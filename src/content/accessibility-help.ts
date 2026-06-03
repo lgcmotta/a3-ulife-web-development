@@ -2,30 +2,30 @@ import type { AccessibilityHelpSection } from "@/content/types";
 
 export const accessibilityHelpSections: AccessibilityHelpSection[] = [
   {
-    title: "Use the main navigation",
+    title: "Start from the main navigation",
     content:
-      "The top navigation links to Home, Learning Tracks, and Accessibility Help. Topic pages also include a return path back to the learning tracks overview.",
+      "Use the header links to move between Home, Learning Tracks, and Accessibility Help. Topic pages include a Back to learning tracks link so you can return to the track overview without retracing every previous step.",
     appliesTo: "Main areas",
     order: 1,
   },
   {
-    title: "Move with the keyboard",
+    title: "Move through controls with the keyboard",
     content:
-      "Use Tab to move through links and controls, Shift+Tab to move backward, and Enter or Space to activate focused controls. The skip link moves directly to the main content.",
+      "Press Tab to move forward through links, topic cards, and the high-contrast theme switch. Press Shift+Tab to move backward, then use Enter or Space to activate the focused item. The skip link moves focus directly to the main content.",
     appliesTo: "Keyboard navigation",
     order: 2,
   },
   {
-    title: "Follow the page structure",
+    title: "Use headings and landmarks as a page map",
     content:
-      "Each page has a clear main heading, a navigation region, and a main content region so screen reader users can understand the current area and available choices.",
+      "Each page has a primary navigation region, one main content region, and clear headings for the current area. Screen reader users can jump by headings to compare tracks, find topic sections, and reach the next study action.",
     appliesTo: "Screen reader structure",
     order: 3,
   },
   {
-    title: "Choose a visual theme",
+    title: "Switch to stronger visual contrast",
     content:
-      "The default theme uses calm academic colors. The high-contrast theme strengthens boundaries and text contrast without changing the content or navigation.",
+      "The high-contrast theme strengthens text, borders, focus outlines, and button contrast without changing the content order. Current navigation state is also shown with text and underline, not color alone.",
     appliesTo: "Visual accessibility",
     order: 4,
   },

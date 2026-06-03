@@ -11,6 +11,10 @@ export function TopicStudyCard({ topic }: { topic: Topic }) {
           <li key={idea}>{idea}</li>
         ))}
       </ul>
+      <h2>Practice prompt</h2>
+      <p>{topic.practicePrompt}</p>
+      <h2>Professor&apos;s note</h2>
+      <p>{topic.professorNote}</p>
     </section>
   );
 }

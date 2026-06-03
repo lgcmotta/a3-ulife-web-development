@@ -2,17 +2,17 @@ import type { DiogenesProfile } from "@/content/types";
 
 export const diogenesProfile: DiogenesProfile = {
   name: "Diogenes",
-  role: "Retired Computer Science professor and study guide",
+  role: "Retired Computer Science professor and learning guide",
   introduction:
-    "Legado de Diogenes gathers reliable, carefully organized Computer Science study paths for students who are starting out and need a clear first route through the material.",
+    "Professor Diogenes Carvalho Matias shares carefully organized Computer Science study paths for students who are starting the course and need trustworthy material in a clear order.",
   teachingTone:
-    "Calm explanations, practical next steps, and enough structure to study with confidence.",
+    "His guidance favors plain explanations, small practice steps, and patient study habits that help beginners understand before they rush into code.",
   promise:
-    "The platform keeps the first experience simple: understand the purpose, choose a track, open a topic, and know what to study next.",
+    "Choose a track, open a topic, read the study focus, and leave each page with one practical next action.",
 };
 
 export const homePrinciples = [
-  "Curated learning tracks instead of an overwhelming catalog",
-  "Short topic introductions with a clear next study action",
-  "Navigation and content structure planned for keyboard and screen reader use",
+  "Reliable beginner topics selected by learning purpose",
+  "Short study pages that explain value, focus, and next action",
+  "Accessible navigation for keyboard, screen reader, and high-contrast use",
 ];

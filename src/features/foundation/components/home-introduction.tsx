@@ -23,6 +23,7 @@ export function HomeIntroduction() {
         </Badge>
         <h1 id="home-heading">Legado de Diogenes</h1>
         <p className="hero-lede">{diogenesProfile.introduction}</p>
+        <p className="hero-support">{diogenesProfile.teachingTone}</p>
         <p className="hero-support">{diogenesProfile.promise}</p>
         <PrimaryActions />
       </div>

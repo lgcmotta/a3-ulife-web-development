@@ -24,6 +24,8 @@ export type Topic = {
   whyItMatters: string;
   studyNext: string;
   keyIdeas: string[];
+  practicePrompt: string;
+  professorNote: string;
 };
 
 export type LearningTrack = {
@@ -32,6 +34,7 @@ export type LearningTrack = {
   summary: string;
   description: string;
   recommendedFor: string;
+  outcome: string;
   topics: Topic[];
 };
 
