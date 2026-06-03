@@ -4,18 +4,35 @@ Legado de Diogenes is a usability-focused educational web platform for beginner 
 
 ## Current Feature
 
-The active implementation follows `specs/001-platform-foundation/plan.md`.
+The active implementation follows `specs/004-personalized-tracks/plan.md`.
 
 ## Local Commands
 
 ```bash
 pnpm install
+docker compose up -d redis
 pnpm dev
 pnpm lint
 pnpm test
 pnpm test:e2e
 pnpm build
 ```
+
+## Redis
+
+The personalized student area stores anonymous browser-student records, drafts, saved paths, progress, and history in Redis.
+
+Local default:
+
+```bash
+REDIS_URL=redis://localhost:6379
+```
+
+No secrets are required for local development.
+
+## Learning Content
+
+Detailed topic sections live in `src/content/learning-sections/` and are rendered from markdown. Each available topic has one markdown file with original English educational content, beginner-friendly guidance, and external reference links.
 
 ## Public Presentation URL
 

@@ -1,8 +1,12 @@
 # MacOS
 **/.DS_Store
+Thumbs.db
+*.tmp
+*.swp
 
 # JetBrains
 .idea/
+.vscode/
 
 # Codex
 .codex/

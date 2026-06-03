@@ -1,5 +1,10 @@
 import type { MainNavigationItem } from "@/content/types";
 
+export const studentAreaRoutes = {
+  history: "/tracks/history",
+  builder: "/tracks/builder",
+} as const;
+
 export const mainNavigation: MainNavigationItem[] = [
   {
     label: "Home",
