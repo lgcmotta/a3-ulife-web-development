@@ -1,6 +1,7 @@
 "use client";
 
 import { Contrast } from "lucide-react";
+import type { KeyboardEvent } from "react";
 import { useEffect, useState } from "react";
 import { type ThemeId } from "@/accessibility/theme";
 import {
@@ -26,6 +27,15 @@ export function ThemeToggle() {
     applyThemePreference(nextTheme);
   }
 
+  function handleToggleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key !== " " && event.key !== "Spacebar") {
+      return;
+    }
+
+    event.preventDefault();
+    toggleTheme();
+  }
+
   return (
     <div className="theme-toggle" aria-label="Visual theme">
       <Contrast aria-hidden="true" size={18} />
@@ -35,6 +45,7 @@ export function ThemeToggle() {
         aria-labelledby="theme-toggle-label"
         checked={isHighContrast}
         onClick={toggleTheme}
+        onKeyDown={handleToggleKeyDown}
       />
     </div>
   );

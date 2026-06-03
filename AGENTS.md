@@ -5,6 +5,7 @@ Auto-generated from feature plans where applicable. The manual project governanc
 ## Active Technologies
 
 - 001-platform-foundation: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, shadcn CLI 4.10.0, Vitest 4.1.8, Playwright 1.60.0.
+- 002-github-test-automation: GitHub Actions, actions/checkout@v6, pnpm/action-setup@v6, actions/setup-node@v6, pnpm 9.5.0, ESLint 9.39.4, Vitest 4.1.8, Playwright 1.60.0.
 
 ## Project Structure
 
@@ -185,8 +186,7 @@ The baseline quality rules are:
 <!-- MANUAL ADDITIONS END -->
 
 <!-- SPECKIT START -->
-Current plan reference: `specs/001-platform-foundation/plan.md`
-
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan file above.
+shell commands, and other important information, read the current plan
+at specs/002-github-test-automation/plan.md
 <!-- SPECKIT END -->
