@@ -35,7 +35,10 @@ export function subscribeToThemePreference(onStoreChange: () => void) {
     return () => undefined;
   }
 
-  const handleChange = () => onStoreChange();
+  const handleChange = () => {
+    applyThemePreference(getThemePreferenceSnapshot());
+    onStoreChange();
+  };
 
   window.addEventListener("storage", handleChange);
   window.addEventListener(THEME_PREFERENCE_EVENT, handleChange);
