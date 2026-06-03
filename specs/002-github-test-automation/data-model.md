@@ -13,7 +13,7 @@ This feature does not add application data, student data, browser storage, accou
 - `triggers`: Events that start the workflow.
 - `concurrencyGroup`: Expression used to cancel older runs for the same workflow/ref.
 - `permissions`: Minimal repository token permissions.
-- `jobs`: Ordered jobs that make up the quality gate.
+- `job`: The single quality job that contains ordered validation steps.
 
 **Validation Rules**:
 
@@ -41,23 +41,42 @@ This feature does not add application data, student data, browser storage, accou
 
 ## Entity: Quality Job
 
-**Purpose**: Represents one required quality gate in the workflow.
+**Purpose**: Represents the single workflow job that runs all validation steps after shared setup.
 
 **Fields**:
 
 - `id`: Stable job identifier.
 - `displayName`: Human-readable check name.
-- `dependsOn`: Prior job that must pass before this job runs.
 - `setupSteps`: Checkout, package manager, runtime, and dependency installation steps.
-- `qualityCommand`: Project command that validates the quality area.
-- `failureMeaning`: What a failure communicates to contributors and reviewers.
+- `validationSteps`: Ordered steps that validate lint, build, unit, and e2e behavior.
+- `failureMeaning`: What a failed step communicates to contributors and reviewers.
 
 **Validation Rules**:
 
-- Jobs must run in this order: lint, build, unit tests, e2e tests.
-- Each job must use major-only action references.
-- Each job must install dependencies with the lockfile before running its quality command.
-- Downstream jobs must depend on the previous job.
+- Workflow must expose one quality job.
+- The quality job must run steps in this order: lint, build, unit tests, e2e tests.
+- The quality job must use major-only action references.
+- The quality job must install dependencies with the lockfile once before running validation commands.
+- Later validation steps must not run when an earlier validation step fails.
+
+## Entity: Quality Step
+
+**Purpose**: Represents one named validation step inside the single quality job.
+
+**Fields**:
+
+- `name`: Human-readable step name shown in the job log.
+- `qualityCommand`: Project command that validates the quality area.
+- `order`: Position in the hard-fail sequence.
+- `setupRequirement`: Any prerequisite unique to the step.
+
+**Validation Rules**:
+
+- Lint step must run `pnpm lint` first.
+- Build step must run `pnpm build` after lint passes.
+- Unit test step must run `pnpm test` after build passes.
+- E2e setup must install Playwright Chromium before e2e tests run.
+- E2e step must run `pnpm test:e2e` last.
 
 ## Entity: Action Reference
 

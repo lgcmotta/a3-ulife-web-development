@@ -62,20 +62,21 @@ Not allowed:
 
 ## Required Job Contract
 
-The workflow must expose four ordered jobs. Each downstream job must depend on the previous job so failures stop later quality gates.
+The workflow must expose one job named `quality-gate`. The job must perform shared checkout, pnpm setup, Node.js setup with pnpm cache, and dependency installation once, then run named validation steps in the required order. GitHub Actions stops later steps automatically when a previous step fails.
 
-| Order | Job ID | Required Command | Depends On |
-|-------|--------|------------------|------------|
-| 1 | `lint` | `pnpm lint` | None |
-| 2 | `build` | `pnpm build` | `lint` |
-| 3 | `unit-tests` | `pnpm test` | `build` |
-| 4 | `e2e-tests` | `pnpm exec playwright install --with-deps chromium` then `pnpm test:e2e` | `unit-tests` |
+| Order | Step Name | Required Command |
+|-------|-----------|------------------|
+| 1 | `Run linter` | `pnpm lint` |
+| 2 | `Build project` | `pnpm build` |
+| 3 | `Run unit tests` | `pnpm test` |
+| 4 | `Install Playwright Chromium` | `pnpm exec playwright install --with-deps chromium` |
+| 5 | `Run end-to-end tests` | `pnpm test:e2e` |
 
-Each job must perform repository checkout, pnpm setup, Node.js setup for `25.9.0`, dependency installation with `pnpm install --frozen-lockfile`, and then the quality command for that job.
+The `Install Playwright Chromium` step must run only after lint, build, and unit tests pass. The `Run end-to-end tests` step must run only after Playwright Chromium installation succeeds.
 
 ## Required Setup Contract
 
-Each job must use this setup pattern before its quality command:
+The quality job must use this setup pattern once before validation steps:
 
 ```yaml
 - name: Checkout
@@ -93,6 +94,27 @@ Each job must use this setup pattern before its quality command:
 
 - name: Install dependencies
   run: pnpm install --frozen-lockfile
+```
+
+## Required Step Contract
+
+The quality job must then run validation steps in this exact order:
+
+```yaml
+- name: Run linter
+  run: pnpm lint
+
+- name: Build project
+  run: pnpm build
+
+- name: Run unit tests
+  run: pnpm test
+
+- name: Install Playwright Chromium
+  run: pnpm exec playwright install --with-deps chromium
+
+- name: Run end-to-end tests
+  run: pnpm test:e2e
 ```
 
 ## Required Repository Configuration

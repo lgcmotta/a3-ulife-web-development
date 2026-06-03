@@ -8,7 +8,7 @@
 
 ## Summary
 
-Add a GitHub Actions quality gate for the existing frontend project. The workflow will run on pull requests targeting `main`, re-run when pull request commits change, and run again on pushes to `main` after merges. It will use the repository's existing package scripts in this hard-fail order: lint, build, unit tests, and end-to-end tests. The implementation is limited to `.github/workflows` and supporting documentation; no product behavior, deployment automation, backend service, repository secrets, or external product integration is introduced.
+Add a GitHub Actions quality gate for the existing frontend project. The workflow will run on pull requests targeting `main`, re-run when pull request commits change, and run again on pushes to `main` after merges. It will use one GitHub Actions job with shared checkout, Node.js setup, pnpm cache, and dependency installation, then run the repository's existing package scripts in this hard-fail step order: lint, build, unit tests, and end-to-end tests. The implementation is limited to `.github/workflows` and supporting documentation; no product behavior, deployment automation, backend service, repository secrets, or external product integration is introduced.
 
 ## Technical Context
 
@@ -24,11 +24,11 @@ Add a GitHub Actions quality gate for the existing frontend project. The workflo
 
 **Project Type**: Static-first frontend web application with repository-hosted CI quality automation
 
-**Performance Goals**: Pull request quality status should be visible without local execution; default branch validation should start within 5 minutes of a merge push; reviewers should identify the failed quality category in under 30 seconds
+**Performance Goals**: Pull request quality status should be visible without local execution; default branch validation should start within 5 minutes of a merge push; reviewers should identify the failed quality step in under 30 seconds; the workflow should avoid repeated checkout and dependency installation within the same run
 
-**Constraints**: Workflow file must live in `.github/workflows`; trigger on `pull_request` for `opened`, `synchronize`, `reopened`, and `ready_for_review`; trigger on `push` to `main`; use workflow-level concurrency with `group: ${{ github.workflow }}-${{ github.ref }}` and `cancel-in-progress: true`; reference action versions by current major tag only; run quality gates in the required order and skip downstream gates after a failure; do not configure repository variables or secrets
+**Constraints**: Workflow file must live in `.github/workflows`; trigger on `pull_request` for `opened`, `synchronize`, `reopened`, and `ready_for_review`; trigger on `push` to `main`; use workflow-level concurrency with `group: ${{ github.workflow }}-${{ github.ref }}` and `cancel-in-progress: true`; reference action versions by current major tag only; use a single quality job with multiple named steps; run quality gates in the required order and stop downstream steps after a failure; keep pnpm caching enabled; do not configure repository variables or secrets
 
-**Scale/Scope**: One workflow file with four dependent quality jobs (`lint`, `build`, `unit-tests`, `e2e-tests`) covering the existing application and test suites
+**Scale/Scope**: One workflow file with one quality job and ordered validation steps (`lint`, `build`, `unit-tests`, `e2e-tests`) covering the existing application and test suites
 
 ## Constitution Check
 
@@ -41,7 +41,7 @@ The repository constitution file is still the default placeholder, so the effect
 | Spec Kit chain controls scope | PASS | Feature is backed by `specs/002-github-test-automation/spec.md` and stays within regression-prevention automation. |
 | Static-compatible frontend | PASS | Plan adds repository CI only; no backend, server runtime, deployment runtime, or product integration is introduced. |
 | Usability and accessibility remain protected | PASS | Existing lint, build, unit, and e2e suites include the foundation app and accessibility checks; the workflow prevents regressions from reaching `main`. |
-| Simplicity and no speculative systems | PASS | Plan uses one GitHub Actions workflow, existing package scripts, and repository-local configuration only. |
+| Simplicity and no speculative systems | PASS | Plan uses one GitHub Actions workflow, one quality job, existing package scripts, and repository-local configuration only. |
 | No repository secrets or external services | PASS | Workflow uses only GitHub-provided automation context and public package/browser downloads; no user-managed secrets or variables are required. |
 
 ## Project Structure
@@ -88,7 +88,7 @@ No constitution or governance violations are introduced by this plan.
 
 ## Phase 0 Research Summary
 
-Research decisions are captured in [research.md](./research.md). All workflow unknowns are resolved: current major action tags, trigger events, concurrency behavior, linter choice, job ordering, dependency setup, and repository secret requirements.
+Research decisions are captured in [research.md](./research.md). All workflow unknowns are resolved: current major action tags, trigger events, concurrency behavior, linter choice, single-job step ordering, dependency setup, pnpm caching, and repository secret requirements.
 
 ## Phase 1 Design Summary
 
@@ -105,5 +105,5 @@ Design artifacts are captured in:
 | Spec Kit chain controls scope | PASS | Design artifacts map directly to the approved CI specification and do not add deployment, coverage gates, security scans, or product features. |
 | Static-compatible frontend | PASS | The workflow validates the static-first frontend and does not introduce runtime infrastructure. |
 | Usability and accessibility remain protected | PASS | The e2e job runs the existing Playwright integration suite, including accessibility checks already present in the foundation project. |
-| Simplicity and no speculative systems | PASS | One workflow file, four ordered jobs, and existing package scripts keep the implementation small. |
+| Simplicity and no speculative systems | PASS | One workflow file, one quality job, ordered validation steps, and existing package scripts keep the implementation small. |
 | No repository secrets or external services | PASS | Contract documents that no repository secrets or manually configured variables are required. |

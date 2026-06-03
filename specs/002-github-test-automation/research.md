@@ -54,18 +54,19 @@
 - Prettier-only formatting gate: Rejected because Prettier is not currently configured and would broaden scope.
 - Biome: Rejected because it would add a new tool without a need strong enough for this narrow automation feature.
 
-## Decision: Use four dependent jobs in the required order
+## Decision: Use one quality job with ordered validation steps
 
-**Rationale**: Four jobs named `lint`, `build`, `unit-tests`, and `e2e-tests` provide clear pull request statuses while preserving hard-fail ordering with `needs`. The order is lint first, build second, unit tests third, and e2e tests fourth. Downstream jobs do not run when an upstream gate fails.
+**Rationale**: One job avoids repeating checkout, Node.js setup, pnpm setup, dependency cache restore, and dependency installation for each quality gate. GitHub Actions steps already hard-fail sequentially by default, so lint can run first, build second, unit tests third, and e2e tests fourth while stopping later steps after the first failure. Clear step names preserve reviewer visibility inside the single quality check.
 
 **Alternatives considered**:
 
-- One job with four steps: Rejected because it hides the quality categories behind one check result and gives reviewers less clear pull request status.
-- Parallel jobs: Rejected because the user explicitly required hard-fail ordering.
+- Four dependent jobs: Rejected for the revised plan because each job repeats checkout and dependency installation, which adds avoidable runtime for this small project.
+- Parallel jobs: Rejected because the user explicitly required hard-fail ordering and because e2e should not run after lint, build, or unit failures.
+- Separate workflows: Rejected because the feature is one quality gate and should remain easy to reason about.
 
 ## Decision: Reuse existing package scripts and test configuration
 
-**Rationale**: The repository already defines the exact quality commands needed by the feature: `pnpm lint`, `pnpm build`, `pnpm test`, and `pnpm test:e2e`. Reusing them keeps local and CI behavior aligned. The e2e job must install Playwright Chromium and operating-system dependencies before running `pnpm test:e2e`.
+**Rationale**: The repository already defines the exact quality commands needed by the feature: `pnpm lint`, `pnpm build`, `pnpm test`, and `pnpm test:e2e`. Reusing them keeps local and CI behavior aligned. The single quality job must install Playwright Chromium and operating-system dependencies after unit tests pass and before running `pnpm test:e2e`.
 
 **Alternatives considered**:
 
