@@ -26,8 +26,20 @@ test.describe("foundation flow", () => {
     await expect(
       page.getByRole("heading", { name: "Problem-Solving Basics" }),
     ).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole("heading", { name: /practice prompt/i })).toBeVisible();
+    await expect(page.getByText(/grade-average calculator/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /professor's note/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /what to do next/i })).toBeVisible();
     await expect(page.getByRole("link", { name: /back to learning tracks/i })).toBeVisible();
+  });
+
+  test("track cards show expected outcomes for comparison", async ({ page }) => {
+    await page.goto("/tracks");
+
+    await expect(page.getByText(/Expected outcome:/i)).toHaveCount(3);
+    await expect(page.getByText(/plan a small program/i)).toBeVisible();
+    await expect(page.getByText(/mobile readability/i)).toBeVisible();
+    await expect(page.getByText(/ask specific questions/i)).toBeVisible();
   });
 
   test("mobile viewport keeps the main flow reachable", async ({ page }) => {

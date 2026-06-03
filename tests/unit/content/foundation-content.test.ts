@@ -7,9 +7,12 @@ describe("foundation content", () => {
     expect(diogenesProfile.name).toBe("Diogenes");
     expect(diogenesProfile.role).toContain("professor");
     expect(diogenesProfile.introduction).toContain("Computer Science");
+    expect(diogenesProfile.introduction).toContain("Diogenes Carvalho Matias");
+    expect(diogenesProfile.teachingTone).toMatch(/plain explanations/i);
+    expect(diogenesProfile.promise).toMatch(/practical next action/i);
     expect(
-      `${diogenesProfile.role} ${diogenesProfile.introduction} ${diogenesProfile.promise}`.toLowerCase(),
-    ).not.toMatch(/chatbot|dashboard|account|authentication|community/);
+      `${diogenesProfile.role} ${diogenesProfile.introduction} ${diogenesProfile.teachingTone} ${diogenesProfile.promise}`.toLowerCase(),
+    ).not.toMatch(/chatbot|dashboard|account|authentication|community|personalization|live chat|generative ai/);
   });
 
   it("keeps primary navigation focused on approved main areas", () => {

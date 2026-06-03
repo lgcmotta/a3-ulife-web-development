@@ -11,8 +11,9 @@ export function AccessibilityView() {
         <p className="eyebrow">Accessibility help</p>
         <h1 id="accessibility-heading">Navigate the foundation independently</h1>
         <p>
-          This page explains the core structure and the accessibility behaviors
-          planned into the first version of Legado de Diogenes.
+          This page explains how to move through Legado de Diogenes with a
+          keyboard, screen reader, or high-contrast visual theme while keeping
+          the same learning content available to every student.
         </p>
       </div>
       <div className="help-grid">

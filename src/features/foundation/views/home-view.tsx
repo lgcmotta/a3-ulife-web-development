@@ -8,15 +8,15 @@ export function HomeView() {
       <section className="content-band" aria-labelledby="foundation-preview-heading">
         <div className="content-container preview-grid">
           <div>
-            <p className="eyebrow">Foundation MVP</p>
-            <h2 id="foundation-preview-heading">A simple route into Computer Science study</h2>
-          </div>
-          <p>
-            The first version keeps the structure intentionally small: a clear
-            introduction, a curated tracks overview, concise topic pages, and
-            accessibility guidance that is available from every main area.
-          </p>
+          <p className="eyebrow">Foundation MVP</p>
+          <h2 id="foundation-preview-heading">A simple route into Computer Science study</h2>
         </div>
+        <p>
+          Students begin with a short professor introduction, compare curated
+          study tracks, open focused topic pages, and use accessibility guidance
+          whenever they need help moving through the platform.
+        </p>
+      </div>
       </section>
       <section className="content-container track-strip" aria-label="Available track preview">
         {learningTracks.map((track) => (

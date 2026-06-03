@@ -22,7 +22,7 @@ export const heuristicFindings: HeuristicEvaluationFinding[] = [
   {
     heuristic: "Accessibility and flexibility of use",
     finding:
-      "The first version needs keyboard navigation and a high-contrast option before adding richer features.",
+      "Students need keyboard navigation and a high-contrast option to use the foundation independently.",
     severity: "high",
     decision: "addressed-now",
     iterationNote:

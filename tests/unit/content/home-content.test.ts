@@ -11,6 +11,9 @@ describe("home introduction", () => {
       "Legado de Diogenes",
     );
     expect(screen.getByText(/retired computer science professor/i)).toBeTruthy();
+    expect(screen.getByText(/diogenes carvalho matias/i)).toBeTruthy();
+    expect(screen.getByText(/plain explanations/i)).toBeTruthy();
+    expect(screen.getByText(/practical next action/i)).toBeTruthy();
     expect(screen.getByRole("link", { name: /explore tracks/i })).toBeTruthy();
     expect(screen.getByRole("link", { name: /accessibility help/i })).toBeTruthy();
   });

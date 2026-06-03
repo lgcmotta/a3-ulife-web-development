@@ -12,6 +12,9 @@ export function TrackCard({ track }: { track: LearningTrack }) {
       <h2 id={`${track.slug}-heading`}>{track.title}</h2>
       <p className="track-summary">{track.summary}</p>
       <p>{track.description}</p>
+      <p>
+        <strong>Expected outcome:</strong> {track.outcome}
+      </p>
       <TopicLinkList topics={track.topics} />
     </article>
   );

@@ -37,6 +37,15 @@ test.describe("accessibility foundation", () => {
     await expect(page.getByRole("heading", { name: /navigate the foundation/i })).toBeVisible();
   });
 
+  test("accessibility help explains concrete navigation and theme support", async ({ page }) => {
+    await page.goto("/accessibility");
+
+    await expect(page.getByText(/Back to learning tracks link/i)).toBeVisible();
+    await expect(page.getByText(/Press Tab to move forward/i)).toBeVisible();
+    await expect(page.getByText(/Screen reader users can jump by headings/i)).toBeVisible();
+    await expect(page.getByText(/not color alone/i)).toBeVisible();
+  });
+
   test("theme switch is keyboard reachable and preserves content", async ({ page }) => {
     await page.goto("/accessibility");
     const toggle = page.getByRole("switch", { name: /high contrast/i });

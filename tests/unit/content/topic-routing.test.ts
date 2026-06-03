@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { findTopicRoute, getTopicRouteParams } from "@/content/topic-routes";
+import { learningTracks } from "@/content/tracks";
 
 describe("topic routes", () => {
   it("generates a static route for every curated topic", () => {
     const params = getTopicRouteParams();
-    expect(params.length).toBeGreaterThan(3);
+    const topicCount = learningTracks.reduce((count, track) => count + track.topics.length, 0);
+
+    expect(params.length).toBe(topicCount);
     expect(params.every((param) => findTopicRoute(param))).toBe(true);
   });
 
