@@ -18,3 +18,7 @@ playwright-report/
 test-results/
 *.log
 .env*
+!.env.example
+
+# NextJS
+next-env.d.ts
