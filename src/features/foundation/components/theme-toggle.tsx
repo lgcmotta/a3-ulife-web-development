@@ -2,29 +2,31 @@
 
 import { Contrast } from "lucide-react";
 import type { KeyboardEvent } from "react";
-import { useEffect, useState } from "react";
-import { type ThemeId } from "@/accessibility/theme";
+import { useSyncExternalStore } from "react";
+import { defaultTheme, type ThemeId } from "@/accessibility/theme";
 import {
   applyThemePreference,
-  readThemePreference,
+  getThemePreferenceSnapshot,
+  notifyThemePreferenceChange,
+  subscribeToThemePreference,
   writeThemePreference,
 } from "@/storage/theme-preference";
 import { Switch } from "@/ui/components/switch";
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<ThemeId>(() => readThemePreference());
-
-  useEffect(() => {
-    applyThemePreference(theme);
-  }, [theme]);
+  const theme = useSyncExternalStore(
+    subscribeToThemePreference,
+    getThemePreferenceSnapshot,
+    () => defaultTheme,
+  );
 
   const isHighContrast = theme === "high-contrast";
 
   function toggleTheme() {
     const nextTheme: ThemeId = isHighContrast ? "default" : "high-contrast";
-    setTheme(nextTheme);
     writeThemePreference(nextTheme);
     applyThemePreference(nextTheme);
+    notifyThemePreferenceChange();
   }
 
   function handleToggleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
