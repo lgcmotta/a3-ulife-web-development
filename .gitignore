@@ -1,0 +1,20 @@
+# MacOS
+**/.DS_Store
+
+# JetBrains
+.idea/
+
+# Codex
+.codex/
+
+# NodeJS
+node_modules/
+dist/
+build/
+out/
+coverage/
+.next/
+playwright-report/
+test-results/
+*.log
+.env*
