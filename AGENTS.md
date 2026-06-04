@@ -196,5 +196,5 @@ The baseline quality rules are:
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/005-fix-path-builder-crud/plan.md
+at specs/006-theme-contrast-modes/plan.md
 <!-- SPECKIT END -->

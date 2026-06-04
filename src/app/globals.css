@@ -1,35 +1,136 @@
 @import "tailwindcss";
 
-:root {
+:root,
+:root[data-theme="light"][data-contrast="normal"] {
   --background: #fbfaf7;
   --foreground: #15211c;
   --muted-foreground: #40524b;
   --surface: #ffffff;
+  --surface-foreground: #15211c;
   --surface-strong: #eef4f1;
+  --surface-strong-foreground: #15211c;
   --border: #b8c8c1;
   --action: #0f5e52;
   --action-hover: #0a493f;
   --action-foreground: #ffffff;
-  --focus: #c4452d;
+  --action-hover-foreground: #ffffff;
+  --control: #ffffff;
+  --control-foreground: #15211c;
+  --control-hover: #eef4f1;
+  --control-hover-foreground: #15211c;
+  --control-selected: #0f5e52;
+  --control-selected-foreground: #ffffff;
+  --disabled: #e7eeea;
+  --disabled-foreground: #52625c;
+  --focus: #8f2f1d;
+  --focus-foreground: #ffffff;
+  --link: #0f5e52;
   --accent: #8b3f53;
+  --accent-foreground: #ffffff;
   --gold: #b56b14;
+  --warning: #8a4b00;
+  --success: #0f5e52;
+  --danger: #9b2f22;
   color-scheme: light;
 }
 
-:root[data-theme="high-contrast"] {
+:root[data-theme="light"][data-contrast="high"] {
   --background: #ffffff;
   --foreground: #050505;
   --muted-foreground: #111111;
   --surface: #ffffff;
+  --surface-foreground: #050505;
   --surface-strong: #f1f1f1;
+  --surface-strong-foreground: #050505;
   --border: #000000;
   --action: #003f8f;
   --action-hover: #002b62;
   --action-foreground: #ffffff;
-  --focus: #ffb000;
+  --action-hover-foreground: #ffffff;
+  --control: #ffffff;
+  --control-foreground: #050505;
+  --control-hover: #f1f1f1;
+  --control-hover-foreground: #050505;
+  --control-selected: #001f5c;
+  --control-selected-foreground: #ffffff;
+  --disabled: #e7e7e7;
+  --disabled-foreground: #333333;
+  --focus: #005fcc;
+  --focus-foreground: #ffffff;
+  --link: #003f8f;
   --accent: #7a003c;
+  --accent-foreground: #ffffff;
   --gold: #704500;
+  --warning: #6d3d00;
+  --success: #005b2f;
+  --danger: #8b0000;
   color-scheme: light;
+}
+
+:root[data-theme="dark"][data-contrast="normal"] {
+  --background: #101714;
+  --foreground: #f4fbf7;
+  --muted-foreground: #c3d1ca;
+  --surface: #17231f;
+  --surface-foreground: #f4fbf7;
+  --surface-strong: #22342e;
+  --surface-strong-foreground: #f4fbf7;
+  --border: #6f837b;
+  --action: #62d6c6;
+  --action-hover: #7be7d7;
+  --action-foreground: #06211d;
+  --action-hover-foreground: #031a16;
+  --control: #17231f;
+  --control-foreground: #f4fbf7;
+  --control-hover: #22342e;
+  --control-hover-foreground: #f4fbf7;
+  --control-selected: #b7e4dd;
+  --control-selected-foreground: #06211d;
+  --disabled: #2c3834;
+  --disabled-foreground: #c0ccc7;
+  --focus: #ffcc33;
+  --focus-foreground: #101714;
+  --link: #8ee5d5;
+  --accent: #f6a7bd;
+  --accent-foreground: #2a0712;
+  --gold: #f1bd74;
+  --warning: #ffd166;
+  --success: #74e8b5;
+  --danger: #ff9f9f;
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"][data-contrast="high"] {
+  --background: #000000;
+  --foreground: #ffffff;
+  --muted-foreground: #f2f2f2;
+  --surface: #000000;
+  --surface-foreground: #ffffff;
+  --surface-strong: #111111;
+  --surface-strong-foreground: #ffffff;
+  --border: #ffffff;
+  --action: #ffd400;
+  --action-hover: #ffe66d;
+  --action-foreground: #000000;
+  --action-hover-foreground: #000000;
+  --control: #000000;
+  --control-foreground: #ffffff;
+  --control-hover: #111111;
+  --control-hover-foreground: #ffffff;
+  --control-selected: #ffffff;
+  --control-selected-foreground: #000000;
+  --disabled: #222222;
+  --disabled-foreground: #dddddd;
+  --focus: #005fcc;
+  --focus-foreground: #ffffff;
+  --link: #ffd400;
+  --accent: #ffffff;
+  --accent-foreground: #000000;
+  --gold: #ffd400;
+  --warning: #ffd400;
+  --success: #00ff99;
+  --danger: #ffb3b3;
+  color-scheme: dark;
 }
 
 * {
@@ -51,7 +152,7 @@ body {
   line-height: 1.6;
 }
 
-a {
+a:not([class]) {
   color: inherit;
 }
 
@@ -89,7 +190,7 @@ a {
 }
 
 .learning-markdown a {
-  color: var(--action);
+  color: var(--link);
   font-weight: 700;
   text-decoration-thickness: 0.12em;
   text-underline-offset: 0.18em;
@@ -141,20 +242,26 @@ a {
 }
 
 .student-tab {
-  border: 1px solid transparent;
+  background: var(--control);
+  border: 1px solid var(--border);
   border-bottom: 0;
   border-radius: 6px 6px 0 0;
-  color: var(--muted-foreground);
+  color: var(--control-foreground);
   font-weight: 700;
   min-height: 2.75rem;
   padding: 0.65rem 0.9rem;
   text-decoration: none;
 }
 
+.student-tab:hover {
+  background: var(--control-hover);
+  color: var(--control-hover-foreground);
+}
+
 .student-tab-active {
-  background: var(--surface);
+  background: var(--control-selected);
   border-color: var(--border);
-  color: var(--foreground);
+  color: var(--control-selected-foreground);
   text-decoration: underline;
   text-decoration-thickness: 0.13em;
   text-underline-offset: 0.28em;
@@ -168,7 +275,7 @@ a {
   transform: translateY(-160%);
   border-radius: 6px;
   background: var(--focus);
-  color: #111111;
+  color: var(--focus-foreground);
   font-weight: 700;
   padding: 0.75rem 1rem;
 }
@@ -225,18 +332,25 @@ a {
 }
 
 .nav-link {
+  background: var(--control);
   border: 1px solid transparent;
-  color: var(--muted-foreground);
+  color: var(--control-foreground);
   font-size: 0.93rem;
   font-weight: 700;
   min-height: 2.45rem;
   padding: 0.45rem 0.7rem;
 }
 
+.nav-link:hover {
+  border-color: var(--border);
+  background: var(--control-hover);
+  color: var(--control-hover-foreground);
+}
+
 .nav-link[aria-current="page"] {
   border-color: var(--border);
-  background: var(--surface-strong);
-  color: var(--foreground);
+  background: var(--control-selected);
+  color: var(--control-selected-foreground);
   text-decoration: underline;
   text-decoration-thickness: 0.13em;
   text-underline-offset: 0.28em;
@@ -245,10 +359,133 @@ a {
 .theme-toggle {
   align-items: center;
   display: flex;
-  gap: 0.6rem;
+  flex-wrap: wrap;
+  gap: 0.8rem;
   justify-content: flex-end;
-  min-width: 13rem;
+}
+
+.base-theme-control {
+  border: 0;
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+.base-theme-control legend {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+
+.base-theme-options,
+.contrast-control {
+  align-items: center;
+  display: flex;
+  gap: 0.4rem;
+}
+
+.theme-option {
+  display: inline-flex;
+}
+
+.theme-option input {
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  position: absolute;
   white-space: nowrap;
+  width: 1px;
+}
+
+.theme-option span {
+  align-items: center;
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--control-foreground);
+  display: inline-flex;
+  font-size: 0.88rem;
+  font-weight: 800;
+  gap: 0.35rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.55rem;
+  white-space: nowrap;
+}
+
+.theme-option input:focus-visible + span {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.theme-option input:checked + span {
+  background: var(--control-selected);
+  color: var(--control-selected-foreground);
+  text-decoration: underline;
+  text-decoration-thickness: 0.13em;
+  text-underline-offset: 0.22em;
+}
+
+.contrast-control {
+  white-space: nowrap;
+}
+
+.button-base {
+  border-color: var(--border);
+  color: var(--control-foreground);
+}
+
+.button-base:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.button-base:disabled,
+.button-base[aria-disabled="true"] {
+  background: var(--disabled);
+  border-color: var(--border);
+  color: var(--disabled-foreground);
+  pointer-events: none;
+}
+
+.button-action {
+  background: var(--action);
+  border-color: var(--action);
+  color: var(--action-foreground);
+}
+
+.button-action:hover {
+  background: var(--action-hover);
+  border-color: var(--action-hover);
+  color: var(--action-hover-foreground);
+}
+
+.button-secondary,
+.button-outline {
+  background: var(--control);
+  color: var(--control-foreground);
+}
+
+.button-secondary:hover,
+.button-outline:hover,
+.button-ghost:hover {
+  background: var(--control-hover);
+  border-color: var(--border);
+  color: var(--control-hover-foreground);
+}
+
+.button-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--foreground);
+}
+
+[data-sonner-toaster],
+[data-sonner-toast] {
+  pointer-events: none;
 }
 
 .hero-section {
@@ -346,6 +583,7 @@ a {
   border-bottom: 1px solid var(--border);
   border-top: 1px solid var(--border);
   background: var(--surface-strong);
+  color: var(--surface-strong-foreground);
 }
 
 .preview-grid {
@@ -403,6 +641,7 @@ h3 {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
+  color: var(--surface-foreground);
 }
 
 .compact-track {
@@ -462,7 +701,7 @@ h3 {
 }
 
 .track-summary {
-  color: var(--foreground) !important;
+  color: var(--surface-foreground) !important;
   font-weight: 700;
 }
 
@@ -476,8 +715,10 @@ h3 {
 
 .topic-link-list a {
   align-items: center;
+  background: var(--control);
   border: 1px solid var(--border);
   border-radius: 6px;
+  color: var(--control-foreground);
   display: flex;
   font-weight: 700;
   gap: 0.75rem;
@@ -489,7 +730,8 @@ h3 {
 
 .topic-link-list a:hover,
 .return-link:hover {
-  background: var(--surface-strong);
+  background: var(--control-hover);
+  color: var(--control-hover-foreground);
 }
 
 .topic-page {
@@ -505,8 +747,9 @@ h3 {
 }
 
 .return-link {
+  background: var(--control);
   border: 1px solid var(--border);
-  color: var(--muted-foreground);
+  color: var(--control-foreground);
   font-weight: 800;
   padding: 0.55rem 0.75rem;
   width: fit-content;
@@ -522,6 +765,7 @@ h3 {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
+  color: var(--surface-foreground);
   display: grid;
   gap: 1rem;
   padding: 1.25rem;
@@ -534,8 +778,10 @@ h3 {
 }
 
 .status-label {
+  background: var(--surface-strong);
   border: 1px solid var(--border);
   border-radius: 999px;
+  color: var(--surface-strong-foreground);
   display: inline-flex;
   font-size: 0.85rem;
   font-weight: 700;
@@ -561,6 +807,7 @@ h3 {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
+  color: var(--surface-foreground);
   display: grid;
   gap: 1rem;
   padding: 1rem;
@@ -595,8 +842,8 @@ h3 {
   align-items: center;
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: var(--surface-strong);
-  color: var(--foreground);
+  background: var(--control);
+  color: var(--control-foreground);
   display: inline-flex;
   font: inherit;
   height: 2.25rem;
@@ -606,7 +853,8 @@ h3 {
 }
 
 .item-action-button:hover {
-  background: var(--surface);
+  background: var(--control-hover);
+  color: var(--control-hover-foreground);
 }
 
 .item-action-button svg {
@@ -618,10 +866,6 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.button-default {
-  color: var(--action-foreground) !important;
 }
 
 .study-card h2 {
@@ -665,6 +909,7 @@ h3 {
 @media (max-width: 900px) {
   .site-header {
     grid-template-columns: 1fr;
+    position: static;
   }
 
   .brand-mark,
@@ -674,6 +919,11 @@ h3 {
 
   .theme-toggle {
     min-width: 0;
+  }
+
+  .base-theme-control,
+  .contrast-control {
+    justify-content: center;
   }
 
   .preview-grid,
@@ -722,5 +972,17 @@ h3 {
   .nav-link {
     flex: 1 1 100%;
     justify-content: center;
+  }
+
+  .theme-toggle,
+  .base-theme-options,
+  .contrast-control {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .theme-option span {
+    justify-content: center;
+    width: 100%;
   }
 }
