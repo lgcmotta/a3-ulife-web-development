@@ -24,7 +24,8 @@ jobs:
   quality-gate:
     name: Quality Gate
     runs-on: ubuntu-latest
-
+    env:
+        REDIS_URL: redis://localhost:6379
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -49,6 +50,9 @@ jobs:
 
       - name: Build project
         run: pnpm build
+
+      - name: Docker Compose UP
+        run: docker compose -f ./docker-compose.yml up -d && sleep 5
 
       - name: Run unit tests
         run: pnpm test

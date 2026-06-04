@@ -55,6 +55,61 @@ a {
   color: inherit;
 }
 
+.learning-markdown {
+  display: grid;
+  gap: 1rem;
+  max-width: 78ch;
+}
+
+.learning-markdown h1,
+.learning-markdown h2,
+.learning-markdown h3 {
+  line-height: 1.15;
+  margin: 0.75rem 0 0;
+}
+
+.learning-markdown h1 {
+  font-size: clamp(2rem, 6vw, 3.75rem);
+}
+
+.learning-markdown h2 {
+  font-size: clamp(1.45rem, 4vw, 2rem);
+}
+
+.learning-markdown p,
+.learning-markdown ul,
+.learning-markdown ol,
+.learning-markdown table {
+  margin: 0;
+}
+
+.learning-markdown ul,
+.learning-markdown ol {
+  padding-left: 1.4rem;
+}
+
+.learning-markdown a {
+  color: var(--action);
+  font-weight: 700;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.18em;
+}
+
+.learning-markdown table {
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.learning-markdown th,
+.learning-markdown td {
+  border: 1px solid var(--border);
+  padding: 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -63,6 +118,46 @@ a {
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
+}
+
+.sr-only {
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.student-tabs {
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-block: 1rem 1.5rem;
+}
+
+.student-tab {
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  color: var(--muted-foreground);
+  font-weight: 700;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.9rem;
+  text-decoration: none;
+}
+
+.student-tab-active {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-thickness: 0.13em;
+  text-underline-offset: 0.28em;
 }
 
 .skip-link {
@@ -423,6 +518,112 @@ h3 {
   padding: 1.25rem;
 }
 
+.student-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.student-empty-state {
+  display: grid;
+  gap: 1rem;
+  max-width: 42rem;
+}
+
+.status-label {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+}
+
+.builder-action-bar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.builder-layout {
+  align-items: start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(16rem, 0.9fr) minmax(0, 1.3fr);
+}
+
+.builder-sidebar,
+.current-path-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.tree-track-row,
+.tree-topic-row,
+.path-item-heading,
+.current-path-panel li {
+  align-items: center;
+  display: flex;
+  gap: 0.65rem;
+}
+
+.tree-topic-list,
+.current-path-list,
+.current-track-group ol {
+  display: grid;
+  gap: 0.55rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.current-track-group {
+  border-top: 1px solid var(--border);
+  display: grid !important;
+  padding-top: 0.8rem;
+}
+
+.item-action-button {
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-strong);
+  color: var(--foreground);
+  display: inline-flex;
+  font: inherit;
+  height: 2.25rem;
+  justify-content: center;
+  padding: 0;
+  width: 2.25rem;
+}
+
+.item-action-button:hover {
+  background: var(--surface);
+}
+
+.item-action-button svg {
+  height: 1.1rem;
+  width: 1.1rem;
+}
+
+.history-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.button-default {
+  color: var(--action-foreground) !important;
+}
+
 .study-card h2 {
   margin: 0.5rem 0;
 }
@@ -479,6 +680,7 @@ h3 {
   .track-strip,
   .tracks-grid,
   .help-grid,
+  .builder-layout,
   .evidence-grid {
     grid-template-columns: 1fr;
   }

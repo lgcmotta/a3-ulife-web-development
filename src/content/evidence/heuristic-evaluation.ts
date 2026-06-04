@@ -31,10 +31,37 @@ export const heuristicFindings: HeuristicEvaluationFinding[] = [
   {
     heuristic: "User control and freedom",
     finding:
-      "A future progress dashboard could help students resume study, but it would expand scope beyond the foundation MVP.",
-    severity: "low",
-    decision: "deferred",
+      "Students can make significant path edits and need a way to avoid losing or accidentally applying changes.",
+    severity: "high",
+    decision: "addressed-now",
     iterationNote:
-      "Progress behavior is documented as later-scope work and not presented in the current interface.",
+      "The builder separates Save from Continue Learning, disables invalid actions, and requires confirmation for discard and clear.",
+  },
+  {
+    heuristic: "Match between system and real world",
+    finding:
+      "The builder must preserve the learning-track hierarchy so students do not see topics detached from their study context.",
+    severity: "medium",
+    decision: "addressed-now",
+    iterationNote:
+      "The current path groups selected topics under their parent track and only permits topic reordering inside that group.",
+  },
+  {
+    heuristic: "Error prevention",
+    finding:
+      "Students may try to continue learning with unsaved edits or save an empty path.",
+    severity: "high",
+    decision: "addressed-now",
+    iterationNote:
+      "The action bar disables invalid actions and server actions return friendly feedback for blocked operations.",
+  },
+  {
+    heuristic: "Accessibility and flexibility of use",
+    finding:
+      "The personalized builder introduces tabs, tree controls, context menus, dialogs, toasts, and long reading pages.",
+    severity: "high",
+    decision: "addressed-now",
+    iterationNote:
+      "Student-area tabs expose selected state, controls have readable labels, destructive dialogs are explicit, and learning sections place Complete Topic before long content.",
   },
 ];

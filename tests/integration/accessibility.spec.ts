@@ -4,6 +4,8 @@ import AxeBuilder from "@axe-core/playwright";
 const routes = [
   "/",
   "/tracks",
+  "/tracks/history?demoHistory=1",
+  "/tracks/builder",
   "/tracks/programming-foundations/problem-solving-basics",
   "/accessibility",
 ];
@@ -54,5 +56,19 @@ test.describe("accessibility foundation", () => {
 
     await expect(page.locator("html")).toHaveAttribute("data-theme", "high-contrast");
     await expect(page.getByRole("heading", { name: /navigate the foundation/i })).toBeVisible();
+  });
+
+  test("student area tabs and builder actions are keyboard reachable", async ({ page }) => {
+    await page.goto("/tracks/builder");
+
+    await expect(page.getByRole("tab", { name: "Learning Path Builder" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Save" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Start Learning" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Available Tracks" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Current Path" })).toBeVisible();
   });
 });
