@@ -1,12 +1,6 @@
-import { expect, test } from "@playwright/test";
-
-import { clearStudentAreaTestData } from "../e2e-support/redis-test-utils";
+import { expect, test } from "../e2e-support/student-area-test";
 
 test.describe("student area history", () => {
-  test.beforeEach(async () => {
-    await clearStudentAreaTestData();
-  });
-
   test("empty history explains the next action", async ({ page }) => {
     await page.goto("/tracks/history");
 

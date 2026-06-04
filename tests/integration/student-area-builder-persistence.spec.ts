@@ -1,6 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
-
-import { clearStudentAreaTestData } from "../e2e-support/redis-test-utils";
+import { expect, test, type Page } from "../e2e-support/student-area-test";
 
 async function selectWholeTrack(page: Page, trackName: RegExp, trackCheckbox: RegExp) {
   await page.getByRole("button", { name: trackName }).click();
@@ -25,10 +23,6 @@ async function clearBuilder(page: Page) {
 }
 
 test.describe("student area builder persistence", () => {
-  test.beforeEach(async () => {
-    await clearStudentAreaTestData();
-  });
-
   test("discard in create mode returns to the empty builder state", async ({ page }) => {
     await page.goto("/tracks/builder");
 

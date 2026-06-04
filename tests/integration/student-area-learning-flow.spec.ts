@@ -1,6 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
-
-import { clearStudentAreaTestData } from "../e2e-support/redis-test-utils";
+import { expect, test, type Page } from "../e2e-support/student-area-test";
 
 async function saveWholeTrack(page: Page, trackName: RegExp, trackCheckbox: RegExp) {
   await page.goto("/tracks/builder");
@@ -14,10 +12,6 @@ async function saveWholeTrack(page: Page, trackName: RegExp, trackCheckbox: RegE
 }
 
 test.describe("student area learning flow", () => {
-  test.beforeEach(async () => {
-    await clearStudentAreaTestData();
-  });
-
   test("saved path opens topic content and can return to builder", async ({ page }) => {
     await page.goto("/tracks/builder");
 

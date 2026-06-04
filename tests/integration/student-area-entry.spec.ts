@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../e2e-support/student-area-test";
 
 test.describe("student area entry", () => {
   test("home Start Learning opens the history tab", async ({ page }) => {

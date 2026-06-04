@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../e2e-support/student-area-test";
 
 test.describe("foundation flow", () => {
   test("home explains the platform and exposes primary navigation", async ({ page }) => {

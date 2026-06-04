@@ -6,7 +6,11 @@
 
 **Status**: Draft
 
-**Input**: User description: "Change personalized tracks spec so Home and Learning Tracks show Start Learning that opens the student area at `/tracks/history`, student area uses `/tracks/history` and `/tracks/builder` tabs, history includes an action to add a new learning path by moving to `/tracks/builder`, platform creates a persistent anonymous student record without authentication, student area data is platform-managed, history shows a table, builder shows track/topic tree plus current path, builder supports checkbox hierarchy, reorder, context menu actions, save/continue/discard flows, feedback toasts, confirmation modals for destructive resets, and detailed topic learning sections with completion and next-topic flow."
+**Input**: User description: "Change personalized tracks spec so Home and Learning Tracks show Start Learning that opens the student area at `/tracks/history`, student area uses `/tracks/history` and `/tracks/builder` tabs, history includes an action to add a new learning path by moving to `/tracks/builder`, platform creates a persistent anonymous student record without authentication, student area data is platform-managed, history shows a table, builder shows track/topic tree plus current path, builder supports checkbox hierarchy, reorder, composition-only context menu actions, save/start/resume/discard/clear flows, feedback toasts, confirmation modals for clearing unsaved builder state, and detailed topic learning sections with completion and next-topic flow."
+
+**Audit Note**: Builder CRUD and state ownership were corrected by `005-fix-path-builder-crud`.
+This specification now preserves the personalized student area scope while aligning builder
+composition, progress, and persistence rules with that later correction.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -67,25 +71,23 @@ A student opens the Learning Path Builder, selects complete tracks or individual
 
 ---
 
-### User Story 4 - Organize And Update The Current Path (Priority: P4)
+### User Story 4 - Organize The Current Path Composition (Priority: P4)
 
-A student reorders selected tracks and topics, uses item actions from a context menu, and receives feedback when an action is invalid, successful, or destructive.
+A student reorders selected tracks and topics, uses item actions from a context menu, and receives feedback when a composition action is invalid or successful.
 
-**Why this priority**: Personalization needs clear control over order and progress without breaking the track-topic hierarchy.
+**Why this priority**: Personalization needs clear control over composition and order without breaking the track-topic hierarchy or mixing builder state with learning progress.
 
-**Independent Test**: Select topics from multiple tracks, reorder tracks, reorder topics inside one track, use remove/move/complete/reset actions, and confirm invalid moves are blocked with feedback.
+**Independent Test**: Select topics from multiple tracks, reorder tracks, reorder topics inside one track, use remove and move actions, and confirm invalid moves are blocked with feedback.
 
 **Acceptance Scenarios**:
 
 1. **Given** the current path contains multiple selected tracks, **When** the student moves a track up or down, **Then** only track order changes and selected topics remain under their original parent track.
 2. **Given** the current path contains multiple selected topics inside one track, **When** the student moves a topic up or down, **Then** only topic order within that same track changes.
 3. **Given** the student attempts to place a topic before, after, or inside a different track, **When** the action would break hierarchy, **Then** the move is blocked and a friendly notification explains the rule.
-4. **Given** a context menu opens for a selected topic, **When** the student chooses remove, move up, move down, complete, or reset, **Then** the chosen action applies only to that topic when valid.
-5. **Given** a context menu opens for a selected track, **When** the student chooses remove, move up, move down, complete, or reset, **Then** the chosen action applies to the whole selected track group when valid.
-6. **Given** a student marks a track complete, **When** the action succeeds, **Then** all selected topics in that track are marked completed.
-7. **Given** a student resets a track, **When** the action succeeds, **Then** all selected topics in that track are marked not completed.
-8. **Given** a student removes, completes, resets, saves, or attempts an invalid action, **When** the action resolves, **Then** the student receives friendly feedback.
-9. **Given** a student uses keyboard navigation, **When** they select, reorder, and use context-menu actions, **Then** the same actions remain available without a mouse.
+4. **Given** a context menu opens for a selected topic, **When** the student chooses remove, move up, or move down, **Then** the chosen composition action applies only to that topic when valid.
+5. **Given** a context menu opens for a selected track, **When** the student chooses remove, move up, or move down, **Then** the chosen composition action applies to the whole selected track group when valid.
+6. **Given** a student removes, reorders, saves, or attempts an invalid action, **When** the action resolves, **Then** the student receives friendly feedback.
+7. **Given** a student uses keyboard navigation, **When** they select, reorder, and use context-menu actions, **Then** the same composition actions remain available without a mouse.
 
 ---
 
@@ -105,7 +107,7 @@ A student saves the current path, continues prior learning when available, and d
 4. **Given** a saved path exists and the student changes the current path, **When** unsaved changes exist, **Then** Save is available and Continue Learning is unavailable until the student saves or discards changes.
 5. **Given** no unsaved changes exist, **When** the builder loads, **Then** Discard Changes is disabled.
 6. **Given** unsaved changes exist, **When** the student selects Discard Changes, **Then** a confirmation dialog appears before the current path reverts to the last saved state.
-7. **Given** the student chooses to clear the learning path, **When** they select the clear action, **Then** a confirmation dialog appears before the saved path and progress are cleared.
+7. **Given** the student chooses to clear the learning path in the builder, **When** they select the clear action, **Then** a confirmation dialog appears before the current builder UI is cleared.
 8. **Given** a save, discard, clear, or invalid action completes, **When** feedback appears, **Then** the message is friendly, specific, and understandable without relying on color alone.
 
 ---
@@ -140,9 +142,9 @@ A student starts or continues a saved path, studies detailed topic sections, com
 - Student tries to add or save an empty track with no topics.
 - Student removes all topics from the current path.
 - Student tries to reorder a topic outside its parent track.
-- Student uses remove, complete, or reset on a whole track.
+- Student uses remove, move up, or move down on a whole track.
 - Student clicks Discard Changes with unsaved changes.
-- Student clears the learning path and progress.
+- Student clears the builder UI without saving and saved path data must remain unchanged.
 - Student completes the final selected topic.
 - Student reopens a completed topic and selects Complete Topic again.
 - Student data cannot be loaded or saved.
@@ -182,23 +184,23 @@ A student starts or continues a saved path, studies detailed topic sections, com
 - **FR-025**: Students MUST be able to reorder selected tracks relative to other selected tracks.
 - **FR-026**: Students MUST be able to reorder selected topics only within their own parent track.
 - **FR-027**: The platform MUST prevent moving a topic outside its parent track.
-- **FR-028**: Track and topic items in the current path MUST provide context-menu actions for remove, move up, move down, complete, and reset.
+- **FR-028**: Track and topic items in the current path MUST provide composition-only context-menu actions for remove, move up, and move down.
 - **FR-029**: Remove MUST remove the selected topic or selected track group from the current path.
 - **FR-030**: Move up and move down MUST move a topic only within its parent track or move a track only among selected track groups.
-- **FR-031**: Complete MUST mark the selected topic completed or mark all selected topics in a selected track group completed.
-- **FR-032**: Reset MUST mark the selected topic not completed or mark all selected topics in a selected track group not completed.
-- **FR-033**: Completion and reset actions MUST update the student record.
+- **FR-031**: Builder composition menus MUST NOT include completion or reset progress actions.
+- **FR-032**: Builder composition changes MUST NOT mark topics complete or reset completed topics.
+- **FR-033**: Topic completion MUST update the student record only through the learning flow.
 - **FR-034**: The builder MUST provide Save, Discard Changes, Clear Learning Path, and Start/Continue learning actions.
 - **FR-035**: Save MUST be enabled only when the current path has at least one selected topic and has unsaved changes.
 - **FR-036**: Discard Changes MUST be enabled only when unsaved changes exist.
-- **FR-037**: Clear Learning Path MUST ask for confirmation before clearing saved path data or progress.
+- **FR-037**: Clear Learning Path MUST ask for confirmation before clearing the current builder UI state.
 - **FR-038**: Discard Changes MUST ask for confirmation before reverting unsaved changes.
 - **FR-039**: If no saved path exists, the learning action MUST become "Start Learning" only after a valid current path is saved.
 - **FR-040**: If a saved path exists and no unsaved changes exist, the learning action MUST say "Continue Learning".
 - **FR-041**: If a saved path exists and unsaved changes exist, Continue Learning MUST be unavailable until the student saves or discards changes.
 - **FR-042**: Starting a saved path MUST open the first selected topic section in saved order.
 - **FR-043**: Continuing a saved path MUST open the topic section where the student most recently stopped or the next uncompleted topic.
-- **FR-044**: Every add, remove, reorder, complete, reset, save, discard, clear, blocked, or failed action MUST provide clear feedback.
+- **FR-044**: Every add, remove, reorder, save, discard, clear, blocked, failed, or learning-progress action MUST provide clear feedback.
 - **FR-045**: Invalid actions MUST show friendly error feedback.
 - **FR-046**: Successful save and progress actions MUST show friendly success feedback.
 - **FR-047**: Topic learning sections MUST display substantial self-contained educational content for each topic.
@@ -218,12 +220,12 @@ A student starts or continues a saved path, studies detailed topic sections, com
 - **Learning Path History Entry**: One saved or completed learning path record shown in the history table, including date or label, selected track summary, progress, and status.
 - **Available Learning Track**: Existing curated track that can be expanded in the builder tree and selected as a group.
 - **Available Topic**: Topic belonging to one available learning track and selectable individually in the builder.
-- **Current Path Draft**: Unsaved builder state containing selected track groups, selected topics, order, completion states, and dirty/unchanged status.
+- **Current Path Draft**: Unsaved builder state containing selected track groups, selected topics, order, and dirty/unchanged status.
 - **Saved Learning Path**: Persisted version of the current path used for Start Learning and Continue Learning.
 - **Path Track Group**: Selected parent track inside a current or saved path, containing one or more selected topics.
 - **Topic Progress State**: Completion state for one selected topic, either completed or not completed.
 - **Builder Feedback Message**: Toast or equivalent message that explains success, error, blocked action, or save state.
-- **Confirmation Dialog**: Modal confirmation used only for discarding unsaved changes or clearing a learning path.
+- **Confirmation Dialog**: Modal confirmation used only for discarding unsaved changes or clearing the current builder UI state.
 - **Learning Section**: Detailed topic study page shown as part of a saved path.
 
 ## Success Criteria *(mandatory)*
@@ -254,5 +256,5 @@ A student starts or continues a saved path, studies detailed topic sections, com
 - Learning Path Builder is always available at `/tracks/builder`.
 - Detailed learning section content is original English educational content and suitable for beginner or early-stage Computer Science students.
 - External references are optional supporting material, not required for completing a topic.
-- Clearing a learning path removes the saved path and progress for that path after confirmation.
+- Clearing a learning path in the builder clears only the current builder UI state; saved path data changes only after an explicit Save.
 - If available tracks or topics change after a path was saved, the student area should keep available items, explain unavailable removed items, and avoid breaking the path UI.
