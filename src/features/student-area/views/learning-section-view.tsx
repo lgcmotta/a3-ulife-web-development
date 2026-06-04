@@ -44,7 +44,7 @@ export async function LearningSectionView({
 
   return (
     <article className="content-container topic-page" aria-labelledby="learning-topic-heading">
-      <Link className="return-link" href="/tracks/builder" prefetch={false}>
+      <Link className="return-link" href={`/tracks/builder?edit=${path.pathId}`} prefetch={false}>
         Return to Builder
       </Link>
       <div className="topic-header">

@@ -4,18 +4,26 @@ import { learningTracks } from "@/content/tracks";
 import {
   createHistoryEntry,
   getLearningDestination,
-  getEditableExistingPath,
-  saveDraftAsActivePath,
+  saveCompositionAsLearningPath,
+  upsertHistoryEntry,
 } from "@/features/student-area/server/path-persistence";
 import { completeSavedPathTopic, getPathProgressSummary } from "@/features/student-area/server/path-progress";
-import { fixtureDraft, fixtureStudentId } from "../../fixtures/student-area";
+import {
+  fixtureDraft,
+  fixtureSavedPath,
+  fixtureSavedPathWithGroups,
+  fixtureStudentId,
+  fixtureTrackGroup,
+} from "../../fixtures/student-area";
 
 describe("path persistence", () => {
-  it("saves a valid draft as an active path and history entry", () => {
-    const saved = saveDraftAsActivePath({
-      draft: fixtureDraft,
+  it("creates a saved learning path and history entry from local builder composition", () => {
+    const saved = saveCompositionAsLearningPath({
+      studentId: fixtureStudentId,
+      trackGroups: fixtureDraft.trackGroups,
       existingPath: null,
       pathId: "path001",
+      catalog: learningTracks,
       now: new Date("2026-06-03T10:00:00.000Z"),
     });
     const history = createHistoryEntry({
@@ -24,17 +32,108 @@ describe("path persistence", () => {
       catalog: learningTracks,
     });
 
+    expect(saved.pathId).toBe("path001");
     expect(saved.studentId).toBe(fixtureStudentId);
     expect(saved.status).toBe("not-started");
-    expect(history.trackSummary).toBe("Programming Foundations");
-    expect(history.topicCount).toBe(1);
+    expect(history).toMatchObject({
+      pathId: "path001",
+      trackSummary: "Programming Foundations",
+      topicCount: 1,
+      completedTopicCount: 0,
+    });
+  });
+
+  it("updates an existing saved path ID without creating a duplicate history row", () => {
+    const saved = saveCompositionAsLearningPath({
+      studentId: fixtureStudentId,
+      trackGroups: fixtureDraft.trackGroups,
+      existingPath: fixtureSavedPath,
+      pathId: "path999",
+      catalog: learningTracks,
+      now: new Date("2026-06-03T11:00:00.000Z"),
+    });
+    const existingHistory = [
+      createHistoryEntry({
+        savedPath: fixtureSavedPath,
+        historyId: "hist001",
+        catalog: learningTracks,
+      }),
+    ];
+    const history = upsertHistoryEntry(
+      existingHistory,
+      createHistoryEntry({ savedPath: saved, historyId: "hist002", catalog: learningTracks }),
+    );
+
+    expect(saved.pathId).toBe(fixtureSavedPath.pathId);
+    expect(history).toHaveLength(1);
+    expect(history[0]).toMatchObject({
+      historyId: "hist002",
+      pathId: fixtureSavedPath.pathId,
+      savedAt: "2026-06-03T11:00:00.000Z",
+    });
+  });
+
+  it("preserves retained progress, initializes new topics, and removes dropped topic progress", () => {
+    const existing = fixtureSavedPathWithGroups({
+      status: "in-progress",
+      lastActiveTopicSlug: "problem-solving-basics",
+      trackGroups: [
+        fixtureTrackGroup({
+          topicSlugs: ["problem-solving-basics", "variables-and-flow"],
+          completedTopicSlugs: ["problem-solving-basics"],
+        }),
+      ],
+    });
+    const saved = saveCompositionAsLearningPath({
+      studentId: fixtureStudentId,
+      trackGroups: [
+        fixtureTrackGroup({ topicSlugs: ["problem-solving-basics"] }),
+        {
+          trackSlug: "web-and-accessibility",
+          order: 1,
+          topicItems: [
+            {
+              topicSlug: "semantic-structure",
+              trackSlug: "web-and-accessibility",
+              order: 0,
+              completed: false,
+              completedAt: null,
+            },
+          ],
+        },
+      ],
+      existingPath: existing,
+      pathId: "path999",
+      catalog: learningTracks,
+      now: new Date("2026-06-03T11:00:00.000Z"),
+    });
+
+    expect(saved.pathId).toBe(fixtureSavedPath.pathId);
+    expect(saved.trackGroups.flatMap((group) => group.topicItems.map((topic) => topic.topicSlug))).toEqual([
+      "problem-solving-basics",
+      "semantic-structure",
+    ]);
+    expect(saved.trackGroups[0]?.topicItems[0]).toMatchObject({
+      topicSlug: "problem-solving-basics",
+      completed: true,
+      completedAt: "2026-06-03T10:30:00.000Z",
+    });
+    expect(saved.trackGroups[1]?.topicItems[0]).toMatchObject({
+      topicSlug: "semantic-structure",
+      completed: false,
+      completedAt: null,
+    });
+    expect(saved.lastActiveTopicSlug).toBe("problem-solving-basics");
+    expect(JSON.stringify(saved.trackGroups)).not.toContain("variables-and-flow");
   });
 
   it("routes learning to the first uncompleted topic or completion screen", () => {
-    const saved = saveDraftAsActivePath({
-      draft: fixtureDraft,
+    const saved = saveCompositionAsLearningPath({
+      studentId: fixtureStudentId,
+      trackGroups: fixtureDraft.trackGroups,
       existingPath: null,
       pathId: "path001",
+      catalog: learningTracks,
       now: new Date("2026-06-03T10:00:00.000Z"),
     });
 
@@ -53,10 +152,12 @@ describe("path persistence", () => {
   });
 
   it("updates final-topic completion status and progress counts", () => {
-    const saved = saveDraftAsActivePath({
-      draft: fixtureDraft,
+    const saved = saveCompositionAsLearningPath({
+      studentId: fixtureStudentId,
+      trackGroups: fixtureDraft.trackGroups,
       existingPath: null,
       pathId: "path001",
+      catalog: learningTracks,
       now: new Date("2026-06-03T10:00:00.000Z"),
     });
 
@@ -76,27 +177,21 @@ describe("path persistence", () => {
     });
   });
 
-  it("does not reuse completed paths when saving a new builder draft", () => {
+  it("does not allow builder saves to rewrite completed paths", () => {
     const completed = {
-      ...saveDraftAsActivePath({
-        draft: fixtureDraft,
-        existingPath: null,
-        pathId: "path001",
-        now: new Date("2026-06-03T10:00:00.000Z"),
-      }),
+      ...fixtureSavedPath,
       status: "completed" as const,
       completedAt: "2026-06-03T10:30:00.000Z",
     };
 
-    expect(getEditableExistingPath(fixtureDraft, completed)).toBeNull();
-
-    const next = saveDraftAsActivePath({
-      draft: fixtureDraft,
-      existingPath: getEditableExistingPath(fixtureDraft, completed),
-      pathId: "path002",
-      now: new Date("2026-06-03T11:00:00.000Z"),
-    });
-
-    expect(next.pathId).toBe("path002");
+    expect(() =>
+      saveCompositionAsLearningPath({
+        studentId: fixtureStudentId,
+        trackGroups: fixtureDraft.trackGroups,
+        existingPath: completed,
+        pathId: completed.pathId,
+        catalog: learningTracks,
+      }),
+    ).toThrow(/completed learning paths/i);
   });
 });

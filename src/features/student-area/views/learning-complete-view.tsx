@@ -1,8 +1,21 @@
 import Link from "next/link";
 
+import type { SavedLearningPath } from "@/server/student-area/types";
 import { buttonVariants } from "@/ui/components/button";
 
-export function LearningCompleteView() {
+export function LearningCompleteView({ path }: { path: SavedLearningPath | null }) {
+  if (!path) {
+    return (
+      <section className="content-container page-section" aria-labelledby="learning-complete-heading">
+        <h1 id="learning-complete-heading">Learning path unavailable</h1>
+        <p>This saved learning path could not be loaded.</p>
+        <Link className={buttonVariants()} href="/tracks/history" prefetch={false}>
+          Continue
+        </Link>
+      </section>
+    );
+  }
+
   return (
     <section className="content-container page-section" aria-labelledby="learning-complete-heading">
       <p className="eyebrow">Path complete</p>

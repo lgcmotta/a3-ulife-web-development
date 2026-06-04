@@ -1,5 +1,11 @@
 import { learningTracks } from "@/content/tracks";
-import type { CurrentPathDraft, SavedLearningPath } from "@/server/student-area/types";
+import type {
+  CurrentPathDraft,
+  PathStatus,
+  PathTopicItem,
+  PathTrackGroup,
+  SavedLearningPath,
+} from "@/server/student-area/types";
 
 export const fixtureStudentId = "abc1234";
 export const fixturePathId = "path001";
@@ -38,3 +44,76 @@ export const fixtureSavedPath: SavedLearningPath = {
   completedAt: null,
   trackGroups: fixtureDraft.trackGroups,
 };
+
+export function fixtureTopicItem({
+  trackSlug = "programming-foundations",
+  topicSlug,
+  order,
+  completed = false,
+  completedAt = null,
+}: {
+  trackSlug?: string;
+  topicSlug: string;
+  order: number;
+  completed?: boolean;
+  completedAt?: string | null;
+}): PathTopicItem {
+  return {
+    topicSlug,
+    trackSlug,
+    order,
+    completed,
+    completedAt,
+  };
+}
+
+export function fixtureTrackGroup({
+  trackSlug = "programming-foundations",
+  topicSlugs,
+  order = 0,
+  completedTopicSlugs = [],
+  completedAt = "2026-06-03T10:30:00.000Z",
+}: {
+  trackSlug?: string;
+  topicSlugs: string[];
+  order?: number;
+  completedTopicSlugs?: string[];
+  completedAt?: string;
+}): PathTrackGroup {
+  return {
+    trackSlug,
+    order,
+    topicItems: topicSlugs.map((topicSlug, topicOrder) =>
+      fixtureTopicItem({
+        trackSlug,
+        topicSlug,
+        order: topicOrder,
+        completed: completedTopicSlugs.includes(topicSlug),
+        completedAt: completedTopicSlugs.includes(topicSlug) ? completedAt : null,
+      }),
+    ),
+  };
+}
+
+export function fixtureSavedPathWithGroups({
+  trackGroups,
+  pathId = fixturePathId,
+  status = "not-started",
+  lastActiveTopicSlug = null,
+  completedAt = null,
+}: {
+  trackGroups: PathTrackGroup[];
+  pathId?: string;
+  status?: PathStatus;
+  lastActiveTopicSlug?: string | null;
+  completedAt?: string | null;
+}): SavedLearningPath {
+  return {
+    ...fixtureSavedPath,
+    pathId,
+    status,
+    lastActiveTopicSlug,
+    completedAt,
+    trackGroups,
+  };
+}

@@ -54,9 +54,6 @@ export function CurrentPathPanel({
                         <span data-testid={`current-topic-${item.topicSlug}`}>
                           {topic?.title ?? item.topicSlug}
                         </span>
-                        <span className="status-label">
-                          {item.completed ? "Completed" : "Not completed"}
-                        </span>
                         {onItemAction ? (
                           <PathItemContextMenu
                             label={topic?.title ?? item.topicSlug}

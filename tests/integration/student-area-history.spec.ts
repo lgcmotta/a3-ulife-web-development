@@ -23,6 +23,7 @@ test.describe("student area history", () => {
     await expect(page.getByRole("columnheader", { name: "Saved" })).toBeVisible();
     await expect(page.getByRole("columnheader", { name: "Tracks" })).toBeVisible();
     await expect(page.getByText("Not started")).toBeVisible();
+    await expect(page.getByRole("link", { name: /delete/i })).toHaveCount(0);
   });
 
   test("unfinished history rows expose resume learning and edit path actions", async ({ page }) => {
@@ -46,9 +47,31 @@ test.describe("student area history", () => {
     const editPath = page.getByRole("link", { name: /edit path/i });
     await expect(editPath).toBeVisible();
     await expect(editPath).toHaveAttribute("href", /\/tracks\/builder\?edit=.+/);
+    await expect(page.getByRole("link", { name: /delete/i })).toHaveCount(0);
 
     await editPath.click();
     await expect(page).toHaveURL(/\/tracks\/builder\?edit=.+/);
     await expect(page.getByTestId("current-topic-problem-solving-basics")).toBeVisible();
+  });
+
+  test("completed history rows show no resume, edit, or delete actions", async ({ page }) => {
+    await page.goto("/tracks/builder");
+
+    await page.getByRole("button", { name: /programming foundations/i }).click();
+    await page.getByRole("checkbox", { name: /^select programming foundations$/i }).click();
+    await page.getByRole("button", { name: "Save" }).click();
+    await page.getByRole("button", { name: "Start Learning" }).click();
+
+    await page.getByRole("button", { name: /complete topic/i }).click();
+    await page.getByRole("button", { name: /complete topic/i }).click();
+    await page.getByRole("button", { name: /complete topic/i }).click();
+    await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
+
+    await page.goto("/tracks/history");
+
+    await expect(page.getByText("Completed")).toBeVisible();
+    await expect(page.getByRole("link", { name: /resume learning/i })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /edit path/i })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /delete/i })).toHaveCount(0);
   });
 });

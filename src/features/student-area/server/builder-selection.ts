@@ -1,9 +1,8 @@
 import type { LearningTrack } from "@/content/types";
-import { encodePublicId } from "@/server/ids/sqids";
-import { studentCounters } from "@/server/student-area/keys";
 import { countTopics, normalizePathGroups } from "@/server/student-area/path-validation";
 import type { StudentAreaStore } from "@/server/student-area/repository";
 import type {
+  BuilderMode,
   BuilderSelectionState,
   CurrentPathDraft,
   PathTopicItem,
@@ -14,15 +13,17 @@ import type {
 export type BuilderState = {
   availableTracks: LearningTrack[];
   draft: CurrentPathDraft;
-  activePath: SavedLearningPath | null;
-  isEditingActivePath: boolean;
+  initialDraft: CurrentPathDraft;
+  savedPathId: string | null;
+  mode: BuilderMode;
+  loadMessage: string | null;
   canSave: boolean;
   canClear: boolean;
   canStartLearning: boolean;
   learningActionLabel: "Start Learning" | "Continue Learning";
 };
 
-export function createEmptyDraft(studentId: string, draftId: string): CurrentPathDraft {
+export function createEmptyDraft(studentId: string, draftId = "new-path"): CurrentPathDraft {
   return {
     draftId,
     studentId,
@@ -38,7 +39,7 @@ export function draftFromSavedPath(savedPath: SavedLearningPath): CurrentPathDra
     studentId: savedPath.studentId,
     dirty: false,
     updatedAt: new Date().toISOString(),
-    trackGroups: savedPath.trackGroups,
+    trackGroups: normalizePathGroups(savedPath.trackGroups),
   };
 }
 
@@ -52,12 +53,65 @@ function createTopicItem(trackSlug: string, topicSlug: string, order: number): P
   };
 }
 
-function markDirty(draft: CurrentPathDraft, dirty = true): CurrentPathDraft {
+function markEdited(draft: CurrentPathDraft): CurrentPathDraft {
   return {
     ...draft,
-    dirty,
+    dirty: true,
     updatedAt: new Date().toISOString(),
   };
+}
+
+export function arePathGroupsEqual(left: PathTrackGroup[], right: PathTrackGroup[]) {
+  const normalizeForCompare = (groups: PathTrackGroup[]) =>
+    normalizePathGroups(groups).map((group) => ({
+      trackSlug: group.trackSlug,
+      topicItems: group.topicItems.map((topic) => topic.topicSlug),
+    }));
+
+  return JSON.stringify(normalizeForCompare(left)) === JSON.stringify(normalizeForCompare(right));
+}
+
+export function withDraft(state: BuilderState, draft: CurrentPathDraft): BuilderState {
+  const normalizedDraft = {
+    ...draft,
+    trackGroups: normalizePathGroups(draft.trackGroups),
+  };
+  const dirty = !arePathGroupsEqual(normalizedDraft.trackGroups, state.initialDraft.trackGroups);
+  const nextDraft = {
+    ...normalizedDraft,
+    dirty,
+  };
+  const topicCount = countTopics(nextDraft.trackGroups);
+
+  return {
+    ...state,
+    draft: nextDraft,
+    canSave: dirty && topicCount > 0,
+    canClear: topicCount > 0,
+    canStartLearning: Boolean(state.savedPathId) && !dirty && topicCount > 0,
+  };
+}
+
+export function resetBuilderToInitial(state: BuilderState): BuilderState {
+  return withDraft(state, {
+    ...state.initialDraft,
+    updatedAt: new Date().toISOString(),
+  });
+}
+
+export function markSavedState(state: BuilderState, savedPath: SavedLearningPath): BuilderState {
+  const cleanDraft = draftFromSavedPath(savedPath);
+  const nextState: BuilderState = {
+    ...state,
+    draft: cleanDraft,
+    initialDraft: cleanDraft,
+    savedPathId: savedPath.pathId,
+    mode: "edit",
+    loadMessage: null,
+    learningActionLabel: savedPath.status === "in-progress" ? "Continue Learning" : "Start Learning",
+  };
+
+  return withDraft(nextState, cleanDraft);
 }
 
 export function toggleTrackInDraft(
@@ -74,7 +128,7 @@ export function toggleTrackInDraft(
   const remaining = draft.trackGroups.filter((group) => group.trackSlug !== trackSlug);
 
   if (!selected) {
-    return markDirty({ ...draft, trackGroups: normalizePathGroups(remaining) });
+    return markEdited({ ...draft, trackGroups: normalizePathGroups(remaining) });
   }
 
   const group: PathTrackGroup = {
@@ -83,7 +137,7 @@ export function toggleTrackInDraft(
     topicItems: track.topics.map((topic, order) => createTopicItem(trackSlug, topic.slug, order)),
   };
 
-  return markDirty({ ...draft, trackGroups: normalizePathGroups([...remaining, group]) });
+  return markEdited({ ...draft, trackGroups: normalizePathGroups([...remaining, group]) });
 }
 
 export function toggleTopicInDraft(
@@ -120,7 +174,7 @@ export function toggleTopicInDraft(
         ]
       : otherGroups;
 
-  return markDirty({ ...draft, trackGroups: normalizePathGroups(nextGroups) });
+  return markEdited({ ...draft, trackGroups: normalizePathGroups(nextGroups) });
 }
 
 export function getTrackSelectionState(
@@ -146,6 +200,36 @@ export function isTopicSelected(draft: CurrentPathDraft, trackSlug: string, topi
   );
 }
 
+function createState({
+  catalog,
+  initialDraft,
+  savedPath,
+  mode,
+  loadMessage = null,
+}: {
+  catalog: LearningTrack[];
+  initialDraft: CurrentPathDraft;
+  savedPath: SavedLearningPath | null;
+  mode: BuilderMode;
+  loadMessage?: string | null;
+}): BuilderState {
+  const topicCount = countTopics(initialDraft.trackGroups);
+  const state: BuilderState = {
+    availableTracks: catalog,
+    draft: initialDraft,
+    initialDraft,
+    savedPathId: savedPath?.pathId ?? null,
+    mode,
+    loadMessage,
+    canSave: false,
+    canClear: topicCount > 0,
+    canStartLearning: Boolean(savedPath) && topicCount > 0,
+    learningActionLabel: savedPath?.status === "in-progress" ? "Continue Learning" : "Start Learning",
+  };
+
+  return withDraft(state, initialDraft);
+}
+
 export async function loadBuilderState({
   studentId,
   catalog,
@@ -157,52 +241,44 @@ export async function loadBuilderState({
   store: StudentAreaStore;
   editPathId?: string;
 }): Promise<BuilderState> {
-  const activePath = await store.loadActivePath(studentId);
-  let draft = await store.loadDraft(studentId);
-  const canEditActivePath = Boolean(
-    editPathId &&
-      activePath &&
-      activePath.pathId === editPathId &&
-      activePath.status !== "completed",
-  );
-
-  if (canEditActivePath && activePath && draft?.draftId !== activePath.pathId) {
-    draft = draftFromSavedPath(activePath);
-    await store.saveDraft(draft);
+  if (!editPathId) {
+    const emptyDraft = createEmptyDraft(studentId);
+    return createState({
+      catalog,
+      initialDraft: emptyDraft,
+      savedPath: null,
+      mode: "create",
+    });
   }
 
-  if (
-    !canEditActivePath &&
-    activePath &&
-    (!draft || draft.draftId === activePath.pathId || !draft.dirty)
-  ) {
-    draft = createEmptyDraft(studentId, encodePublicId(await store.allocateId(studentCounters.path)));
-    await store.saveDraft(draft);
+  const savedPath = await store.loadSavedPath(studentId, editPathId);
+
+  if (!savedPath) {
+    const emptyDraft = createEmptyDraft(studentId);
+    return createState({
+      catalog,
+      initialDraft: emptyDraft,
+      savedPath: null,
+      mode: "create",
+      loadMessage: "This saved learning path could not be found. A new empty builder is ready.",
+    });
   }
 
-  if (!draft && activePath && canEditActivePath) {
-    draft = draftFromSavedPath(activePath);
-    await store.saveDraft(draft);
+  if (savedPath.status === "completed") {
+    const emptyDraft = createEmptyDraft(studentId);
+    return createState({
+      catalog,
+      initialDraft: emptyDraft,
+      savedPath: null,
+      mode: "create",
+      loadMessage: "Completed learning paths are kept in history and cannot be edited.",
+    });
   }
 
-  if (!draft) {
-    draft = createEmptyDraft(studentId, encodePublicId(await store.allocateId(studentCounters.path)));
-    await store.saveDraft(draft);
-  }
-
-  const topicCount = countTopics(draft.trackGroups);
-  const isEditingActivePath = Boolean(
-    activePath && activePath.status !== "completed" && draft.draftId === activePath.pathId,
-  );
-
-  return {
-    availableTracks: catalog,
-    draft,
-    activePath,
-    isEditingActivePath,
-    canSave: draft.dirty && topicCount > 0,
-    canClear: topicCount > 0,
-    canStartLearning: isEditingActivePath && !draft.dirty && topicCount > 0,
-    learningActionLabel: activePath?.status === "in-progress" ? "Continue Learning" : "Start Learning",
-  };
+  return createState({
+    catalog,
+    initialDraft: draftFromSavedPath(savedPath),
+    savedPath,
+    mode: "edit",
+  });
 }

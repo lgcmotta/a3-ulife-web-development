@@ -2,46 +2,90 @@ import type { LearningTrack } from "@/content/types";
 import { getPathProgressSummary } from "@/features/student-area/server/path-progress";
 import { validateSavedPathGroups } from "@/server/student-area/path-validation";
 import type {
-  CurrentPathDraft,
   LearningPathHistoryEntry,
+  PathTopicItem,
+  PathTrackGroup,
   SavedLearningPath,
 } from "@/server/student-area/types";
 
-export function getEditableExistingPath(
-  draft: CurrentPathDraft,
+function topicKey(trackSlug: string, topicSlug: string) {
+  return `${trackSlug}:${topicSlug}`;
+}
+
+function mergeProgress(
+  nextGroups: PathTrackGroup[],
   existingPath: SavedLearningPath | null,
+): PathTrackGroup[] {
+  const existingTopics = new Map<string, PathTopicItem>();
+
+  for (const group of existingPath?.trackGroups ?? []) {
+    for (const topic of group.topicItems) {
+      existingTopics.set(topicKey(group.trackSlug, topic.topicSlug), topic);
+    }
+  }
+
+  return nextGroups.map((group) => ({
+    ...group,
+    topicItems: group.topicItems.map((topic) => {
+      const existing = existingTopics.get(topicKey(group.trackSlug, topic.topicSlug));
+
+      return {
+        ...topic,
+        completed: existing?.completed ?? false,
+        completedAt: existing?.completedAt ?? null,
+      };
+    }),
+  }));
+}
+
+function keepLastActiveTopic(
+  existingPath: SavedLearningPath | null,
+  trackGroups: PathTrackGroup[],
 ) {
-  if (!existingPath || existingPath.status === "completed" || draft.draftId !== existingPath.pathId) {
+  if (!existingPath?.lastActiveTopicSlug) {
     return null;
   }
 
-  return existingPath;
+  const stillSelected = trackGroups.some((group) =>
+    group.topicItems.some((topic) => topic.topicSlug === existingPath.lastActiveTopicSlug),
+  );
+
+  return stillSelected ? existingPath.lastActiveTopicSlug : null;
 }
 
-export function saveDraftAsActivePath({
-  draft,
+export function saveCompositionAsLearningPath({
+  studentId,
+  trackGroups,
   existingPath,
   pathId,
+  catalog,
   now = new Date(),
 }: {
-  draft: CurrentPathDraft;
+  studentId: string;
+  trackGroups: PathTrackGroup[];
   existingPath: SavedLearningPath | null;
   pathId: string;
+  catalog: LearningTrack[];
   now?: Date;
 }): SavedLearningPath {
+  if (existingPath?.status === "completed") {
+    throw new Error("Completed learning paths cannot be edited.");
+  }
+
   const timestamp = now.toISOString();
-  const trackGroups = validateSavedPathGroups(draft.trackGroups);
-  const progress = getPathProgressSummary({ trackGroups });
+  const normalized = validateSavedPathGroups(trackGroups, catalog);
+  const mergedGroups = mergeProgress(normalized, existingPath);
+  const progress = getPathProgressSummary({ trackGroups: mergedGroups });
 
   return {
     pathId: existingPath?.pathId ?? pathId,
-    studentId: draft.studentId,
-    trackGroups,
+    studentId,
+    trackGroups: mergedGroups,
     status: progress.status,
-    lastActiveTopicSlug: existingPath?.lastActiveTopicSlug ?? null,
+    lastActiveTopicSlug: keepLastActiveTopic(existingPath, mergedGroups),
     createdAt: existingPath?.createdAt ?? timestamp,
     updatedAt: timestamp,
-    completedAt: progress.status === "completed" ? timestamp : null,
+    completedAt: progress.status === "completed" ? (existingPath?.completedAt ?? timestamp) : null,
   };
 }
 
@@ -69,6 +113,18 @@ export function createHistoryEntry({
     completedTopicCount: progress.completedTopicCount,
     status: progress.status,
   };
+}
+
+export function upsertHistoryEntry(
+  history: LearningPathHistoryEntry[],
+  entry: LearningPathHistoryEntry,
+) {
+  const exists = history.some((candidate) => candidate.pathId === entry.pathId);
+  const nextHistory = exists
+    ? history.map((candidate) => (candidate.pathId === entry.pathId ? entry : candidate))
+    : [entry, ...history];
+
+  return nextHistory.toSorted((left, right) => Date.parse(right.savedAt) - Date.parse(left.savedAt));
 }
 
 export function getLearningDestination(savedPath: SavedLearningPath) {

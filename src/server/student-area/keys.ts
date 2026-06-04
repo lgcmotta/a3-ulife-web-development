@@ -7,8 +7,7 @@ export const studentCounters = {
 export function studentKeys(studentId: string) {
   return {
     student: `student:${studentId}`,
-    draft: `student:${studentId}:path:draft`,
-    activePath: `student:${studentId}:path:active`,
+    savedPath: (pathId: string) => `student:${studentId}:paths:${pathId}`,
     history: `student:${studentId}:paths:history`,
     feedback: `student:${studentId}:feedback`,
   };
