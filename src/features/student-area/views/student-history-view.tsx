@@ -2,7 +2,7 @@ import { EmptyHistoryState } from "@/features/student-area/components/empty-hist
 import { LearningPathHistoryTable } from "@/features/student-area/components/learning-path-history-table";
 import { presentHistoryRows } from "@/features/student-area/server/history-presenter";
 import { createRedisStudentAreaStore } from "@/server/student-area/repository";
-import type { LearningPathHistoryEntry } from "@/server/student-area/types";
+import type { LearningPathHistoryEntry, SavedLearningPath } from "@/server/student-area/types";
 
 const demoHistory: LearningPathHistoryEntry[] = [
   {
@@ -17,6 +17,10 @@ const demoHistory: LearningPathHistoryEntry[] = [
   },
 ];
 
+function isSavedLearningPath(path: SavedLearningPath | null): path is SavedLearningPath {
+  return path !== null;
+}
+
 export async function StudentHistoryView({
   studentId,
   demo = false,
@@ -30,21 +34,12 @@ export async function StudentHistoryView({
   if (!demo) {
     try {
       const store = createRedisStudentAreaStore();
-      await store.recoverSplitLearningData(studentId);
-      let [history, activePath] = await Promise.all([
-        store.loadHistory(studentId),
-        store.loadActivePath(studentId),
-      ]);
+      const history = await store.loadHistory(studentId);
+      const savedPaths = (
+        await Promise.all(history.map((entry) => store.loadSavedPath(studentId, entry.pathId)))
+      ).filter(isSavedLearningPath);
 
-      if (history.length === 0 && !activePath) {
-        await store.recoverSplitLearningData(studentId);
-        [history, activePath] = await Promise.all([
-          store.loadHistory(studentId),
-          store.loadActivePath(studentId),
-        ]);
-      }
-
-      rows = presentHistoryRows(history, activePath);
+      rows = presentHistoryRows(history, savedPaths);
     } catch {
       error = "History is temporarily unavailable. You can still open the builder and try again.";
     }

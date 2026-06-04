@@ -35,12 +35,13 @@ export function LearningPathHistoryTable({ rows }: { rows: PresentedHistoryRow[]
             <TableCell>
               {row.resumeTarget && row.editTarget ? (
                 <div className="history-row-actions">
-                  <Link className={buttonVariants({ size: "sm" })} href={row.resumeTarget}>
+                  <Link className={buttonVariants({ size: "sm" })} href={row.resumeTarget} prefetch={false}>
                     Resume Learning
                   </Link>
                   <Link
                     className={buttonVariants({ size: "sm", variant: "secondary" })}
                     href={row.editTarget}
+                    prefetch={false}
                   >
                     Edit Path
                   </Link>

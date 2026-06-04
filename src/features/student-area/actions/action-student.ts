@@ -8,6 +8,17 @@ import type { StudentAreaStore } from "@/server/student-area/repository";
 export async function resolveActionStudentId(boundStudentId: string, store: StudentAreaStore) {
   const cookieStore = await cookies();
   const cookieStudentId = cookieStore.get(ANONYMOUS_STUDENT_COOKIE)?.value;
+  const boundStudent = await store.loadStudent(boundStudentId);
+
+  if (boundStudent) {
+    cookieStore.set(ANONYMOUS_STUDENT_COOKIE, boundStudentId, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+    });
+    return boundStudentId;
+  }
 
   if (!cookieStudentId) {
     cookieStore.set(ANONYMOUS_STUDENT_COOKIE, boundStudentId, {

@@ -18,12 +18,12 @@ export default async function TopicLearningPage({
   const { student } = await getCurrentStudentOrRedirect(
     `/tracks/learn/${pathId}/${topicSlug}`,
   );
-  const path = await createRedisStudentAreaStore().loadActivePath(student.studentId);
+  const path = await createRedisStudentAreaStore().loadSavedPath(student.studentId, pathId);
 
   return (
     <LearningSectionView
       studentId={student.studentId}
-      path={path?.pathId === pathId ? path : null}
+      path={path}
       topicSlug={topicSlug}
     />
   );

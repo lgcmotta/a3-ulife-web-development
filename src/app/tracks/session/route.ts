@@ -4,7 +4,38 @@ import { ANONYMOUS_STUDENT_COOKIE } from "@/server/student-area/student-record";
 import {
   allocateStudentRecord,
   createRedisStudentAreaStore,
+  type StudentAreaStore,
 } from "@/server/student-area/repository";
+import type { AnonymousStudentRecord } from "@/server/student-area/types";
+
+const pendingAnonymousStudents = new Map<string, Promise<AnonymousStudentRecord>>();
+
+function pendingStudentKey(request: NextRequest) {
+  return [
+    request.headers.get("x-forwarded-for") ?? "local",
+    request.headers.get("user-agent") ?? "unknown-agent",
+    request.headers.get("accept-language") ?? "unknown-language",
+  ].join("|");
+}
+
+async function allocatePendingStudent(request: NextRequest, store: StudentAreaStore) {
+  const key = pendingStudentKey(request);
+  const pending = pendingAnonymousStudents.get(key);
+
+  if (pending) {
+    return pending;
+  }
+
+  const next = allocateStudentRecord(store);
+  pendingAnonymousStudents.set(key, next);
+
+  const clearPending = () => {
+    setTimeout(() => pendingAnonymousStudents.delete(key), 2_000);
+  };
+  next.then(clearPending, clearPending);
+
+  return next;
+}
 
 export async function GET(request: NextRequest) {
   const store = createRedisStudentAreaStore();
@@ -17,7 +48,7 @@ export async function GET(request: NextRequest) {
         ...existing,
         lastSeenAt: new Date().toISOString(),
       }
-    : await allocateStudentRecord(store);
+    : await allocatePendingStudent(request, store);
 
   await store.saveStudent(student);
 

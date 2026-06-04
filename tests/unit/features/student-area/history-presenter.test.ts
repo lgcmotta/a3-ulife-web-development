@@ -24,10 +24,11 @@ describe("history presenter", () => {
       progressLabel: "1 of 3 topics complete",
       statusLabel: "In progress",
     });
+    expect(rows[0]).not.toHaveProperty("deleteTarget");
   });
 
-  it("uses the current active path when the saved history snapshot is stale", () => {
-    const activePath = {
+  it("uses the matching saved path when the saved history snapshot is stale", () => {
+    const savedPath = {
       ...fixtureSavedPath,
       status: "completed" as const,
       completedAt: "2026-06-03T10:30:00.000Z",
@@ -44,8 +45,8 @@ describe("history presenter", () => {
       [
         {
           historyId: "hist001",
-          studentId: activePath.studentId,
-          pathId: activePath.pathId,
+          studentId: savedPath.studentId,
+          pathId: savedPath.pathId,
           savedAt: "2026-06-03T10:05:00.000Z",
           trackSummary: "Programming Foundations",
           topicCount: 1,
@@ -53,7 +54,7 @@ describe("history presenter", () => {
           status: "not-started",
         },
       ],
-      activePath,
+      [savedPath],
     );
 
     expect(rows[0]).toMatchObject({
@@ -64,8 +65,8 @@ describe("history presenter", () => {
     });
   });
 
-  it("adds resume and edit targets for unfinished active paths", () => {
-    const activePath = {
+  it("adds resume and edit targets for unfinished saved paths", () => {
+    const savedPath = {
       ...fixtureSavedPath,
       status: "in-progress" as const,
       trackGroups: fixtureSavedPath.trackGroups.map((group) => ({
@@ -87,8 +88,8 @@ describe("history presenter", () => {
       [
         {
           historyId: "hist001",
-          studentId: activePath.studentId,
-          pathId: activePath.pathId,
+          studentId: savedPath.studentId,
+          pathId: savedPath.pathId,
           savedAt: "2026-06-03T10:05:00.000Z",
           trackSummary: "Programming Foundations",
           topicCount: 2,
@@ -96,7 +97,7 @@ describe("history presenter", () => {
           status: "not-started",
         },
       ],
-      activePath,
+      [savedPath],
     );
 
     expect(rows[0]).toMatchObject({

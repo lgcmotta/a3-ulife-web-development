@@ -14,8 +14,6 @@ const actions: Array<{ label: string; action: PathContextAction }> = [
   { label: "Remove", action: "remove" },
   { label: "Move up", action: "move-up" },
   { label: "Move down", action: "move-down" },
-  { label: "Complete", action: "complete" },
-  { label: "Reset", action: "reset" },
 ];
 
 export function PathItemContextMenu({

@@ -8,6 +8,7 @@ import { completeSavedPathTopic } from "@/features/student-area/server/path-prog
 import {
   createHistoryEntry,
   getLearningDestination,
+  upsertHistoryEntry,
 } from "@/features/student-area/server/path-persistence";
 import { encodePublicId } from "@/server/ids/sqids";
 import { studentCounters } from "@/server/student-area/keys";
@@ -16,42 +17,23 @@ import { createRedisStudentAreaStore } from "@/server/student-area/repository";
 export async function completeTopicAction(studentId: string, pathId: string, topicSlug: string) {
   const store = createRedisStudentAreaStore();
   studentId = await resolveActionStudentId(studentId, store);
-  const path = await store.loadActivePath(studentId);
+  const path = await store.loadSavedPath(studentId, pathId);
 
-  if (!path || path.pathId !== pathId) {
-    redirect("/tracks/builder");
+  if (!path) {
+    redirect("/tracks/history");
   }
 
   const savedPath = completeSavedPathTopic({ savedPath: path, topicSlug });
   const history = await store.loadHistory(studentId);
-  let foundHistoryEntry = false;
-  const nextHistory = history.map((entry) => {
-    if (entry.pathId !== savedPath.pathId) {
-      return entry;
-    }
-
-    foundHistoryEntry = true;
-    return {
-      ...createHistoryEntry({
-        savedPath,
-        historyId: entry.historyId,
-        catalog: learningTracks,
-      }),
-      savedAt: entry.savedAt,
-    };
+  const existingHistoryEntry = history.find((entry) => entry.pathId === savedPath.pathId);
+  const historyEntry = createHistoryEntry({
+    savedPath,
+    historyId:
+      existingHistoryEntry?.historyId ?? encodePublicId(await store.allocateId(studentCounters.history)),
+    catalog: learningTracks,
   });
 
-  if (!foundHistoryEntry) {
-    nextHistory.unshift(
-      createHistoryEntry({
-        savedPath,
-        historyId: encodePublicId(await store.allocateId(studentCounters.history)),
-        catalog: learningTracks,
-      }),
-    );
-  }
-
-  await store.saveActivePath(savedPath);
-  await store.saveHistory(studentId, nextHistory);
+  await store.saveSavedPath(savedPath);
+  await store.saveHistory(studentId, upsertHistoryEntry(history, historyEntry));
   redirect(getLearningDestination(savedPath));
 }

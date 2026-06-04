@@ -9,24 +9,24 @@ import {
 import { getLearningDestination } from "@/features/student-area/server/path-persistence";
 import { createRedisStudentAreaStore } from "@/server/student-area/repository";
 
-export async function startOrContinueLearningAction(studentId: string) {
+export async function startOrContinueLearningAction(studentId: string, pathId: string | null) {
   const store = createRedisStudentAreaStore();
 
   try {
     studentId = await resolveActionStudentId(studentId, store);
-    const draft = await store.loadDraft(studentId);
-    const activePath = await store.loadActivePath(studentId);
 
-    if (!activePath) {
+    if (!pathId) {
       return createActionError("Save a learning path before starting.", "start-learning");
     }
 
-    if (draft?.dirty) {
-      return createActionError("Save or discard changes before continuing.", "continue-learning");
+    const savedPath = await store.loadSavedPath(studentId, pathId);
+
+    if (!savedPath) {
+      return createActionError("Save a learning path before starting.", "start-learning");
     }
 
     return createActionSuccess("Opening your next topic.", {
-      url: getLearningDestination(activePath),
+      url: getLearningDestination(savedPath),
     });
   } catch (error) {
     return friendlyActionError(error, "Learning could not be opened. Please try again.");

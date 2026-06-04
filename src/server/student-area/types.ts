@@ -2,7 +2,8 @@ export type PathStatus = "not-started" | "in-progress" | "completed";
 export type FeedbackKind = "success" | "error" | "info";
 export type PathItemLevel = "track" | "topic";
 export type PathDirection = "up" | "down";
-export type PathContextAction = "remove" | "move-up" | "move-down" | "complete" | "reset";
+export type PathContextAction = "remove" | "move-up" | "move-down";
+export type BuilderMode = "create" | "edit";
 
 export type AnonymousStudentRecord = {
   studentId: string;
@@ -25,13 +26,17 @@ export type PathTrackGroup = {
   topicItems: PathTopicItem[];
 };
 
-export type CurrentPathDraft = {
+export type BuilderComposition = {
   draftId: string;
   studentId: string;
   trackGroups: PathTrackGroup[];
   dirty: boolean;
   updatedAt: string;
 };
+
+// Backward-compatible name for existing component/test surfaces. This is local
+// builder composition state, not a persisted storage draft.
+export type CurrentPathDraft = BuilderComposition;
 
 export type SavedLearningPath = {
   pathId: string;

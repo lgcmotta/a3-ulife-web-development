@@ -25,20 +25,22 @@ export type PresentedHistoryRow = {
 
 export function presentHistoryRows(
   entries: LearningPathHistoryEntry[],
-  activePath: SavedLearningPath | null = null,
+  savedPaths: SavedLearningPath[] = [],
 ): PresentedHistoryRow[] {
+  const savedPathById = new Map(savedPaths.map((path) => [path.pathId, path]));
+
   return entries
     .toSorted((left, right) => Date.parse(right.savedAt) - Date.parse(left.savedAt))
     .map((entry) => {
-      const activeEntry = activePath?.pathId === entry.pathId ? activePath : null;
-      const progress = activeEntry
-        ? getPathProgressSummary(activeEntry)
+      const savedPath = savedPathById.get(entry.pathId) ?? null;
+      const progress = savedPath
+        ? getPathProgressSummary(savedPath)
         : {
             topicCount: entry.topicCount,
             completedTopicCount: entry.completedTopicCount,
             status: entry.status,
           };
-      const isUnfinishedActivePath = Boolean(activeEntry && progress.status !== "completed");
+      const canResumeOrEdit = Boolean(savedPath && progress.status !== "completed");
 
       return {
         historyId: entry.historyId,
@@ -51,8 +53,8 @@ export function presentHistoryRows(
         trackSummary: entry.trackSummary,
         progressLabel: `${progress.completedTopicCount} of ${progress.topicCount} topics complete`,
         statusLabel: statusLabels[progress.status],
-        resumeTarget: isUnfinishedActivePath ? getLearningDestination(activeEntry!) : null,
-        editTarget: isUnfinishedActivePath ? `/tracks/builder?edit=${entry.pathId}` : null,
+        resumeTarget: canResumeOrEdit && savedPath ? getLearningDestination(savedPath) : null,
+        editTarget: canResumeOrEdit ? `/tracks/builder?edit=${entry.pathId}` : null,
       };
     });
 }
