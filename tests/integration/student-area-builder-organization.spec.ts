@@ -1,12 +1,6 @@
-import { expect, test } from "@playwright/test";
-
-import { clearStudentAreaTestData } from "../e2e-support/redis-test-utils";
+import { expect, test } from "../e2e-support/student-area-test";
 
 test.describe("student area builder organization", () => {
-  test.beforeEach(async () => {
-    await clearStudentAreaTestData();
-  });
-
   test("context menu exposes organization actions", async ({ page }) => {
     await page.goto("/tracks/builder");
 

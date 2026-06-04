@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "../e2e-support/student-area-test";
 import AxeBuilder from "@axe-core/playwright";
 
 const routes = [
