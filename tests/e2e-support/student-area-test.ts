@@ -7,16 +7,13 @@ import { ANONYMOUS_STUDENT_COOKIE } from "@/server/student-area/student-record";
 import { clearStudentAreaDataForStudent } from "./redis-test-utils";
 
 function testIsolationKey(testInfo: TestInfo) {
-  const titlePath =
-    typeof testInfo.titlePath === "function" ? testInfo.titlePath() : testInfo.titlePath;
-
   return createHash("sha1")
     .update(
       [
         testInfo.project.name,
         String(testInfo.workerIndex),
         String(testInfo.retry),
-        ...titlePath,
+        ...testInfo.titlePath,
       ].join("|"),
     )
     .digest("hex")
