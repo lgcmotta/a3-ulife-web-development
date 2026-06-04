@@ -7,27 +7,89 @@ import {
   loadBuilderState,
   toggleTopicInDraft,
   toggleTrackInDraft,
+  type BuilderState,
 } from "@/features/student-area/server/builder-selection";
 import { completePathItem, resetPathItem } from "@/features/student-area/server/path-progress";
 import {
   createHistoryEntry,
+  getEditableExistingPath,
   saveDraftAsActivePath,
 } from "@/features/student-area/server/path-persistence";
 import { movePathItem } from "@/features/student-area/server/path-reorder";
 import { encodePublicId } from "@/server/ids/sqids";
 import { studentCounters } from "@/server/student-area/keys";
+import { countTopics } from "@/server/student-area/path-validation";
 import { createRedisStudentAreaStore } from "@/server/student-area/repository";
-import type { PathContextAction, PathItemLevel } from "@/server/student-area/types";
+import type { CurrentPathDraft, PathContextAction, PathItemLevel } from "@/server/student-area/types";
 
-export async function toggleTrackAction(studentId: string, trackSlug: string, selected: boolean) {
+async function resolveStudentForPathAction(
+  studentId: string,
+  store: ReturnType<typeof createRedisStudentAreaStore>,
+) {
+  const resolvedStudentId = await resolveActionStudentId(studentId, store);
+  await store.recoverSplitLearningData(resolvedStudentId);
+  return resolvedStudentId;
+}
+
+async function loadActionBuilderState({
+  studentId,
+  store,
+  editPathId,
+}: {
+  studentId: string;
+  store: ReturnType<typeof createRedisStudentAreaStore>;
+  editPathId?: string;
+}) {
+  if (editPathId) {
+    return loadBuilderState({ studentId, catalog: learningTracks, store, editPathId });
+  }
+
+  const [activePath, draft] = await Promise.all([
+    store.loadActivePath(studentId),
+    store.loadDraft(studentId),
+  ]);
+  const inferredEditPathId =
+    activePath && activePath.status !== "completed" && draft?.draftId === activePath.pathId
+      ? activePath.pathId
+      : undefined;
+
+  return loadBuilderState({
+    studentId,
+    catalog: learningTracks,
+    store,
+    editPathId: inferredEditPathId,
+  });
+}
+
+function stateFromSavedDraft(state: BuilderState, draft: CurrentPathDraft): BuilderState {
+  const topicCount = countTopics(draft.trackGroups);
+
+  return {
+    availableTracks: state.availableTracks,
+    draft,
+    activePath: state.activePath,
+    isEditingActivePath: state.isEditingActivePath,
+    canSave: draft.dirty && topicCount > 0,
+    canClear: topicCount > 0,
+    canStartLearning: state.isEditingActivePath && !draft.dirty && topicCount > 0,
+    learningActionLabel: state.learningActionLabel,
+  };
+}
+
+export async function toggleTrackAction(
+  studentId: string,
+  trackSlug: string,
+  selected: boolean,
+  editPathId?: string,
+) {
   const store = createRedisStudentAreaStore();
 
   try {
-    studentId = await resolveActionStudentId(studentId, store);
-    const state = await loadBuilderState({ studentId, catalog: learningTracks, store });
+    studentId = await resolveStudentForPathAction(studentId, store);
+    const state = await loadActionBuilderState({ studentId, store, editPathId });
     const draft = toggleTrackInDraft(state.draft, learningTracks, trackSlug, selected);
     await store.saveDraft(draft);
-    const nextState = await loadBuilderState({ studentId, catalog: learningTracks, store });
+    const nextState = stateFromSavedDraft(state, draft);
     const trackTitle =
       learningTracks.find((track) => track.slug === trackSlug)?.title ?? "The selected track";
 
@@ -46,15 +108,16 @@ export async function toggleTopicAction(
   trackSlug: string,
   topicSlug: string,
   selected: boolean,
+  editPathId?: string,
 ) {
   const store = createRedisStudentAreaStore();
 
   try {
-    studentId = await resolveActionStudentId(studentId, store);
-    const state = await loadBuilderState({ studentId, catalog: learningTracks, store });
+    studentId = await resolveStudentForPathAction(studentId, store);
+    const state = await loadActionBuilderState({ studentId, store, editPathId });
     const draft = toggleTopicInDraft(state.draft, learningTracks, trackSlug, topicSlug, selected);
     await store.saveDraft(draft);
-    const nextState = await loadBuilderState({ studentId, catalog: learningTracks, store });
+    const nextState = stateFromSavedDraft(state, draft);
     const topicTitle =
       learningTracks
         .find((track) => track.slug === trackSlug)
@@ -76,12 +139,13 @@ export async function applyContextMenuAction(
   trackSlug: string,
   topicSlug: string | undefined,
   action: PathContextAction,
+  editPathId?: string,
 ) {
   const store = createRedisStudentAreaStore();
 
   try {
-    studentId = await resolveActionStudentId(studentId, store);
-    const state = await loadBuilderState({ studentId, catalog: learningTracks, store });
+    studentId = await resolveStudentForPathAction(studentId, store);
+    const state = await loadActionBuilderState({ studentId, store, editPathId });
     let draft = state.draft;
     let message = "Current path updated.";
 
@@ -121,28 +185,31 @@ export async function applyContextMenuAction(
     }
 
     await store.saveDraft(draft);
-    const nextState = await loadBuilderState({ studentId, catalog: learningTracks, store });
+    const nextState = stateFromSavedDraft(state, draft);
     return createActionSuccess(message, nextState, action);
   } catch (error) {
     return friendlyActionError(error, "The current path could not be updated. Please try again.");
   }
 }
 
-export async function saveDraftAction(studentId: string) {
+export async function saveDraftAction(studentId: string, editPathId?: string) {
   const store = createRedisStudentAreaStore();
 
   try {
-    studentId = await resolveActionStudentId(studentId, store);
-    const state = await loadBuilderState({ studentId, catalog: learningTracks, store });
+    studentId = await resolveStudentForPathAction(studentId, store);
+    const state = await loadActionBuilderState({ studentId, store, editPathId });
+    const existingEditablePath = getEditableExistingPath(state.draft, state.activePath);
     const activePath = saveDraftAsActivePath({
       draft: state.draft,
-      existingPath: state.activePath,
+      existingPath: existingEditablePath,
       pathId: encodePublicId(await store.allocateId(studentCounters.path)),
     });
     const history = await store.loadHistory(studentId);
+    const existingHistoryEntry = history.find((entry) => entry.pathId === activePath.pathId);
     const historyEntry = createHistoryEntry({
       savedPath: activePath,
-      historyId: encodePublicId(await store.allocateId(studentCounters.history)),
+      historyId:
+        existingHistoryEntry?.historyId ?? encodePublicId(await store.allocateId(studentCounters.history)),
       catalog: learningTracks,
     });
     const cleanDraft = {
@@ -154,9 +221,28 @@ export async function saveDraftAction(studentId: string) {
 
     await store.saveActivePath(activePath);
     await store.saveDraft(cleanDraft);
-    await store.saveHistory(studentId, [historyEntry, ...history]);
+    await store.saveHistory(
+      studentId,
+      existingHistoryEntry
+        ? history.map((entry) => (entry.pathId === activePath.pathId ? historyEntry : entry))
+        : [historyEntry, ...history],
+    );
 
-    const nextState = await loadBuilderState({ studentId, catalog: learningTracks, store });
+    const topicCount = activePath.trackGroups.reduce(
+      (count, group) => count + group.topicItems.length,
+      0,
+    );
+    const nextState = {
+      availableTracks: learningTracks,
+      draft: cleanDraft,
+      activePath,
+      isEditingActivePath: Boolean(existingEditablePath),
+      canSave: false,
+      canClear: Boolean(existingEditablePath) && topicCount > 0,
+      canStartLearning: topicCount > 0,
+      learningActionLabel:
+        activePath.status === "in-progress" ? ("Continue Learning" as const) : ("Start Learning" as const),
+    };
     return createActionSuccess("Learning path saved.", nextState, "save");
   } catch (error) {
     return friendlyActionError(error, "The learning path could not be saved. Please try again.");
@@ -167,9 +253,12 @@ export async function discardChangesAction(studentId: string) {
   const store = createRedisStudentAreaStore();
 
   try {
-    studentId = await resolveActionStudentId(studentId, store);
+    studentId = await resolveStudentForPathAction(studentId, store);
     const activePath = await store.loadActivePath(studentId);
-    const draft = activePath && activePath.status !== "completed"
+    const currentDraft = await store.loadDraft(studentId);
+    const draft = activePath &&
+        activePath.status !== "completed" &&
+        currentDraft?.draftId === activePath.pathId
       ? {
           draftId: activePath.pathId,
           studentId,
@@ -197,8 +286,25 @@ export async function clearLearningPathAction(studentId: string) {
   const store = createRedisStudentAreaStore();
 
   try {
-    studentId = await resolveActionStudentId(studentId, store);
-    await store.clearStudentLearningData(studentId);
+    studentId = await resolveStudentForPathAction(studentId, store);
+    const [activePath, draft, history] = await Promise.all([
+      store.loadActivePath(studentId),
+      store.loadDraft(studentId),
+      store.loadHistory(studentId),
+    ]);
+    const isEditingActivePath = Boolean(
+      activePath && activePath.status !== "completed" && draft?.draftId === activePath.pathId,
+    );
+
+    if (isEditingActivePath && activePath) {
+      await store.deleteActivePath(studentId);
+      await store.saveHistory(
+        studentId,
+        history.filter((entry) => entry.pathId !== activePath.pathId),
+      );
+    }
+
+    await store.deleteDraft(studentId);
     const nextState = await loadBuilderState({ studentId, catalog: learningTracks, store });
     return createActionSuccess("Learning path cleared.", nextState, "clear");
   } catch (error) {

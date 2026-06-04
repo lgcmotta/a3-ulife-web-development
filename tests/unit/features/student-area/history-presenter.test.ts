@@ -103,7 +103,7 @@ describe("history presenter", () => {
       progressLabel: "1 of 2 topics complete",
       statusLabel: "In progress",
       resumeTarget: "/tracks/learn/path001/variables-and-flow",
-      editTarget: "/tracks/builder",
+      editTarget: "/tracks/builder?edit=path001",
     });
   });
 });

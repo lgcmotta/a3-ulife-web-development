@@ -3,11 +3,18 @@ import { StudentBuilderClient } from "@/features/student-area/components/student
 import { loadBuilderState } from "@/features/student-area/server/builder-selection";
 import { createRedisStudentAreaStore } from "@/server/student-area/repository";
 
-export async function StudentBuilderView({ studentId }: { studentId: string }) {
+export async function StudentBuilderView({
+  studentId,
+  editPathId,
+}: {
+  studentId: string;
+  editPathId?: string;
+}) {
   const initialState = await loadBuilderState({
     studentId,
     catalog: learningTracks,
     store: createRedisStudentAreaStore(),
+    editPathId,
   });
 
   return (

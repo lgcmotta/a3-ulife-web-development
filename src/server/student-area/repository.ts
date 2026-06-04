@@ -89,13 +89,14 @@ export function createRedisStudentAreaStore(): StudentAreaStore {
       return saveJson(studentKeys(studentId).feedback, feedback);
     },
     async recoverSplitLearningData(studentId) {
-      const [student, activePath, history] = await Promise.all([
+      const [student, activePath, draft, history] = await Promise.all([
         this.loadStudent(studentId),
         this.loadActivePath(studentId),
+        this.loadDraft(studentId),
         this.loadHistory(studentId),
       ]);
 
-      if (!student || activePath || history.length > 0) {
+      if (!student) {
         return;
       }
 
@@ -113,7 +114,7 @@ export function createRedisStudentAreaStore(): StudentAreaStore {
           const sourceHistory = await this.loadHistory(sourceStudentId);
           const sourceActivePath = await this.loadActivePath(sourceStudentId);
 
-          if (!sourceStudent || sourceHistory.length === 0 || !sourceActivePath) {
+          if (!sourceStudent || sourceHistory.length === 0) {
             return null;
           }
 
@@ -142,24 +143,33 @@ export function createRedisStudentAreaStore(): StudentAreaStore {
         return;
       }
 
-      await this.saveActivePath({
-        ...recovered.sourceActivePath,
-        studentId,
-      });
+      if (!activePath && recovered.sourceActivePath) {
+        await this.saveActivePath({
+          ...recovered.sourceActivePath,
+          studentId,
+        });
+      }
 
-      if (recovered.sourceDraft) {
+      if (!draft && recovered.sourceDraft) {
         await this.saveDraft({
           ...recovered.sourceDraft,
           studentId,
         });
       }
 
-      await this.saveHistory(
-        studentId,
-        recovered.sourceHistory.map((entry) => ({
+      const existingPathIds = new Set(history.map((entry) => entry.pathId));
+      const recoveredHistory = recovered.sourceHistory
+        .filter((entry) => !existingPathIds.has(entry.pathId))
+        .map((entry) => ({
           ...entry,
           studentId,
-        })),
+        }));
+
+      await this.saveHistory(
+        studentId,
+        [...recoveredHistory, ...history].toSorted(
+          (left, right) => Date.parse(right.savedAt) - Date.parse(left.savedAt),
+        ),
       );
 
       await client.del([

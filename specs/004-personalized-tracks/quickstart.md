@@ -132,8 +132,8 @@ Latest validation result:
 
 - `pnpm lint`: passed
 - `pnpm build`: passed
-- `pnpm test`: passed, 21 files and 51 tests
-- `pnpm test:e2e`: passed, 56 Playwright tests with Redis running
+- `pnpm test`: passed, 21 files and 55 tests
+- `pnpm test:e2e`: passed, 64 Playwright tests with Redis running
 
 Targeted regression validation for the student-area UI fixes also passed:
 
@@ -142,6 +142,10 @@ Targeted regression validation for the student-area UI fixes also passed:
 - Unfinished history rows show Resume Learning and Edit Path actions.
 - Completed learning paths show completed progress and status in history.
 - Returning to the builder after completing a path shows the initial empty builder state.
+- Completed history is preserved while creating a new learning path.
+- History edit links open `/tracks/builder?edit={pathId}` for unfinished paths.
+- Plain builder visits stay empty after starting an active path unless the user opens Edit Path.
+- Edited full tracks can remove one topic without clearing the remaining selected topics.
 
 ## Environment And Secrets
 

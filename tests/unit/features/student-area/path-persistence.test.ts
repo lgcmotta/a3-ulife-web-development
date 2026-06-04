@@ -4,6 +4,7 @@ import { learningTracks } from "@/content/tracks";
 import {
   createHistoryEntry,
   getLearningDestination,
+  getEditableExistingPath,
   saveDraftAsActivePath,
 } from "@/features/student-area/server/path-persistence";
 import { completeSavedPathTopic, getPathProgressSummary } from "@/features/student-area/server/path-progress";
@@ -73,5 +74,29 @@ describe("path persistence", () => {
       completedTopicCount: 1,
       status: "completed",
     });
+  });
+
+  it("does not reuse completed paths when saving a new builder draft", () => {
+    const completed = {
+      ...saveDraftAsActivePath({
+        draft: fixtureDraft,
+        existingPath: null,
+        pathId: "path001",
+        now: new Date("2026-06-03T10:00:00.000Z"),
+      }),
+      status: "completed" as const,
+      completedAt: "2026-06-03T10:30:00.000Z",
+    };
+
+    expect(getEditableExistingPath(fixtureDraft, completed)).toBeNull();
+
+    const next = saveDraftAsActivePath({
+      draft: fixtureDraft,
+      existingPath: getEditableExistingPath(fixtureDraft, completed),
+      pathId: "path002",
+      now: new Date("2026-06-03T11:00:00.000Z"),
+    });
+
+    expect(next.pathId).toBe("path002");
   });
 });

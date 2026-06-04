@@ -48,16 +48,15 @@ export function TrackTopicTree({
               <AccordionContent>
                 <ul className="tree-topic-list">
                   {track.topics.map((topic) => (
-                    <li key={topic.slug}>
-                      <label className="tree-topic-row">
-                        <Checkbox
-                          checked={isTopicSelected(draft, track.slug, topic.slug)}
-                          onCheckedChange={(value) =>
-                            onToggleTopic(track.slug, topic.slug, value === true)
-                          }
-                        />
-                        <span>{topic.title}</span>
-                      </label>
+                    <li className="tree-topic-row" key={topic.slug}>
+                      <Checkbox
+                        aria-label={topic.title}
+                        checked={isTopicSelected(draft, track.slug, topic.slug)}
+                        onCheckedChange={(value) =>
+                          onToggleTopic(track.slug, topic.slug, value === true)
+                        }
+                      />
+                      <span>{topic.title}</span>
                     </li>
                   ))}
                 </ul>

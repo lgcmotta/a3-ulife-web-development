@@ -52,7 +52,7 @@ export function presentHistoryRows(
         progressLabel: `${progress.completedTopicCount} of ${progress.topicCount} topics complete`,
         statusLabel: statusLabels[progress.status],
         resumeTarget: isUnfinishedActivePath ? getLearningDestination(activeEntry!) : null,
-        editTarget: isUnfinishedActivePath ? "/tracks/builder" : null,
+        editTarget: isUnfinishedActivePath ? `/tracks/builder?edit=${entry.pathId}` : null,
       };
     });
 }

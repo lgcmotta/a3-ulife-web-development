@@ -29,10 +29,11 @@ export function StudentBuilderClient({
   const [state, setState] = useState(initialState);
   const [dialog, setDialog] = useState<"discard" | "clear" | null>(null);
   const [isPending, startTransition] = useTransition();
+  const editPathId = state.isEditingActivePath ? state.draft.draftId : undefined;
 
   function applyTrackToggle(trackSlug: string, selected: boolean) {
     startTransition(async () => {
-      const result = await toggleTrackAction(studentId, trackSlug, selected);
+      const result = await toggleTrackAction(studentId, trackSlug, selected, editPathId);
       showStudentFeedback(result.feedback);
 
       if (result.ok) {
@@ -43,7 +44,7 @@ export function StudentBuilderClient({
 
   function applyTopicToggle(trackSlug: string, topicSlug: string, selected: boolean) {
     startTransition(async () => {
-      const result = await toggleTopicAction(studentId, trackSlug, topicSlug, selected);
+      const result = await toggleTopicAction(studentId, trackSlug, topicSlug, selected, editPathId);
       showStudentFeedback(result.feedback);
 
       if (result.ok) {
@@ -59,7 +60,14 @@ export function StudentBuilderClient({
     action: PathContextAction,
   ) {
     startTransition(async () => {
-      const result = await applyContextMenuAction(studentId, level, trackSlug, topicSlug, action);
+      const result = await applyContextMenuAction(
+        studentId,
+        level,
+        trackSlug,
+        topicSlug,
+        action,
+        editPathId,
+      );
       showStudentFeedback(result.feedback);
 
       if (result.ok) {
@@ -70,7 +78,7 @@ export function StudentBuilderClient({
 
   function applySave() {
     startTransition(async () => {
-      const result = await saveDraftAction(studentId);
+      const result = await saveDraftAction(studentId, editPathId);
       showStudentFeedback(result.feedback);
 
       if (result.ok) {

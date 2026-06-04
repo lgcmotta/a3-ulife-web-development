@@ -20,9 +20,6 @@ export function BuilderActionBar({
   onLearning: () => void;
   pending: boolean;
 }) {
-  const hasDraftContent = state.draft.trackGroups.length > 0;
-  const canClear = Boolean(state.activePath) || hasDraftContent;
-
   return (
     <div className="builder-action-bar" aria-label="Builder actions">
       <Button disabled={!state.canSave || pending} onClick={onSave} type="button">
@@ -47,7 +44,7 @@ export function BuilderActionBar({
         <RotateCcw aria-hidden="true" size={18} />
         Discard Changes
       </Button>
-      <Button disabled={!canClear || pending} onClick={onClear} type="button" variant="secondary">
+      <Button disabled={!state.canClear || pending} onClick={onClear} type="button" variant="secondary">
         <Eraser aria-hidden="true" size={18} />
         Clear Learning Path
       </Button>

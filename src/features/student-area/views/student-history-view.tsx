@@ -30,6 +30,7 @@ export async function StudentHistoryView({
   if (!demo) {
     try {
       const store = createRedisStudentAreaStore();
+      await store.recoverSplitLearningData(studentId);
       let [history, activePath] = await Promise.all([
         store.loadHistory(studentId),
         store.loadActivePath(studentId),

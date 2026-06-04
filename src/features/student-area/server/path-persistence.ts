@@ -7,6 +7,17 @@ import type {
   SavedLearningPath,
 } from "@/server/student-area/types";
 
+export function getEditableExistingPath(
+  draft: CurrentPathDraft,
+  existingPath: SavedLearningPath | null,
+) {
+  if (!existingPath || existingPath.status === "completed" || draft.draftId !== existingPath.pathId) {
+    return null;
+  }
+
+  return existingPath;
+}
+
 export function saveDraftAsActivePath({
   draft,
   existingPath,

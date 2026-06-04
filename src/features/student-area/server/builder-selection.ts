@@ -15,7 +15,9 @@ export type BuilderState = {
   availableTracks: LearningTrack[];
   draft: CurrentPathDraft;
   activePath: SavedLearningPath | null;
+  isEditingActivePath: boolean;
   canSave: boolean;
+  canClear: boolean;
   canStartLearning: boolean;
   learningActionLabel: "Start Learning" | "Continue Learning";
 };
@@ -148,20 +150,37 @@ export async function loadBuilderState({
   studentId,
   catalog,
   store,
+  editPathId,
 }: {
   studentId: string;
   catalog: LearningTrack[];
   store: StudentAreaStore;
+  editPathId?: string;
 }): Promise<BuilderState> {
   const activePath = await store.loadActivePath(studentId);
   let draft = await store.loadDraft(studentId);
+  const canEditActivePath = Boolean(
+    editPathId &&
+      activePath &&
+      activePath.pathId === editPathId &&
+      activePath.status !== "completed",
+  );
 
-  if (activePath?.status === "completed" && (!draft || draft.draftId === activePath.pathId)) {
+  if (canEditActivePath && activePath && draft?.draftId !== activePath.pathId) {
+    draft = draftFromSavedPath(activePath);
+    await store.saveDraft(draft);
+  }
+
+  if (
+    !canEditActivePath &&
+    activePath &&
+    (!draft || draft.draftId === activePath.pathId || !draft.dirty)
+  ) {
     draft = createEmptyDraft(studentId, encodePublicId(await store.allocateId(studentCounters.path)));
     await store.saveDraft(draft);
   }
 
-  if (!draft && activePath) {
+  if (!draft && activePath && canEditActivePath) {
     draft = draftFromSavedPath(activePath);
     await store.saveDraft(draft);
   }
@@ -172,13 +191,18 @@ export async function loadBuilderState({
   }
 
   const topicCount = countTopics(draft.trackGroups);
+  const isEditingActivePath = Boolean(
+    activePath && activePath.status !== "completed" && draft.draftId === activePath.pathId,
+  );
 
   return {
     availableTracks: catalog,
     draft,
     activePath,
+    isEditingActivePath,
     canSave: draft.dirty && topicCount > 0,
-    canStartLearning: Boolean(activePath) && !draft.dirty && topicCount > 0,
+    canClear: topicCount > 0,
+    canStartLearning: isEditingActivePath && !draft.dirty && topicCount > 0,
     learningActionLabel: activePath?.status === "in-progress" ? "Continue Learning" : "Start Learning",
   };
 }

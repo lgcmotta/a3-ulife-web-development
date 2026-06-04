@@ -43,9 +43,12 @@ test.describe("student area history", () => {
     await expect(page.getByText("1 of 3 topics complete")).toBeVisible();
     await expect(page.getByText("In progress")).toBeVisible();
     await expect(page.getByRole("link", { name: /resume learning/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /edit path/i })).toBeVisible();
+    const editPath = page.getByRole("link", { name: /edit path/i });
+    await expect(editPath).toBeVisible();
+    await expect(editPath).toHaveAttribute("href", /\/tracks\/builder\?edit=.+/);
 
-    await page.getByRole("link", { name: /edit path/i }).click();
-    await page.waitForURL("**/tracks/builder");
+    await editPath.click();
+    await expect(page).toHaveURL(/\/tracks\/builder\?edit=.+/);
+    await expect(page.getByTestId("current-topic-problem-solving-basics")).toBeVisible();
   });
 });
