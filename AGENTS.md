@@ -2,6 +2,9 @@
 
 Auto-generated from feature plans where applicable. The manual project governance below must remain in effect. 
 
+The project constitution at `.specify/memory/constitution.md` is authoritative. If this
+file conflicts with the constitution, agents must follow the constitution.
+
 ## Active Technologies
 
 - 001-platform-foundation: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, shadcn CLI 4.10.0, Vitest 4.1.8, Playwright 1.60.0.
@@ -184,6 +187,9 @@ The baseline quality rules are:
 - Avoid unnecessary abstractions, frameworks, services, or infrastructure.
 - When uncertainty exists, prefer the simpler option unless the approved spec requires otherwise.
 - Do not treat unapproved ideas as part of the baseline product.
+- Keep automated tests independent, order-independent, and safe to run in parallel.
+- Keep UI state, server/action commands, and repository/storage operations explicit and separate.
+- Split functions that branch across multiple user scenarios, workflows, or persistence meanings.
 
 <!-- MANUAL ADDITIONS END -->
 

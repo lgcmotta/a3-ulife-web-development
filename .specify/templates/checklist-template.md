@@ -15,6 +15,8 @@
   - Feature requirements from spec.md
   - Technical context from plan.md
   - Implementation details from tasks.md
+  - Applicable constitution gates for scope, simplicity, usability, accessibility,
+    testing independence, assignment evidence, and responsibility boundaries
   
   DO NOT keep these sample items in the generated checklist file.
   ============================================================================

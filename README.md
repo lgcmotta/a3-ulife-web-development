@@ -4,7 +4,16 @@ Legado de Diogenes is a usability-focused educational web platform for beginner 
 
 ## Current Feature
 
-The active implementation follows `specs/004-personalized-tracks/plan.md`.
+The active Spec Kit context is tracked by `AGENTS.md` and the feature directories under
+`specs/`.
+
+## Spec Kit Governance
+
+The project constitution lives at `.specify/memory/constitution.md`. Future
+specifications, plans, tasks, and implementations must preserve its rules for scope
+control, simplicity, usability, accessibility, static-first architecture, independent
+testing, assignment evidence, frontend/server/storage boundaries, and single-flow
+function design.
 
 ## Local Commands
 

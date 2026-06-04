@@ -40,7 +40,28 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Answer each gate with PASS, N/A with justification, or VIOLATION with a Complexity
+Tracking entry:
+
+- **Spec-driven scope**: Plan implements only approved specification behavior or
+  documented constitution-compliance corrective work.
+- **Simplicity and academic fit**: Plan chooses the smallest defensible solution for the
+  class assignment and rejects unnecessary services, abstractions, games, or speculative
+  systems.
+- **Usability and accessibility**: Plan includes user-visible usability outcomes and
+  accessibility behavior for keyboard, landmarks/headings, labels, announcements where
+  needed, and color-safe/high-contrast meaning.
+- **Static-first fit**: Plan preserves frontend-focused/static-first delivery unless the
+  specification explicitly approves runtime services.
+- **Independent testing**: Planned automated tests are independently runnable,
+  order-independent, parallel-safe, and do not rely on global cleanup or exact generated
+  IDs.
+- **Assignment evidence**: Plan includes relevant personas/research, IA, wireframes,
+  heuristic evaluation, accessibility checks, iteration notes, or deployment evidence.
+- **Responsibility boundaries**: Plan keeps client/UI state, server/action commands, and
+  repository/storage operations separate and explicit.
+- **Single-flow functions**: Plan avoids multi-scenario branching in one function and
+  identifies refactoring where branching changes business or persistence meaning.
 
 ## Project Structure
 

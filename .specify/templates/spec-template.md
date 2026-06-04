@@ -8,6 +8,20 @@
 
 **Input**: User description: "$ARGUMENTS"
 
+## Constitution Alignment *(mandatory)*
+
+<!--
+  ACTION REQUIRED: Explain how this feature fits the current constitution.
+  Keep this product-facing and scope-oriented; implementation details belong in plan.md.
+-->
+
+- **Scope control**: [Why this feature belongs in the Diogenes educational platform and does not add unrelated product goals]
+- **Simplicity**: [Smallest useful version of the feature and explicit out-of-scope items]
+- **Usability/accessibility**: [User-visible usability outcome and accessibility expectations]
+- **Assignment evidence**: [Personas, IA, wireframes, heuristic evaluation, accessibility checks, iteration notes, or deployment evidence needed]
+- **Architecture boundaries**: [Expected frontend/client, server/action, and storage responsibilities if applicable]
+- **Testing independence**: [How scenarios can be tested independently without order dependence or shared mutable state]
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--

@@ -9,7 +9,8 @@ description: "Task list template for feature implementation"
 
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Include test tasks when required by the specification, plan, or constitution.
+All automated tests must be independently runnable, order-independent, and parallel-safe.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -69,6 +70,10 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T007 Create base models/entities that all stories depend on
 - [ ] T008 Configure error handling and logging infrastructure
 - [ ] T009 Setup environment configuration management
+- [ ] TXXX Define responsibility boundaries for UI state, server/actions, and storage
+      operations when the feature crosses those layers
+- [ ] TXXX Define parallel-safe test data isolation when persistence or e2e tests are
+      involved
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -83,6 +88,8 @@ Examples of foundational tasks (adjust based on your project):
 ### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> Tests must not depend on execution order, global cleanup, exact generated IDs, or
+> previous scenario state.
 
 - [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
@@ -157,6 +164,8 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
+- [ ] TXXX Validate constitution gates: usability, accessibility, assignment evidence,
+      responsibility boundaries, and independent/parallel-safe tests
 
 ---
 
@@ -180,6 +189,7 @@ Examples of foundational tasks (adjust based on your project):
 ### Within Each User Story
 
 - Tests (if included) MUST be written and FAIL before implementation
+- Tests MUST be independent, order-independent, and parallel-safe
 - Models before services
 - Services before endpoints
 - Core implementation before integration
@@ -246,6 +256,8 @@ With multiple developers:
 - [P] tasks = different files, no dependencies
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
+- Test data should be isolated per test or scenario; avoid global cleanup and exact
+  generated-ID assertions
 - Verify tests fail before implementing
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
