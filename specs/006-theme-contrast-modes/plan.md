@@ -176,16 +176,16 @@ Research output is captured in [research.md](./research.md). Key decisions:
 
 - Keep the visual preference controls in the existing header area to preserve routes and behavior.
 - Replace the single high-contrast switch-only model with:
-  - a labelled base theme control for Light and Dark, preferably native radio controls styled as a compact segmented group,
+  - a labelled base theme switch that displays Light theme or Dark theme with the matching icon,
   - a labelled high-contrast switch that remains independent of the base theme.
 - Controls must expose:
-  - group label such as "Base theme",
-  - options "Light" and "Dark" with selected state,
+  - current base theme label such as "Light theme" or "Dark theme",
+  - switch state for whether the dark base theme is enabled,
   - switch label "High contrast" with on/off state,
   - visible focus indicator in every visual combination.
 - Keyboard expectations:
-  - Tab reaches the group and switch in predictable order.
-  - Arrow keys or native radio behavior change light/dark.
+  - Tab reaches the base theme switch and high-contrast switch in predictable order.
+  - Space or Enter changes light/dark.
   - Space toggles high contrast.
   - Focus remains on the operated control after a preference change.
 
@@ -214,7 +214,7 @@ Research output is captured in [research.md](./research.md). Key decisions:
 1. Update `src/accessibility/theme.ts` to model `BaseTheme`, `HighContrastPreference`, derived theme combinations, labels, storage keys, and contrast-pair metadata used by tests.
 2. Update `src/storage/theme-preference.ts` so read, resolve, write, apply, notify, and subscribe responsibilities handle independent base theme and high-contrast values with legacy fallback.
 3. Update the pre-hydration script in `src/app/layout.tsx` to apply `data-theme` and `data-contrast` before React hydration while preserving a readable server default.
-4. Replace or extend `ThemeToggle` into a compact accessible visual preference control with a base theme radio group and independent high-contrast switch.
+4. Replace or extend `ThemeToggle` into a compact accessible visual preference control with a base theme switch and independent high-contrast switch.
 5. Refactor global CSS variables in `src/app/globals.css` into the four selector blocks and paired semantic token contract.
 6. Update shared primitives in `src/ui/components/` so button, switch, dropdown menu, context menu, tabs, dialog, disabled, selected, focus, and icon-only states consume paired semantic tokens.
 7. Update route/page-specific CSS classes that hard-code foreground/background values when those values can break in one of the four combinations, especially hero actions, navigation, panels, item action buttons, status labels, tabs, and dialogs.

@@ -26,7 +26,7 @@ High contrast remains independent from the Light and Dark base theme selection.
 ## Surfaces And States
 
 - Global navigation current, hover, and focus states
-- Base theme radio group and High contrast switch
+- Base theme switch and High contrast switch
 - Primary, secondary, disabled, selected/current, and focused button states
 - Selected/current student tabs
 - Dropdown menu trigger and menu item states
@@ -46,8 +46,8 @@ High contrast remains independent from the Light and Dark base theme selection.
 
 ## Keyboard And Assistive Labels
 
-- Keyboard path checked on `/accessibility`: Tab reaches the Light radio, arrow key changes to Dark, Tab reaches High contrast, and Space toggles the switch while keeping focus on the operated control.
-- Base theme exposes a labelled `Base theme` radio group with `Light` and `Dark` selected state.
+- Keyboard path checked on `/accessibility`: Tab reaches the base theme switch, Space changes Light theme to Dark theme, Tab reaches High contrast, and Space toggles the switch while keeping focus on the operated control.
+- Base theme exposes a switch named by the current `Light theme` or `Dark theme` label with `aria-checked` state.
 - High contrast exposes a switch named `High contrast` with `aria-checked` on/off state.
 - Current and selected states include non-color cues such as underline, selected state, borders, and native checked state.
 

@@ -12,11 +12,11 @@ describe("ThemeToggle", () => {
 
     render(React.createElement(ThemeToggle));
 
-    expect(screen.getByRole("group", { name: /base theme/i })).toBeTruthy();
-    expect((screen.getByRole("radio", { name: "Light" }) as HTMLInputElement).checked).toBe(
-      false,
+    expect(screen.queryByRole("radio", { name: "Light" })).toBeNull();
+    expect(screen.queryByRole("radio", { name: "Dark" })).toBeNull();
+    expect(screen.getByRole("switch", { name: /dark theme/i }).getAttribute("aria-checked")).toBe(
+      "true",
     );
-    expect((screen.getByRole("radio", { name: "Dark" }) as HTMLInputElement).checked).toBe(true);
     expect(screen.getByRole("switch", { name: /high contrast/i }).getAttribute("aria-checked")).toBe(
       "true",
     );
@@ -47,16 +47,33 @@ describe("ThemeToggle", () => {
 
     render(React.createElement(ThemeToggle));
 
-    await user.click(screen.getByRole("radio", { name: "Dark" }));
+    await user.click(screen.getByRole("switch", { name: /light theme/i }));
 
     expect(window.localStorage.getItem(BASE_THEME_STORAGE_KEY)).toBe("dark");
     expect(window.localStorage.getItem(HIGH_CONTRAST_STORAGE_KEY)).toBe("true");
     expect(document.documentElement.dataset.theme).toBe("dark");
     expect(document.documentElement.dataset.contrast).toBe("high");
-    expect((screen.getByRole("radio", { name: "Dark" }) as HTMLInputElement).checked).toBe(true);
+    expect(screen.getByRole("switch", { name: /dark theme/i }).getAttribute("aria-checked")).toBe(
+      "true",
+    );
     expect(screen.getByRole("switch", { name: /high contrast/i }).getAttribute("aria-checked")).toBe(
       "true",
     );
+  });
+
+  it("toggles base theme with keyboard while preserving focusable state semantics", async () => {
+    const user = userEvent.setup();
+    render(React.createElement(ThemeToggle));
+
+    const toggle = screen.getByRole("switch", { name: /light theme/i });
+    toggle.focus();
+    await user.keyboard("[Space]");
+
+    expect(window.localStorage.getItem(BASE_THEME_STORAGE_KEY)).toBe("dark");
+    expect(toggle.getAttribute("aria-checked")).toBe("true");
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(document.activeElement).toBe(toggle);
+    expect(screen.getByRole("switch", { name: /dark theme/i })).toBe(toggle);
   });
 
   it("toggles contrast with pointer input while preserving focusable state semantics", async () => {

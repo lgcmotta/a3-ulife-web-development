@@ -102,13 +102,13 @@
 
 ### Tests for User Story 3
 
-- [X] T031 [P] [US3] Add Testing Library checks for base theme group label, Light/Dark option names and selected state, High contrast switch name and checked state in tests/unit/accessibility/theme-control.test.ts
-- [X] T032 [P] [US3] Add Playwright keyboard checks for Tab order, radio operation, Space toggling, focus retention, and visible focus in tests/integration/accessibility.spec.ts
+- [X] T031 [P] [US3] Add Testing Library checks for base theme switch label, Light/Dark state, High contrast switch name, and checked state in tests/unit/accessibility/theme-control.test.ts
+- [X] T032 [P] [US3] Add Playwright keyboard checks for Tab order, base theme switch operation, Space toggling, focus retention, and visible focus in tests/integration/accessibility.spec.ts
 - [X] T033 [US3] Add axe regression checks for the visual preference controls in all four visual combinations in tests/integration/accessibility.spec.ts
 
 ### Implementation for User Story 3
 
-- [X] T034 [US3] Ensure the base theme control uses labelled native radio semantics or equivalent accessible segmented control semantics in src/features/foundation/components/theme-toggle.tsx
+- [X] T034 [US3] Ensure the base theme control uses labelled switch semantics with current Light/Dark state in src/features/foundation/components/theme-toggle.tsx
 - [X] T035 [US3] Ensure the high-contrast switch exposes a stable accessible name, on/off state, keyboard Space behavior, and focus retention in src/features/foundation/components/theme-toggle.tsx
 - [X] T036 [US3] Add or adjust focus, current, selected, and disabled non-color cues for the visual preference controls in src/app/globals.css
 - [X] T037 [US3] Update accessibility help copy to explain keyboard operation for the base theme control and high-contrast switch in src/content/accessibility-help.ts

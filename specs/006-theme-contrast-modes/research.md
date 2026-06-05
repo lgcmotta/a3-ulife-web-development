@@ -49,9 +49,9 @@ Define a compact set of semantic CSS variables for four combinations. Every inte
 
 ## Decision: Use Native Accessible Controls For Preferences
 
-Represent base theme as a labelled light/dark radio group or equivalent native mutually exclusive control, and keep high contrast as a labelled switch.
+Represent base theme as a labelled binary switch that displays the current Light theme or Dark theme state with the matching icon, and keep high contrast as a labelled switch.
 
-**Rationale**: Native or native-like controls provide predictable keyboard behavior and clear assistive-technology state. They also make independence explicit: the radio group controls base theme, and the switch controls contrast.
+**Rationale**: Native or native-like controls provide predictable keyboard behavior and clear assistive-technology state. The paired switches keep independence explicit: one switch controls the light/dark base theme, and one switch controls contrast.
 
 **Alternatives considered**:
 

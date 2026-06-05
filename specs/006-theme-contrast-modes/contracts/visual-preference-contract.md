@@ -56,7 +56,7 @@ Valid combinations:
 
 ## Control Accessibility
 
-- Base theme control exposes a group label and selected Light/Dark state.
+- Base theme control exposes a switch label that reflects the current Light/Dark state and an on/off state.
 - High-contrast control exposes an on/off state and the label "High contrast".
 - Controls are reachable by keyboard in the header.
 - Focus remains visible and remains on the operated control after a preference change.

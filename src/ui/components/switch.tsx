@@ -13,7 +13,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
     <button
       aria-checked={checked}
       className={cn(
-        "inline-flex h-7 w-12 items-center rounded-full border border-[var(--border)] bg-[var(--control)] p-1 text-[var(--control-foreground)] transition-colors focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)] disabled:bg-[var(--disabled)] disabled:text-[var(--disabled-foreground)]",
+        "switch-control inline-flex h-7 w-12 items-center rounded-full border border-[var(--border)] bg-[var(--control)] p-1 text-[var(--control-foreground)] transition-colors focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)] disabled:bg-[var(--disabled)] disabled:text-[var(--disabled-foreground)]",
         checked && "bg-[var(--control-selected)] text-[var(--control-selected-foreground)]",
         className,
       )}

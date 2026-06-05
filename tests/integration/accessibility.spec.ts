@@ -181,13 +181,11 @@ async function expectCommonReadableSurfaces(page: Page, route: string) {
   }
 
   if (route === "/accessibility") {
+    await expectReadable(page.locator(".base-theme-control"), "base theme control");
     await expectReadable(
-      page.locator(".theme-option").filter({ hasText: "Light" }).locator("span"),
-      "light theme option",
-    );
-    await expectReadable(
-      page.locator(".theme-option").filter({ hasText: "Dark" }).locator("span"),
-      "dark theme option",
+      page.getByRole("switch", { name: /light theme|dark theme/i }),
+      "base theme switch",
+      3,
     );
   }
 }
@@ -241,7 +239,7 @@ test.describe("accessibility foundation", () => {
     await expect(page.getByText(/Back to learning tracks link/i)).toBeVisible();
     await expect(page.getByText(/Press Tab to move forward/i)).toBeVisible();
     await expect(page.getByText(/Screen reader users can jump by headings/i)).toBeVisible();
-    await expect(page.getByText(/Light or Dark as the base theme/i)).toBeVisible();
+    await expect(page.getByText(/Use the base theme switch/i)).toBeVisible();
     await expect(page.getByText(/not color alone/i)).toBeVisible();
   });
 
@@ -301,8 +299,10 @@ test.describe("accessibility foundation", () => {
       await expectRootMode(page, mode);
 
       await expect(
-        page.getByRole("radio", { name: mode.baseTheme === "light" ? "Light" : "Dark" }),
-      ).toBeChecked();
+        page.getByRole("switch", {
+          name: mode.baseTheme === "light" ? /light theme/i : /dark theme/i,
+        }),
+      ).toHaveAttribute("aria-checked", String(mode.baseTheme === "dark"));
       await expect(page.getByRole("switch", { name: /high contrast/i })).toHaveAttribute(
         "aria-checked",
         String(mode.highContrast),
@@ -321,9 +321,13 @@ test.describe("accessibility foundation", () => {
     await setVisualMode(page, visualModes[1]);
     await page.goto("/accessibility");
 
-    await page.locator(".theme-option").filter({ hasText: "Dark" }).click();
+    await page.getByRole("switch", { name: /light theme/i }).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await expect(page.locator("html")).toHaveAttribute("data-contrast", "high");
+    await expect(page.getByRole("switch", { name: /dark theme/i })).toHaveAttribute(
+      "aria-checked",
+      "true",
+    );
     await expect(page.getByRole("switch", { name: /high contrast/i })).toHaveAttribute(
       "aria-checked",
       "true",
@@ -333,7 +337,10 @@ test.describe("accessibility foundation", () => {
     await contrastSwitch.press("Space");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await expect(page.locator("html")).toHaveAttribute("data-contrast", "normal");
-    await expect(page.getByRole("radio", { name: "Dark" })).toBeChecked();
+    await expect(page.getByRole("switch", { name: /dark theme/i })).toHaveAttribute(
+      "aria-checked",
+      "true",
+    );
     await expect(contrastSwitch).toBeFocused();
   });
 
@@ -341,19 +348,16 @@ test.describe("accessibility foundation", () => {
     await setVisualMode(page, visualModes[0]);
     await page.goto("/accessibility");
 
-    const lightRadio = page.getByRole("radio", { name: "Light" });
-    const darkRadio = page.getByRole("radio", { name: "Dark" });
+    const baseThemeSwitch = page.getByRole("switch", { name: /light theme/i });
     const contrastSwitch = page.getByRole("switch", { name: /high contrast/i });
-    const lightOption = page.locator(".theme-option").filter({ hasText: "Light" }).locator("span");
-    const darkOption = page.locator(".theme-option").filter({ hasText: "Dark" }).locator("span");
 
-    await tabUntilFocused(page, lightRadio);
-    await expect(lightOption).toHaveCSS("outline-style", "solid");
+    await tabUntilFocused(page, baseThemeSwitch);
+    await expect(baseThemeSwitch).toHaveCSS("outline-style", "solid");
 
-    await page.keyboard.press("ArrowRight");
-    await expect(darkRadio).toBeFocused();
-    await expect(darkRadio).toBeChecked();
-    await expect(darkOption).toHaveCSS("outline-style", "solid");
+    await page.keyboard.press("Space");
+    const darkThemeSwitch = page.getByRole("switch", { name: /dark theme/i });
+    await expect(darkThemeSwitch).toBeFocused();
+    await expect(darkThemeSwitch).toHaveAttribute("aria-checked", "true");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await expect(page.locator("html")).toHaveAttribute("data-contrast", "normal");
 

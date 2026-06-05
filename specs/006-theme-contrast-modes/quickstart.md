@@ -6,7 +6,7 @@ Verify that the implementation supports light, light high contrast, dark, and da
 
 ## Expected Visual Preference Controls
 
-- Header includes a labelled base theme control for Light and Dark.
+- Header includes a labelled base theme switch that displays Light theme or Dark theme with the matching icon.
 - Header includes an independent High contrast switch.
 - Changing one preference preserves the other preference.
 - Controls are keyboard reachable and expose current state to assistive technology.
@@ -38,8 +38,8 @@ For each combination, check:
 
 1. Open `/accessibility`.
 2. Press Tab until the base theme control is focused.
-3. Confirm Light/Dark state is exposed through the control label and selected state.
-4. Change Light/Dark with keyboard.
+3. Confirm Light/Dark state is exposed through the switch label, icon, and on/off state.
+4. Change Light/Dark with Space or Enter.
 5. Confirm focus remains visible.
 6. Move to the High contrast switch.
 7. Toggle with Space.
@@ -73,7 +73,7 @@ pnpm build
 - All four visual combinations apply through root attributes before hydration.
 - Preferences persist after reload and navigation.
 - High contrast toggles without resetting light/dark.
-- Light/dark switches without resetting high contrast.
+- The base theme switch toggles light/dark without resetting high contrast.
 - Theme controls do not trigger React/Next hydration mismatch warnings.
 - Token-pair tests meet 4.5:1 for normal text and 3:1 for essential non-text UI.
 - Playwright checks find no unreadable foreground/background pairings on representative controls.

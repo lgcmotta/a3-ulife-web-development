@@ -4,7 +4,6 @@ import { Contrast, Moon, Sun } from "lucide-react";
 import type { KeyboardEvent } from "react";
 import { useId, useSyncExternalStore } from "react";
 import {
-  baseThemes,
   defaultVisualPreference,
   resolveVisualPreference,
   type BaseThemeId,
@@ -24,7 +23,10 @@ const themeIcons = {
   dark: Moon,
 };
 
-const baseThemeOrder = baseThemes.map((theme) => theme.id);
+const baseThemeLabels = {
+  light: "Light theme",
+  dark: "Dark theme",
+} satisfies Record<BaseThemeId, string>;
 
 export function ThemeToggle() {
   const preference = useSyncExternalStore(
@@ -34,6 +36,9 @@ export function ThemeToggle() {
   );
   const baseThemeLabelId = useId();
   const highContrastLabelId = useId();
+  const ThemeIcon = themeIcons[preference.baseTheme];
+  const baseThemeLabel = baseThemeLabels[preference.baseTheme];
+  const isDarkTheme = preference.baseTheme === "dark";
 
   function setBaseTheme(baseTheme: BaseThemeId) {
     if (baseTheme === preference.baseTheme) {
@@ -49,6 +54,10 @@ export function ThemeToggle() {
     notifyThemePreferenceChange();
   }
 
+  function toggleBaseTheme() {
+    setBaseTheme(isDarkTheme ? "light" : "dark");
+  }
+
   function toggleHighContrast() {
     const nextPreference = resolveVisualPreference({
       baseTheme: preference.baseTheme,
@@ -59,80 +68,41 @@ export function ThemeToggle() {
     notifyThemePreferenceChange();
   }
 
-  function focusBaseTheme(baseTheme: BaseThemeId) {
-    requestAnimationFrame(() => {
-      document
-        .querySelector<HTMLInputElement>(`input[name="base-theme"][value="${baseTheme}"]`)
-        ?.focus();
-    });
-  }
-
-  function handleBaseThemeKeyDown(event: KeyboardEvent<HTMLInputElement>, baseTheme: BaseThemeId) {
-    if (
-      event.key !== "ArrowRight" &&
-      event.key !== "ArrowDown" &&
-      event.key !== "ArrowLeft" &&
-      event.key !== "ArrowUp"
-    ) {
-      return;
-    }
-
-    event.preventDefault();
-
-    const currentIndex = baseThemeOrder.indexOf(baseTheme);
-    const direction = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : -1;
-    const nextIndex = (currentIndex + direction + baseThemeOrder.length) % baseThemeOrder.length;
-    const nextBaseTheme = baseThemeOrder[nextIndex];
-
-    setBaseTheme(nextBaseTheme);
-    focusBaseTheme(nextBaseTheme);
-  }
-
-  function handleContrastKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+  function handleSwitchKeyDown(event: KeyboardEvent<HTMLButtonElement>, toggle: () => void) {
     if (event.key !== " " && event.key !== "Spacebar") {
       return;
     }
 
     event.preventDefault();
-    toggleHighContrast();
+    toggle();
   }
 
   return (
     <div className="theme-toggle" aria-label="Visual theme">
-      <fieldset className="base-theme-control" aria-labelledby={baseThemeLabelId}>
-        <legend id={baseThemeLabelId}>Base theme</legend>
-        <div className="base-theme-options">
-          {baseThemes.map((theme) => {
-            const Icon = themeIcons[theme.id];
-
-            return (
-              <label className="theme-option" key={theme.id}>
-                <input
-                  checked={preference.baseTheme === theme.id}
-                  name="base-theme"
-                  onChange={() => setBaseTheme(theme.id)}
-                  onKeyDown={(event) => handleBaseThemeKeyDown(event, theme.id)}
-                  type="radio"
-                  value={theme.id}
-                />
-                <span>
-                  <Icon aria-hidden="true" size={15} />
-                  {theme.label}
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      </fieldset>
+      <div className="base-theme-control">
+        <ThemeIcon aria-hidden="true" size={18} />
+        <span className="theme-control-label" id={baseThemeLabelId}>
+            {baseThemeLabel}
+        </span>
+        <Switch
+          aria-label="Toggle base theme"
+          aria-labelledby={baseThemeLabelId}
+          checked={isDarkTheme}
+          onClick={toggleBaseTheme}
+          onKeyDown={(event) => handleSwitchKeyDown(event, toggleBaseTheme)}
+        />
+      </div>
       <div className="contrast-control">
         <Contrast aria-hidden="true" size={18} />
-        <span id={highContrastLabelId}>High contrast</span>
+        <span className="theme-control-label" id={highContrastLabelId}>
+          High contrast
+        </span>
         <Switch
           aria-label="Toggle high contrast"
           aria-labelledby={highContrastLabelId}
           checked={preference.highContrast}
           onClick={toggleHighContrast}
-          onKeyDown={handleContrastKeyDown}
+          onKeyDown={(event) => handleSwitchKeyDown(event, toggleHighContrast)}
         />
       </div>
     </div>
