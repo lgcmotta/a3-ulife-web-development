@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { diogenesProfile } from "@/content/diogenes";
+import { getLocalizedContent } from "@/content/locales";
 import { mainNavigation } from "@/routes/navigation";
 
 describe("foundation content", () => {
   it("defines Diogenes as a bounded educational guide", () => {
+    const { diogenesProfile } = getLocalizedContent("en");
+
     expect(diogenesProfile.name).toBe("Diogenes");
     expect(diogenesProfile.role).toContain("professor");
     expect(diogenesProfile.introduction).toContain("Computer Science");
@@ -21,6 +23,10 @@ describe("foundation content", () => {
       "/tracks",
       "/accessibility",
     ]);
-    expect(mainNavigation.every((item) => item.label && item.description)).toBe(true);
+    expect(mainNavigation.map((item) => item.area)).toEqual([
+      "home",
+      "tracks",
+      "accessibility",
+    ]);
   });
 });

@@ -9,9 +9,7 @@ export type DiogenesProfile = {
 };
 
 export type MainNavigationItem = {
-  label: string;
   href: string;
-  description: string;
   order: number;
   area: Exclude<MainArea, "topic">;
 };

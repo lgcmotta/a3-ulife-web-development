@@ -2,16 +2,13 @@
   "primaryLabel": "Navegacao principal",
   "items": {
     "home": {
-      "label": "Inicio",
-      "description": "Entenda Diogenes e o objetivo da plataforma"
+      "label": "Inicio"
     },
     "tracks": {
-      "label": "Trilhas de aprendizagem",
-      "description": "Explore caminhos de estudo selecionados para iniciantes"
+      "label": "Trilhas de aprendizagem"
     },
     "accessibility": {
-      "label": "Ajuda de acessibilidade",
-      "description": "Aprenda a navegar e usar a plataforma de forma acessivel"
+      "label": "Ajuda de acessibilidade"
     }
   }
 }

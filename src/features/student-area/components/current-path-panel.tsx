@@ -1,5 +1,3 @@
-"use client";
-
 import { useTranslations } from "next-intl";
 import type { LearningTrack } from "@/content/types";
 import { PathItemContextMenu } from "@/features/student-area/components/path-item-context-menu";

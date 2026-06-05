@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it } from "vitest";
@@ -8,14 +7,9 @@ import enMessages from "@/i18n/messages/en";
 describe("home introduction", () => {
   it("renders the platform purpose, Diogenes role, and primary next actions", () => {
     render(
-      React.createElement(
-        NextIntlClientProvider,
-        {
-          locale: "en",
-          messages: enMessages,
-        },
-        React.createElement(HomeIntroduction),
-      ),
+      <NextIntlClientProvider locale="en" messages={enMessages}>
+        <HomeIntroduction />
+      </NextIntlClientProvider>,
     );
 
     expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(

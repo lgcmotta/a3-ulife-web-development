@@ -1,5 +1,3 @@
-"use client";
-
 import { useTranslations } from "next-intl";
 import { BookOpenCheck, Eraser, RotateCcw, Save } from "lucide-react";
 

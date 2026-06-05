@@ -9,7 +9,6 @@ import {
   HIGH_CONTRAST_STORAGE_KEY,
   LEGACY_THEME_STORAGE_KEY,
   resolveHighContrast,
-  resolveTheme,
   resolveVisualPreference,
   themeTokenSets,
   themes,
@@ -33,9 +32,9 @@ describe("theme helpers", () => {
   });
 
   it("falls back to the readable default for unknown values", () => {
-    expect(resolveTheme("dark-high")).toBe("dark-high");
-    expect(resolveTheme("unknown")).toBe("light");
-    expect(resolveTheme(null)).toBe("light");
+    expect(resolveVisualPreference({ baseTheme: "unknown" })).toBe(
+      visualPreferences["light-normal"],
+    );
     expect(resolveHighContrast("high")).toBe(true);
     expect(resolveHighContrast("not-valid")).toBe(false);
   });
