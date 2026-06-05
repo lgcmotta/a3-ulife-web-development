@@ -11,6 +11,7 @@ file conflicts with the constitution, agents must follow the constitution.
 - 002-github-test-automation: GitHub Actions, actions/checkout@v6, pnpm/action-setup@v6, actions/setup-node@v6, pnpm 9.5.0, ESLint 9.39.4, Vitest 4.1.8, Playwright 1.60.0.
 - 003-educational-content: TypeScript 6.0.3, Node.js v25.9.0, existing Next.js 16.2.7 frontend, local static content modules under `src/content`, Vitest 4.1.8, Playwright 1.60.0.
 - 004-personalized-tracks: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7 server components/actions, React 19.2.7, Redis via Docker Compose, `redis` 6.0.0, `sqids` 0.3.0, `react-markdown` 10.1.0, `remark-gfm` 4.0.1.
+- 007-topic-action-buttons: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, `react-markdown` 10.1.0, `remark-gfm` 4.0.1, existing Redis-backed saved-path progress flow, Vitest 4.1.8, Playwright 1.60.0.
 
 ## Project Structure
 
@@ -42,6 +43,7 @@ public/
 - Do not introduce low-value complexity, speculative subsystems, or unapproved platform dependencies.
 
 ## Recent Changes
+- 007-topic-action-buttons: Planned reusable topic action group for existing Return to Builder and Complete Topic controls.
 
 - 2026-04-21: Established root agent governance for the Legado de Diogenes class project.
 
@@ -196,5 +198,5 @@ The baseline quality rules are:
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/006-theme-contrast-modes/plan.md
+at specs/007-topic-action-buttons/plan.md
 <!-- SPECKIT END -->

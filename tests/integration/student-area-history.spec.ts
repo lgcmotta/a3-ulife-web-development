@@ -1,4 +1,14 @@
-import { expect, test } from "../e2e-support/student-area-test";
+import { expect, test, type Page } from "../e2e-support/student-area-test";
+
+function topicActions(page: Page) {
+  return page.getByRole("group", { name: "Topic actions", exact: true });
+}
+
+async function clickTopCompleteTopic(page: Page) {
+  const previousUrl = page.url();
+  await topicActions(page).getByRole("button", { name: /complete topic/i }).click();
+  await expect.poll(() => page.url()).not.toBe(previousUrl);
+}
 
 test.describe("student area history", () => {
   test("empty history explains the next action", async ({ page }) => {
@@ -29,7 +39,7 @@ test.describe("student area history", () => {
     await page.getByRole("button", { name: "Start Learning" }).click();
     await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
 
-    await page.getByRole("button", { name: /complete topic/i }).click();
+    await clickTopCompleteTopic(page);
     await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
 
     await page.goto("/tracks/history");
@@ -56,9 +66,9 @@ test.describe("student area history", () => {
     await page.getByRole("button", { name: "Save" }).click();
     await page.getByRole("button", { name: "Start Learning" }).click();
 
-    await page.getByRole("button", { name: /complete topic/i }).click();
-    await page.getByRole("button", { name: /complete topic/i }).click();
-    await page.getByRole("button", { name: /complete topic/i }).click();
+    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page);
     await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 
     await page.goto("/tracks/history");

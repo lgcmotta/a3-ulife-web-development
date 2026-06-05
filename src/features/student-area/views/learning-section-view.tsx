@@ -1,12 +1,11 @@
 import Link from "next/link";
 
-import { completeTopicAction } from "@/features/student-area/actions/complete-topic-action";
 import { LearningSectionContent } from "@/features/student-area/components/learning-section-content";
+import { LearningTopicActions } from "@/features/student-area/components/learning-topic-actions";
 import { findTopicBySlug } from "@/server/student-area/catalog";
 import { loadLearningSectionMarkdown } from "@/server/learning-content/markdown";
 import type { SavedLearningPath } from "@/server/student-area/types";
 import { buttonVariants } from "@/ui/components/button";
-import { Button } from "@/ui/components/button";
 
 export async function LearningSectionView({
   studentId,
@@ -44,18 +43,24 @@ export async function LearningSectionView({
 
   return (
     <article className="content-container topic-page" aria-labelledby="learning-topic-heading">
-      <Link className="return-link" href={`/tracks/builder?edit=${path.pathId}`} prefetch={false}>
-        Return to Builder
-      </Link>
+      <LearningTopicActions
+        pathId={path.pathId}
+        placement="start"
+        studentId={studentId}
+        topicSlug={topicSlug}
+      />
       <div className="topic-header">
         <p className="eyebrow">{topicContext.track.title}</p>
         <h1 id="learning-topic-heading">{topicContext.topic.title}</h1>
         <p>{topicContext.topic.summary}</p>
       </div>
-      <form action={completeTopicAction.bind(null, studentId, path.pathId, topicSlug)}>
-        <Button type="submit">Complete Topic</Button>
-      </form>
       <LearningSectionContent markdown={markdownContent} />
+      <LearningTopicActions
+        pathId={path.pathId}
+        placement="end"
+        studentId={studentId}
+        topicSlug={topicSlug}
+      />
     </article>
   );
 }
