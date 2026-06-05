@@ -409,9 +409,9 @@ a {
     font: inherit;
     font-weight: 800;
     justify-content: center;
-    min-height: 2rem;
-    min-width: 2.35rem;
-    padding: 0.2rem 0.45rem;
+    min-height: 2.25rem;
+    min-width: 2.65rem;
+    padding: 0.2rem 0.5rem;
 }
 
 .language-option:hover {
@@ -422,13 +422,11 @@ a {
 .language-option-selected {
     background: var(--control-selected);
     color: var(--control-selected-foreground);
-    text-decoration: underline;
-    text-decoration-thickness: 0.13em;
-    text-underline-offset: 0.22em;
+    text-decoration: none;
 }
 
 .language-flag {
-    font-size: 1.1rem;
+    font-size: 1.5rem; /* or 1.5rem */
     line-height: 1;
 }
 
@@ -507,14 +505,14 @@ a {
 }
 
 .hero-section {
-    min-height: 72vh;
+    min-height: clamp(44rem, 72vh, 56rem);
     position: relative;
     overflow: hidden;
 }
 
 .hero-image {
     object-fit: cover;
-    object-position: center;
+    object-position: 62% center;
 }
 
 .hero-overlay {
@@ -528,7 +526,7 @@ a {
     color: #ffffff;
     display: grid;
     gap: 1.1rem;
-    max-width: 48rem;
+    max-width: 56rem;
     padding: clamp(4rem, 10vw, 7rem) clamp(1.25rem, 7vw, 6rem);
     position: relative;
     z-index: 1;
@@ -582,6 +580,7 @@ a {
     position: absolute;
     right: 0;
     z-index: 2;
+    height: 3rem;
 }
 
 .hero-principles li {
