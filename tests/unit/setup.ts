@@ -18,6 +18,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
-  document.documentElement.dataset.theme = "default";
+  document.documentElement.dataset.theme = "light";
+  document.documentElement.dataset.contrast = "normal";
   window.localStorage.clear();
 });

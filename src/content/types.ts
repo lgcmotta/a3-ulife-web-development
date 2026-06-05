@@ -46,10 +46,12 @@ export type AccessibilityHelpSection = {
 };
 
 export type VisualTheme = {
-  id: "default" | "high-contrast";
+  id: "light" | "light-high" | "dark" | "dark-high";
   label: string;
   purpose: string;
   isDefault: boolean;
+  baseTheme: "light" | "dark";
+  highContrast: boolean;
 };
 
 export type PersonaArtifact = {

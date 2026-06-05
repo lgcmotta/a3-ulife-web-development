@@ -12,8 +12,9 @@ export function AccessibilityView() {
         <h1 id="accessibility-heading">Navigate the foundation independently</h1>
         <p>
           This page explains how to move through Legado de Diogenes with a
-          keyboard, screen reader, or high-contrast visual theme while keeping
-          the same learning content available to every student.
+          keyboard, screen reader, light or dark theme, and optional high
+          contrast while keeping the same learning content available to every
+          student.
         </p>
       </div>
       <div className="help-grid">
@@ -26,7 +27,7 @@ export function AccessibilityView() {
         ))}
       </div>
       <section className="evidence-section" aria-labelledby="themes-heading">
-        <h2 id="themes-heading">Supported visual themes</h2>
+        <h2 id="themes-heading">Supported visual modes</h2>
         <ul className="evidence-list">
           {themes.map((theme) => (
             <li key={theme.id}>

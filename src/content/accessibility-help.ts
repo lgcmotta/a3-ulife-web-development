@@ -11,7 +11,7 @@ export const accessibilityHelpSections: AccessibilityHelpSection[] = [
   {
     title: "Move through controls with the keyboard",
     content:
-      "Press Tab to move forward through links, topic cards, and the high-contrast theme switch. Press Shift+Tab to move backward, then use Enter or Space to activate the focused item. The skip link moves focus directly to the main content.",
+      "Press Tab to move forward through links, topic cards, the base theme switch, and the High contrast switch. Press Shift+Tab to move backward, then use Enter or Space to activate the focused item. The skip link moves focus directly to the main content.",
     appliesTo: "Keyboard navigation",
     order: 2,
   },
@@ -25,7 +25,7 @@ export const accessibilityHelpSections: AccessibilityHelpSection[] = [
   {
     title: "Switch to stronger visual contrast",
     content:
-      "The high-contrast theme strengthens text, borders, focus outlines, and button contrast without changing the content order. Current navigation state is also shown with text and underline, not color alone.",
+      "Use the base theme switch to move between Light theme and Dark theme, then turn High contrast on or off independently. High-contrast mode strengthens text, borders, focus outlines, and button contrast without changing the content order. Current navigation state is also shown with text and underline, not color alone.",
     appliesTo: "Visual accessibility",
     order: 4,
   },

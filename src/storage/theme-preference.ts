@@ -1,32 +1,91 @@
 import {
-  defaultTheme,
-  isThemeId,
-  THEME_STORAGE_KEY,
-  type ThemeId,
+  BASE_THEME_STORAGE_KEY,
+  defaultBaseTheme,
+  defaultHighContrast,
+  HIGH_CONTRAST_STORAGE_KEY,
+  isBaseThemeId,
+  LEGACY_THEME_STORAGE_KEY,
+  resolveVisualPreference,
+  type BaseThemeId,
+  type VisualPreference,
 } from "@/accessibility/theme";
 
 const THEME_PREFERENCE_EVENT = "legado-de-diogenes-theme-change";
 
-export function readStoredThemePreference(): ThemeId | null {
+function readLocalStorageValue(key: string) {
   if (typeof window === "undefined") {
     return null;
   }
 
-  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-  return isThemeId(storedTheme) ? storedTheme : null;
+  return window.localStorage.getItem(key);
 }
 
-export function readAppliedThemePreference(): ThemeId {
-  if (typeof document === "undefined") {
-    return defaultTheme;
+export function readStoredBaseThemePreference(): BaseThemeId | null {
+  const storedTheme = readLocalStorageValue(BASE_THEME_STORAGE_KEY);
+  return isBaseThemeId(storedTheme) ? storedTheme : null;
+}
+
+export function readStoredHighContrastPreference(): boolean | null {
+  const storedContrast = readLocalStorageValue(HIGH_CONTRAST_STORAGE_KEY);
+
+  if (storedContrast === "true") {
+    return true;
   }
 
-  return isThemeId(document.documentElement.dataset.theme)
-    ? document.documentElement.dataset.theme
-    : defaultTheme;
+  if (storedContrast === "false") {
+    return false;
+  }
+
+  return null;
 }
 
-export function getThemePreferenceSnapshot(): ThemeId {
+export function readLegacyThemePreference(): VisualPreference | null {
+  const legacyTheme = readLocalStorageValue(LEGACY_THEME_STORAGE_KEY);
+
+  if (legacyTheme === "high-contrast") {
+    return resolveVisualPreference({
+      baseTheme: defaultBaseTheme,
+      highContrast: true,
+    });
+  }
+
+  if (legacyTheme === "default") {
+    return resolveVisualPreference({
+      baseTheme: defaultBaseTheme,
+      highContrast: defaultHighContrast,
+    });
+  }
+
+  return null;
+}
+
+export function readStoredThemePreference(): VisualPreference | null {
+  const storedBaseTheme = readLocalStorageValue(BASE_THEME_STORAGE_KEY);
+  const storedHighContrast = readLocalStorageValue(HIGH_CONTRAST_STORAGE_KEY);
+  const hasIndependentPreference = storedBaseTheme !== null || storedHighContrast !== null;
+
+  if (hasIndependentPreference) {
+    return resolveVisualPreference({
+      baseTheme: storedBaseTheme,
+      highContrast: storedHighContrast,
+    });
+  }
+
+  return readLegacyThemePreference();
+}
+
+export function readAppliedThemePreference(): VisualPreference {
+  if (typeof document === "undefined") {
+    return resolveVisualPreference();
+  }
+
+  return resolveVisualPreference({
+    baseTheme: document.documentElement.dataset.theme,
+    contrast: document.documentElement.dataset.contrast,
+  });
+}
+
+export function getThemePreferenceSnapshot(): VisualPreference {
   return readStoredThemePreference() ?? readAppliedThemePreference();
 }
 
@@ -42,6 +101,7 @@ export function subscribeToThemePreference(onStoreChange: () => void) {
 
   window.addEventListener("storage", handleChange);
   window.addEventListener(THEME_PREFERENCE_EVENT, handleChange);
+  window.setTimeout(handleChange, 0);
 
   return () => {
     window.removeEventListener("storage", handleChange);
@@ -57,18 +117,41 @@ export function notifyThemePreferenceChange() {
   window.dispatchEvent(new Event(THEME_PREFERENCE_EVENT));
 }
 
-export function writeThemePreference(themeId: ThemeId) {
+export function writeThemePreference(preference: VisualPreference) {
   if (typeof window === "undefined") {
     return;
   }
 
-  window.localStorage.setItem(THEME_STORAGE_KEY, themeId);
+  window.localStorage.setItem(BASE_THEME_STORAGE_KEY, preference.baseTheme);
+  window.localStorage.setItem(HIGH_CONTRAST_STORAGE_KEY, String(preference.highContrast));
+  window.localStorage.removeItem(LEGACY_THEME_STORAGE_KEY);
 }
 
-export function applyThemePreference(themeId: ThemeId) {
+export function writeBaseThemePreference(baseTheme: BaseThemeId) {
+  const currentPreference = getThemePreferenceSnapshot();
+  writeThemePreference(
+    resolveVisualPreference({
+      baseTheme,
+      highContrast: currentPreference.highContrast,
+    }),
+  );
+}
+
+export function writeHighContrastPreference(highContrast: boolean) {
+  const currentPreference = getThemePreferenceSnapshot();
+  writeThemePreference(
+    resolveVisualPreference({
+      baseTheme: currentPreference.baseTheme,
+      highContrast,
+    }),
+  );
+}
+
+export function applyThemePreference(preference: VisualPreference) {
   if (typeof document === "undefined") {
     return;
   }
 
-  document.documentElement.dataset.theme = themeId;
+  document.documentElement.dataset.theme = preference.baseTheme;
+  document.documentElement.dataset.contrast = preference.contrast;
 }
