@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { contrastRatio, hexToRgb } from "../../accessibility/contrast-helpers";
 import {
   BASE_THEME_STORAGE_KEY,
   defaultBaseTheme,
@@ -23,40 +24,6 @@ import {
   readStoredHighContrastPreference,
   readStoredThemePreference,
 } from "@/storage/theme-preference";
-
-type Rgb = {
-  r: number;
-  g: number;
-  b: number;
-};
-
-function hexToRgb(hex: string): Rgb {
-  const normalized = hex.replace("#", "");
-
-  return {
-    r: Number.parseInt(normalized.slice(0, 2), 16),
-    g: Number.parseInt(normalized.slice(2, 4), 16),
-    b: Number.parseInt(normalized.slice(4, 6), 16),
-  };
-}
-
-function relativeLuminance({ r, g, b }: Rgb) {
-  const values = [r, g, b].map((channel) => {
-    const sRgb = channel / 255;
-    return sRgb <= 0.03928 ? sRgb / 12.92 : ((sRgb + 0.055) / 1.055) ** 2.4;
-  });
-
-  return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
-}
-
-function contrastRatio(foreground: string, background: string) {
-  const foregroundLuminance = relativeLuminance(hexToRgb(foreground));
-  const backgroundLuminance = relativeLuminance(hexToRgb(background));
-  const lighter = Math.max(foregroundLuminance, backgroundLuminance);
-  const darker = Math.min(foregroundLuminance, backgroundLuminance);
-
-  return (lighter + 0.05) / (darker + 0.05);
-}
 
 describe("theme helpers", () => {
   it("defines light, light high contrast, dark, and dark high contrast themes", () => {
@@ -97,7 +64,7 @@ describe("theme helpers", () => {
     for (const tokenSet of themeTokenSets) {
       for (const pair of tokenSet.pairs) {
         expect(
-          contrastRatio(pair.foreground, pair.background),
+          contrastRatio(hexToRgb(pair.foreground), hexToRgb(pair.background)),
           `${tokenSet.combination} ${pair.name}`,
         ).toBeGreaterThanOrEqual(pair.minimumRatio);
       }

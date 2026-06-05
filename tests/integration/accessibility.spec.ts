@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
+import { contrastRatio, type Rgb } from "../accessibility/contrast-helpers";
 import { expect, test } from "../e2e-support/student-area-test";
 
 const routes = [
@@ -21,12 +22,6 @@ const visualModes = [
 const highContrastModes = visualModes.filter((mode) => mode.highContrast);
 
 type VisualMode = (typeof visualModes)[number];
-
-type Rgb = {
-  r: number;
-  g: number;
-  b: number;
-};
 
 async function setVisualMode(page: Page, mode: VisualMode) {
   await page.addInitScript((preference) => {
@@ -65,27 +60,7 @@ function parseRgb(color: string): Rgb {
     };
   }
 
-  if (!rgbMatch) {
-    throw new Error(`Unsupported color format: ${color}`);
-  }
-}
-
-function relativeLuminance({ r, g, b }: Rgb) {
-  const values = [r, g, b].map((channel) => {
-    const sRgb = channel / 255;
-    return sRgb <= 0.03928 ? sRgb / 12.92 : ((sRgb + 0.055) / 1.055) ** 2.4;
-  });
-
-  return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
-}
-
-function contrastRatio(foreground: Rgb, background: Rgb) {
-  const foregroundLuminance = relativeLuminance(foreground);
-  const backgroundLuminance = relativeLuminance(background);
-  const lighter = Math.max(foregroundLuminance, backgroundLuminance);
-  const darker = Math.min(foregroundLuminance, backgroundLuminance);
-
-  return (lighter + 0.05) / (darker + 0.05);
+  throw new Error(`Unsupported color format: ${color}`);
 }
 
 async function readEffectiveColors(locator: Locator) {
@@ -197,7 +172,10 @@ async function expectCommonReadableSurfaces(page: Page, route: string) {
   }
 
   if (route === "/tracks/history?demoHistory=1") {
-    await expectReadable(page.locator(".student-tab-active").filter({ hasText: /History/ }), "history tab");
+    await expectReadable(
+      page.locator(".student-tab-active").filter({ hasText: /History/ }),
+      "history tab",
+    );
     await expectReadable(page.getByRole("columnheader", { name: "Saved" }), "history table head");
     await expectReadable(page.locator(".status-label").first(), "history status label");
   }
