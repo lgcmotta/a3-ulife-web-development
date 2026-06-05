@@ -1,5 +1,19 @@
 import { expect, test, type Page } from "../e2e-support/student-area-test";
 
+function topicActions(page: Page) {
+  return page.getByRole("group", { name: "Topic actions", exact: true });
+}
+
+async function clickTopCompleteTopic(page: Page) {
+  const previousUrl = page.url();
+  await topicActions(page).getByRole("button", { name: /complete topic/i }).click();
+  await expect.poll(() => page.url()).not.toBe(previousUrl);
+}
+
+async function expectTopCompleteTopicVisible(page: Page) {
+  await expect(topicActions(page).getByRole("button", { name: /complete topic/i })).toBeVisible();
+}
+
 async function selectWholeTrack(page: Page, trackName: RegExp, trackCheckbox: RegExp) {
   await page.getByRole("button", { name: trackName }).click();
   const checkbox = page.getByRole("checkbox", { name: trackCheckbox });
@@ -81,9 +95,9 @@ test.describe("student area builder persistence", () => {
     await saveProgrammingPath(page);
     await page.getByRole("button", { name: "Start Learning" }).click();
 
-    await page.getByRole("button", { name: /complete topic/i }).click();
-    await page.getByRole("button", { name: /complete topic/i }).click();
-    await page.getByRole("button", { name: /complete topic/i }).click();
+    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page);
     await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 
     await page.goto("/tracks/builder");
@@ -98,9 +112,9 @@ test.describe("student area builder persistence", () => {
     await saveProgrammingPath(page);
     await page.getByRole("button", { name: "Start Learning" }).click();
 
-    await page.getByRole("button", { name: /complete topic/i }).click();
-    await page.getByRole("button", { name: /complete topic/i }).click();
-    await page.getByRole("button", { name: /complete topic/i }).click();
+    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page);
     await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 
     await page.goto("/tracks/builder");
@@ -125,7 +139,7 @@ test.describe("student area builder persistence", () => {
   test("plain builder visits stay empty after starting a saved learning path", async ({ page }) => {
     await saveProgrammingPath(page);
     await page.getByRole("button", { name: "Start Learning" }).click();
-    await expect(page.getByRole("button", { name: /complete topic/i })).toBeVisible();
+    await expectTopCompleteTopicVisible(page);
 
     await page.goto("/tracks/builder");
 
@@ -138,7 +152,7 @@ test.describe("student area builder persistence", () => {
   test("edit path pre-populates once but plain builder visits return to a clean state", async ({ page }) => {
     await saveProgrammingPath(page);
     await page.getByRole("button", { name: "Start Learning" }).click();
-    await expect(page.getByRole("button", { name: /complete topic/i })).toBeVisible();
+    await expectTopCompleteTopicVisible(page);
 
     await page.goto("/tracks/history");
     await page.getByRole("link", { name: /edit path/i }).click();
@@ -156,7 +170,7 @@ test.describe("student area builder persistence", () => {
   test("editing a full track can remove one topic without clearing the whole path", async ({ page }) => {
     await saveProgrammingPath(page);
     await page.getByRole("button", { name: "Start Learning" }).click();
-    await expect(page.getByRole("button", { name: /complete topic/i })).toBeVisible();
+    await expectTopCompleteTopicVisible(page);
 
     await page.goto("/tracks/history");
     await page.getByRole("link", { name: /edit path/i }).click();
