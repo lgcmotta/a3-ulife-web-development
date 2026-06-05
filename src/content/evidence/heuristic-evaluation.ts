@@ -1,1 +1,3 @@
-export { heuristicFindings } from "@/content/locales/en/evidence/heuristic-evaluation";
+import { getLocalizedContent } from "@/content/locales";
+
+export const heuristicFindings = getLocalizedContent("en").heuristicFindings;

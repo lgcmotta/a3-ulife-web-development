@@ -1,5 +1,5 @@
-import enMessages from "../../messages/en.json";
-import ptBRMessages from "../../messages/pt-BR.json";
+import enMessages from "@/i18n/messages/en";
+import ptBRMessages from "@/i18n/messages/pt-BR";
 import { resolveLocale, type SupportedLocale } from "@/i18n/locales";
 
 export const messageCatalogs = {

@@ -1,1 +1,4 @@
-export { informationArchitecture } from "@/content/locales/en/evidence/information-architecture";
+import { getLocalizedContent } from "@/content/locales";
+
+export const informationArchitecture =
+  getLocalizedContent("en").informationArchitecture;

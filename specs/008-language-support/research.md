@@ -1,14 +1,24 @@
 # Research: Language Support
 
-## Decision: Use `next-intl` for UI and assistive text
+## Decision: Use `next-intl` for all non-Markdown translated text
 
-**Rationale**: The feature needs local JSON message catalogs, a hook/function style translation API, and support for both Server Components and Client Components. `next-intl` provides JSON messages, `useTranslations`, `getTranslations`, request-scoped configuration, and `NextIntlClientProvider` for the App Router. `pnpm view next-intl version` returned `4.13.0` on 2026-06-05. Official docs used: <https://next-intl.dev/docs/getting-started/app-router>, <https://next-intl.dev/docs/usage/translations>, and <https://next-intl.dev/docs/environments/server-client-components>.
+**Rationale**: The feature needs local JSON message catalogs, a hook/function style translation API, and support for both Server Components and Client Components. `next-intl` provides JSON messages, `useTranslations`, `getTranslations`, request-scoped configuration, `NextIntlClientProvider` for the App Router, `t.raw` for structured values, and module augmentation for message-key inference. `pnpm view next-intl version` returned `4.13.0` on 2026-06-05. Official docs used: <https://next-intl.dev/docs/getting-started/app-router>, <https://next-intl.dev/docs/usage/translations>, and <https://next-intl.dev/docs/environments/server-client-components>. Installed package types also show `AppConfig` accepts a `Messages` type that `useTranslations` consumes for key inference.
 
 **Alternatives considered**:
 
 - `react-i18next` + `i18next`: Rejected for this project because it needs more custom wiring for Server Components and hydration. The official react-i18next SSR docs point Next.js users toward Next-specific integration options.
 - `next-i18next`: Rejected because the project only needs a small App Router implementation and `next-intl` gives a direct App Router setup with request config, server APIs, and client provider support.
 - Custom translation helper: Rejected because the user explicitly requested an i18n package and the app needs reliable Server/Client Component behavior.
+
+## Decision: Infer translation keys from the English composed catalog
+
+**Rationale**: The user wants TypeScript inference from the actual catalog instead of duplicating manually written key types. The implementation should compose the English domain JSON files into one `enMessages` object and augment `next-intl` with `Messages: typeof enMessages`. This keeps the English catalog as the source of truth and lets `useTranslations`/`getTranslations` catch unknown or misspelled keys at development time. Add custom dot-key helper types only if `next-intl` inference is insufficient for a specific implementation need.
+
+**Alternatives considered**:
+
+- Manually define a separate message-key union: Rejected because it duplicates the catalog shape and adds maintenance noise.
+- Create broad custom key-generation helpers up front: Rejected because `next-intl` already exposes typed message-key support when `AppConfig.Messages` is provided.
+- Leave translation keys untyped: Rejected because the refinement specifically asks for safeguards against misspelled or unknown translation entries.
 
 ## Decision: Use browser-local selected language without locale-prefixed routes for v1
 
@@ -20,15 +30,26 @@
 - Browser language auto-detection: Rejected because the specification sets English as default and manual selection as the first release behavior.
 - Query-string language selection: Rejected because it makes preference persistence noisy and weakens the visual-preference parity requested by the user.
 
-## Decision: Store UI messages separately from educational content
+## Decision: Store all non-Markdown translated text in domain-split message catalogs
 
-**Rationale**: The user explicitly separated UI/screen-reader translation maps from Markdown topic content. UI and assistive text should live in `messages/en.json` and `messages/pt-BR.json` with matching key shapes. Track/topic metadata and other educational content should live in locale-aware content catalog modules. Long-form topic prose should live in per-locale Markdown files.
+**Rationale**: The refinement asks for one consistent translation approach for all non-Markdown text. Root-level message files should move under `src/i18n/messages/`, split by domain, and compose into one selected-language catalog per locale. UI copy, assistive copy, home content, accessibility help, assignment evidence, track metadata, and topic metadata should all use `t(...)` or narrowly scoped `t.raw(...)`. Long-form topic prose should remain in per-locale Markdown files.
 
 **Alternatives considered**:
 
-- Put all text, including Markdown prose, into JSON messages: Rejected because it would mix long educational content with short UI strings and conflict with the requested Markdown duplication model.
-- Keep only Markdown localized and leave track/topic metadata in English: Rejected because track cards, topic headers, summaries, prompts, and professor notes are visible learning content and must be localized.
+- Keep localized TypeScript content modules for educational content: Rejected for the refinement because it creates two translation mechanisms for non-Markdown user-facing text.
+- Put all text, including Markdown prose, into JSON messages: Rejected because it would mix long educational content with interface and structured content strings and conflict with the requested Markdown duplication model.
+- Keep only Markdown localized and leave track/topic metadata outside the message catalog: Rejected because track cards, topic headers, summaries, prompts, and professor notes are visible learning content and must use the same non-Markdown translation source.
 - Use a remote translation platform or CMS: Rejected because external integrations are out of scope and unnecessary for a two-language class project.
+
+## Decision: Prefer stable semantic keys and limited structured reads
+
+**Rationale**: Repeated content such as tracks, topics, evidence notes, and home principles needs stable relationships across locales. Semantic keys such as `tracks.programmingFoundations.title` and `topics.problemSolvingBasics.summary` are safer than index-based keys because order changes do not break meaning. Use `t.raw(...)` only when the UI genuinely needs an array/object, such as a principles list or assembled track/topic catalog. Ordinary strings should stay as `t(...)` calls so key inference and translator intent remain clear.
+
+**Alternatives considered**:
+
+- Use index-based keys such as `tracks.0.title`: Rejected because array position becomes part of the localization contract and can break when content is reordered.
+- Use `t.raw(...)` for all structured domains: Rejected because it hides ordinary labels/descriptions inside large object reads and weakens component-level clarity.
+- Keep every repeated item as a separate manual `t(...)` call in each component: Rejected where it would create noisy reconstruction of the same structured data across multiple components.
 
 ## Decision: Organize Markdown by locale directory
 

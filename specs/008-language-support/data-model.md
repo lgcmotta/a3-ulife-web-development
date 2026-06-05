@@ -31,7 +31,7 @@
 **Relationships**:
 
 - Selects one `Locale`.
-- Drives `Message Catalog`, `Localized Content Catalog`, and `Localized Markdown Asset` selection.
+- Drives `Message Catalog`, `Localized Structured Content View`, and `Localized Markdown Asset` selection.
 - Must remain independent from visual theme, high contrast, saved paths, builder composition, and progress records.
 
 **State Transitions**:
@@ -44,44 +44,54 @@
 
 ## Message Catalog
 
-**Purpose**: Contains short UI and assistive text translations for one locale.
+**Purpose**: Contains all non-Markdown translated text for one locale, including UI text, assistive text, and structured product content.
 
 **Fields**:
 
 - `locale`: Supported locale id.
-- `messages`: Nested key/value object consumed by translation APIs.
-- `namespaces`: Logical groupings such as layout, navigation, preferences, home, tracks, topic, student area, accessibility, feedback, and dialogs.
+- `domainFiles`: Domain-split JSON files for the locale.
+- `messages`: One composed nested key/value object consumed by translation APIs.
+- `namespaces`: Logical groupings such as layout, navigation, preferences, home, tracks, topics, student area, accessibility, feedback, dialogs, and evidence.
+- `typedSource`: English composed catalog used as the source for message-key inference.
 
 **Validation Rules**:
 
-- `messages/en.json` and `messages/pt-BR.json` must have the same key shape.
-- Values must be strings unless `next-intl` rich text support is intentionally used and tested.
+- English and Portuguese (Brazil) composed catalogs must have the same key shape.
+- Domain JSON files live under `src/i18n/messages/{locale}/`.
+- Values should be strings unless the receiving UI genuinely needs an array/object through a structured read.
+- Rich text messages may be used only where the renderer is explicitly tested.
 - Message keys must not contain long-form Markdown topic prose.
-- Screen-reader-only labels, accessible names, status messages, and visible labels are all required message entries.
+- Screen-reader-only labels, accessible names, status messages, visible labels, home copy, track metadata, topic metadata, accessibility help, and evidence copy are all required catalog entries.
+- Message keys should be stable and semantic. Repeated content should prefer identifiers such as track/topic slugs or camel-cased semantic ids over display order.
+- Translation keys should be inferred from the English composed catalog through `next-intl` module augmentation. Extra custom type helpers are allowed only if the implementation cannot rely on the package-provided inference.
 
-## Localized Content Catalog
+## Localized Structured Content View
 
-**Purpose**: Provides localized educational content metadata that is not long-form Markdown.
+**Purpose**: Provides typed application objects assembled from the selected `Message Catalog` when components or route helpers need structured non-Markdown content.
 
 **Fields**:
 
 - `locale`: Supported locale id.
-- `diogenesProfile`: Localized professor/profile copy.
-- `mainNavigation`: Localized navigation labels and descriptions.
-- `accessibilityHelp`: Localized accessibility help sections.
-- `learningTracks`: Localized tracks and topic metadata.
-- `evidence`: Localized assignment evidence copy where rendered to users.
+- `diogenesProfile`: Localized professor/profile copy assembled from message keys.
+- `mainNavigation`: Localized navigation labels and descriptions assembled from message keys.
+- `accessibilityHelp`: Localized accessibility help sections assembled from message keys or a limited structured read.
+- `learningTracks`: Localized tracks and topic metadata assembled from stable semantic message keys.
+- `evidence`: Localized assignment evidence copy assembled from message keys or limited structured reads.
 
 **Relationships**:
 
 - Contains `Localized Track` entries.
+- Reads from one selected `Message Catalog`.
 - Must preserve slug relationships across locales so routes and saved paths remain stable.
+- Does not contain hardcoded translated prose in TypeScript.
 
 **Validation Rules**:
 
 - Each locale must expose the same track slugs in the same intended order.
 - Each matching track must expose the same topic slugs in the same intended order.
 - Localized copy must be placeholder-free and complete for every visible content field.
+- Ordinary string fields should be read with normal translation calls.
+- Structured reads are allowed only when the UI needs an array/object, such as a list of principles, key ideas, evidence notes, or assembled track/topic data.
 
 ## Localized Track
 
@@ -102,6 +112,7 @@
 - Slug must match the English source slug.
 - Topic count and topic slugs must match across locales.
 - Localized values must not be empty or placeholder text.
+- Localized values must come from the selected message catalog, not translated TypeScript constants.
 
 ## Localized Topic
 
@@ -129,6 +140,7 @@
 - `keyIdeas` must remain at least four items.
 - All localized fields must be non-empty.
 - Localized title must match the first heading in the corresponding Markdown file.
+- Localized metadata must come from stable semantic message keys. Index-based key paths are avoided unless no stable semantic identifier exists.
 
 ## Localized Markdown Asset
 

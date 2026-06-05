@@ -32,3 +32,4 @@
 ## Notes
 
 - Validation passed after reviewing the normative specification sections. The input quote preserves the user's original technical references for traceability; requirements and success criteria are written as product behavior and stakeholder outcomes.
+- 2026-06-05 in-place refinement validation passed. The new catalog-consistency requirements remain bounded to non-Markdown translated content, stable identifiers, Markdown separation, behavior preservation, and reviewable coverage.

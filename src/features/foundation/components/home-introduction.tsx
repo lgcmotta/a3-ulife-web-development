@@ -1,14 +1,21 @@
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { BookOpenCheck } from "lucide-react";
-import { getLocalizedContent } from "@/content/locales";
+import { homePrincipleOrder } from "@/content/catalog-structure";
+import type { DiogenesProfile } from "@/content/types";
 import { Badge } from "@/ui/components/badge";
 import { PrimaryActions } from "@/features/foundation/components/primary-actions";
 
 export function HomeIntroduction() {
-  const locale = useLocale();
   const t = useTranslations("home");
-  const { diogenesProfile, homePrinciples } = getLocalizedContent(locale);
+  const brand = useTranslations("brand");
+  const rawHome = t.raw as (key: string) => unknown;
+  const diogenesProfile = rawHome("diogenesProfile") as DiogenesProfile;
+  const principles = rawHome("principles") as Record<
+    (typeof homePrincipleOrder)[number],
+    string
+  >;
+  const homePrinciples = homePrincipleOrder.map((key) => principles[key]);
 
   return (
     <section className="hero-section" aria-labelledby="home-heading">
@@ -26,7 +33,7 @@ export function HomeIntroduction() {
           <BookOpenCheck aria-hidden="true" size={16} />
           {diogenesProfile.role}
         </Badge>
-        <h1 id="home-heading">Legado de Diogenes</h1>
+        <h1 id="home-heading">{brand("name")}</h1>
         <p className="hero-lede">{diogenesProfile.introduction}</p>
         <p className="hero-support">{diogenesProfile.teachingTone}</p>
         <p className="hero-support">{diogenesProfile.promise}</p>

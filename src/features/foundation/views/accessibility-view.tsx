@@ -1,16 +1,40 @@
-import { useLocale, useTranslations } from "next-intl";
-import { getLocalizedContent } from "@/content/locales";
+import { useTranslations } from "next-intl";
+import {
+  accessibilityHelpSectionOrder,
+  heuristicFindingOrder,
+  informationArchitectureOrder,
+  personaOrder,
+} from "@/content/catalog-structure";
 import { themes } from "@/accessibility/theme";
 
 export function AccessibilityView() {
-  const locale = useLocale();
   const t = useTranslations("accessibility");
-  const {
-    accessibilityHelpSections,
-    informationArchitecture,
-    heuristicFindings,
-    personas,
-  } = getLocalizedContent(locale);
+  const evidence = useTranslations("evidence");
+  const rawAccessibility = t.raw as (key: string) => unknown;
+  const rawEvidence = evidence.raw as (key: string) => unknown;
+  const helpSections = rawAccessibility("helpSections") as Record<
+    (typeof accessibilityHelpSectionOrder)[number],
+    { title: string; content: string; appliesTo: string }
+  >;
+  const personas = rawEvidence("personas") as Record<
+    (typeof personaOrder)[number],
+    { scenario: string }
+  >;
+  const informationArchitecture = rawEvidence("informationArchitecture") as {
+    mainAreas: Record<(typeof informationArchitectureOrder.mainAreas)[number], string>;
+  };
+  const heuristicFindings = rawEvidence("heuristicFindings") as Record<
+    (typeof heuristicFindingOrder)[number],
+    { iterationNote: string }
+  >;
+  const accessibilityHelpSections = accessibilityHelpSectionOrder.map(
+    (sectionId) => helpSections[sectionId],
+  );
+  const persona = personas[personaOrder[0]];
+  const mainAreas = informationArchitectureOrder.mainAreas.map(
+    (areaId) => informationArchitecture.mainAreas[areaId],
+  );
+  const firstHeuristicFinding = heuristicFindings[heuristicFindingOrder[0]];
 
   return (
     <section className="content-container page-section" aria-labelledby="accessibility-heading">
@@ -45,19 +69,19 @@ export function AccessibilityView() {
         <div className="evidence-grid">
           <article>
             <h3>{t("personaHeading")}</h3>
-            <p>{personas[0].scenario}</p>
+            <p>{persona.scenario}</p>
           </article>
           <article>
             <h3>{t("informationArchitectureHeading")}</h3>
             <ul>
-              {informationArchitecture.mainAreas.map((area) => (
+              {mainAreas.map((area) => (
                 <li key={area}>{area}</li>
               ))}
             </ul>
           </article>
           <article>
             <h3>{t("heuristicIterationHeading")}</h3>
-            <p>{heuristicFindings[0].iterationNote}</p>
+            <p>{firstHeuristicFinding.iterationNote}</p>
           </article>
         </div>
       </section>

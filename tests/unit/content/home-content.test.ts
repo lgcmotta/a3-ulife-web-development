@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it } from "vitest";
 import { HomeIntroduction } from "@/features/foundation/components/home-introduction";
-import enMessages from "../../../messages/en.json";
+import enMessages from "@/i18n/messages/en";
 
 describe("home introduction", () => {
   it("renders the platform purpose, Diogenes role, and primary next actions", () => {

@@ -1,1 +1,3 @@
-export { personas } from "@/content/locales/en/evidence/personas";
+import { getLocalizedContent } from "@/content/locales";
+
+export const personas = getLocalizedContent("en").personas;

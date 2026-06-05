@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider, useTranslations } from "next-intl";
 import { describe, expect, it } from "vitest";
-import ptBRMessages from "../../../messages/pt-BR.json";
+import ptBRMessages from "@/i18n/messages/pt-BR";
 
 function RepresentativeTranslatedControl() {
   const t = useTranslations("preferences.language");

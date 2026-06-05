@@ -14,15 +14,35 @@
    pnpm add next-intl@4.13.0
    ```
 
-2. Create `messages/en.json` and `messages/pt-BR.json`.
+2. Move and split message catalogs under `src/i18n/messages`.
 
-   - Keep the same nested key shape in both files.
-   - Put visible UI text, button labels, aria labels, screen-reader-only text, status text, dialog text, and toast text here.
+   - Move root `messages/en.json` and `messages/pt-BR.json` into domain files under `src/i18n/messages/en/` and `src/i18n/messages/pt-BR/`.
+   - Recommended domains: `layout`, `navigation`, `preferences`, `home`, `tracks`, `topics`, `accessibility`, `student-area`, and `evidence`.
+   - Add `src/i18n/messages/en.ts` and `src/i18n/messages/pt-BR.ts` to compose one catalog per locale from the domain JSON files.
+   - Keep the same composed nested key shape in both locales.
+   - Put visible UI text, button labels, aria labels, screen-reader-only text, status text, dialog text, toast text, home copy, track/topic metadata, accessibility help, and evidence copy here.
    - Do not put Markdown topic prose here.
 
-3. Add locale helpers and request configuration.
+3. Add locale helpers, type inference, and request configuration.
 
    - Add `src/i18n/locales.ts`.
+   - Add `src/i18n/messages.ts`.
+   - Add `src/i18n/messages.d.ts`.
+   - Use `next-intl` module augmentation so TypeScript infers keys from the English composed catalog:
+
+     ```ts
+     import enMessages from "@/i18n/messages/en";
+     import type { SupportedLocale } from "@/i18n/locales";
+
+     declare module "next-intl" {
+       interface AppConfig {
+         Locale: SupportedLocale;
+         Messages: typeof enMessages;
+       }
+     }
+     ```
+
+   - Create type helpers only if `next-intl` plus `typeof enMessages` does not cover a concrete need.
    - Add `src/i18n/request.ts`.
    - Read the server-readable language cookie in request configuration and fall back to English.
    - Wrap the app with `NextIntlClientProvider` in `src/app/layout.tsx`.
@@ -36,17 +56,20 @@
    - Write the language cookie and client snapshot before refreshing the current route.
    - Use decorative United States and Brazil flag glyphs plus accessible language names.
 
-5. Localize UI and assistive copy.
+5. Localize all non-Markdown text through `next-intl`.
 
-   - Replace hardcoded visible strings with message lookups.
-   - Replace hardcoded aria labels, group labels, status text, and screen-reader-only text with message lookups.
+   - Replace hardcoded visible strings with `t(...)` or `getTranslations(...)` lookups.
+   - Replace hardcoded aria labels, group labels, status text, and screen-reader-only text with translation lookups.
+   - Replace hardcoded non-Markdown product content with translation lookups, including home introduction copy, track metadata, topic metadata, accessibility help, and evidence copy.
+   - Use stable semantic keys such as `tracks.programmingFoundations.title`, not index-based keys such as `tracks.0.title`, wherever possible.
+   - Use `t.raw(...)` only when a component or helper genuinely needs an array/object, such as home principles, key ideas, or assembled track/topic lists.
    - Keep translated labels stable enough for accessible role queries.
 
-6. Localize educational content metadata.
+6. Replace localized TypeScript prose modules with catalog-backed helpers.
 
-   - Move current English content into `src/content/locales/en/`.
-   - Add Portuguese (Brazil) counterparts under `src/content/locales/pt-BR/`.
-   - Add locale-aware content getters.
+   - Remove or shrink localized TypeScript files that export translated prose.
+   - Keep TypeScript helpers only for stable slugs, route/storage-safe ids, and assembling typed objects from `t(...)`/`t.raw(...)`.
+   - Add or update locale-aware content getters so routes and views can still consume structured objects without hardcoded translated prose.
    - Keep slugs identical across locales.
 
 7. Localize Markdown topic content.
@@ -59,7 +82,8 @@
 
 8. Create implementation evidence.
 
-   - Add a feature evidence file with message-key coverage, Markdown file coverage, core component/helper tests, and command results.
+   - Add a feature evidence file with composed message-key coverage, domain file coverage, Markdown file coverage, core component/helper tests, and command results.
+   - Document that non-Markdown translated strings are supplied by the selected message catalog.
    - Leave mobile/desktop/high-contrast visual review and final Portuguese wording review to the user.
 
 ## Focused Verification

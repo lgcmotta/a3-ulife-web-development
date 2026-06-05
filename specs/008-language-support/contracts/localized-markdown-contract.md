@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Define how long-form topic learning content is stored, selected, and validated separately from UI message catalogs.
+Define how long-form topic learning content is stored, selected, and validated separately from the non-Markdown translation catalogs.
 
 ## File Layout
 
@@ -46,6 +46,7 @@ Behavior:
 
 - Every published topic has one English Markdown file and one Portuguese (Brazil) Markdown file.
 - Stable topic slugs remain identical across locale folders.
+- Short topic metadata such as title, summary, key ideas, practice prompt, and professor note comes from the selected message catalog, not from Markdown.
 - Portuguese files are translated during implementation. Automated tests do not attempt to prove the prose is Portuguese.
 - Missing Portuguese files fail validation rather than falling back to English.
 

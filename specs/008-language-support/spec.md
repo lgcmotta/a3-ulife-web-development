@@ -8,13 +8,15 @@
 
 **Input**: User description: "We need to support two languages in our application: English (default) and Portuguese (Brazil). To achieve that we need a way to provide all text that is displayed to the user or read by screen readers in both languages. The topic content which is written in markdown should have a markdown version for english and one markdown version for portuguese, we're not going to use the same translate map for the UI and screen readers that we use for the content of each topic that comes from the Markdown. Just for reference, the screen reader content and the labels will use some sort of i18n package, and the Markdown english files will be translated and copied to a file that is written in Portuguese, in runtime, we should check the current selected language to choose which markdown to serve. The language should follow the same visual pattern as the theme switch and the high contrast switch, but for the language switch the icons should be the flag for each country (USA for english) and BRA for Portuguese"
 
+**Refinement Input**: User description: "Update the existing spec 008-language-support in place. Do not create a new feature, branch, or spec directory. Refine the current language-support specification so all non-Markdown translated text uses one consistent translation-catalog approach, the catalog can be split by content domain while still resolving one selected-language catalog, translation keys are protected against accidental misspelling during implementation, stable semantic keys are preferred over position-based identifiers, structured arrays or objects are used only where the UI genuinely needs structured content, and localized Markdown topic files remain separate. Preserve current routes, language preference behavior, Markdown serving behavior, saved path/progress behavior, and visual layout. Do not add new languages, route prefixes, CMS behavior, external translation services, backend persistence, broad e2e translation sweeps, or visual/browser validation."
+
 ## Constitution Alignment *(mandatory)*
 
 - **Scope control**: This feature belongs in the Diogenes educational platform because language accessibility improves the existing learning experience for English-speaking and Brazilian Portuguese-speaking students. It extends existing public learning, topic, progress, help, and accessibility surfaces without adding a new product area, audience, authentication model, external service, or learning domain.
-- **Simplicity**: The smallest useful version supports two manually selectable languages: English as the default and Portuguese (Brazil) as the alternate language. Out of scope: additional languages, automatic machine translation, browser-language negotiation, cross-device language synchronization, new content domains, and new primary pages beyond any minimal evidence artifacts required for the assignment.
+- **Simplicity**: The smallest useful version supports two manually selectable languages: English as the default and Portuguese (Brazil) as the alternate language. Non-Markdown translated text should follow one consistent catalog-based approach so interface copy, assistive copy, and structured product content are not maintained through competing translation mechanisms. Out of scope: additional languages, automatic machine translation, browser-language negotiation, cross-device language synchronization, new content domains, and new primary pages beyond any minimal evidence artifacts required for the assignment.
 - **Usability/accessibility**: Students must be able to understand visible text, screen-reader-only text, control labels, status messages, and topic study content in their selected language. The language control must be keyboard-operable, screen-reader-friendly, visually consistent with the existing preference controls, and not rely on flag imagery alone.
 - **Assignment evidence**: Planning and delivery should include bilingual copy coverage evidence, topic content translation coverage, keyboard and assistive-technology review notes for the language control, and representative screenshots or review notes for English and Portuguese (Brazil) across the primary learning surfaces.
-- **Architecture boundaries**: This feature changes language preference behavior, interface copy, accessibility copy, and localized learning content selection. It must not introduce hidden progress changes, storage mutation on read, backend-only language decisions, external translation services, or unrelated student-state behavior.
+- **Architecture boundaries**: This feature changes language preference behavior, interface copy, accessibility copy, structured non-Markdown product content, and localized learning content selection. It must not introduce hidden progress changes, storage mutation on read, backend-only language decisions, external translation services, or unrelated student-state behavior. Long-form Markdown topic content remains a separate localized content source from short and structured translation catalog entries.
 - **Testing independence**: English and Portuguese scenarios can be checked independently by explicitly selecting the language at the start of each review. Tests and reviews must not depend on a previous language preference, previous visual preference, or shared mutable learning-progress state.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -34,6 +36,7 @@ A student selects English or Portuguese (Brazil) and sees the application interf
 3. **Given** Portuguese (Brazil) is selected, **When** the student chooses English, **Then** visible interface text, screen-reader-only text, accessible labels, and status messages return to English on the current page.
 4. **Given** a student navigates between existing pages or reloads the site, **When** the page is shown again, **Then** the selected language remains consistent for that student.
 5. **Given** the student changes language, **When** the change is applied, **Then** the current page context, selected visual theme, high-contrast setting, and learning progress are preserved.
+6. **Given** a page displays non-Markdown product content such as home introduction copy, learning track summaries, topic metadata, accessibility help, or assignment evidence, **When** the selected language changes, **Then** that content changes through the same selected-language translation source as the rest of the non-Markdown interface.
 
 ---
 
@@ -51,6 +54,7 @@ A student studying a topic receives the long-form topic content in the selected 
 2. **Given** Portuguese (Brazil) is selected, **When** the student opens the same topic detail or study page, **Then** the topic title, topic body, examples, headings, and learning prompts are shown in Portuguese (Brazil).
 3. **Given** the student switches language while viewing a topic, **When** the content refreshes, **Then** the same topic remains selected and the topic content changes to the matching language.
 4. **Given** topic content is localized, **When** reviewers inspect the content model for a topic, **Then** the topic's long-form learning content is represented separately from short interface labels and screen-reader messages.
+5. **Given** a topic includes both short metadata and long-form study prose, **When** the topic is localized, **Then** short metadata follows the shared non-Markdown translation source and long-form prose follows the separate localized topic-content source.
 
 ---
 
@@ -98,6 +102,9 @@ The project team can show concise evidence that bilingual interface text, access
 - Translated labels are longer than English labels; controls must remain readable without horizontal overflow or clipped text.
 - Status, warning, success, progress, selected, and current-page messages must not mix English and Portuguese (Brazil) after a language change.
 - Existing English-only content or copy discovered during implementation must be classified as either in scope for translation or explicitly documented as out of scope before release.
+- Non-Markdown translated content is maintained in more than one competing source; reviewers must be able to identify a single selected-language translation source for interface, assistive, and structured product content.
+- Repeated content such as tracks, topics, evidence items, or principles changes order between languages; localization must not depend on position alone when a stable semantic identifier is available.
+- Structured translated arrays or objects are returned to the UI; they must remain limited to cases where the UI genuinely needs repeated or structured content, not as a substitute for ordinary single-string translations.
 
 ## Requirements *(mandatory)*
 
@@ -112,7 +119,7 @@ The project team can show concise evidence that bilingual interface text, access
 - **FR-007**: The language control MUST NOT rely on flag icons alone to communicate language choices or selected state.
 - **FR-008**: The selected language MUST remain consistent as the student navigates between existing pages and reloads the site.
 - **FR-009**: Changing language MUST NOT reset the selected base theme, high-contrast preference, current page context, saved learning path, builder composition, or learning progress.
-- **FR-010**: All user-visible interface text in existing approved product areas MUST be available in English and Portuguese (Brazil).
+- **FR-010**: All user-visible interface text and non-Markdown product content in existing approved product areas MUST be available in English and Portuguese (Brazil).
 - **FR-011**: All screen-reader-only text, accessible control names, status messages, and assistive descriptions in existing approved product areas MUST be available in English and Portuguese (Brazil).
 - **FR-012**: Interface text and assistive text MUST use the selected language on initial page view, after language changes, after navigation, and after reload.
 - **FR-013**: Each published topic MUST have a complete English topic content version and a complete Portuguese (Brazil) topic content version before the feature is considered complete.
@@ -125,12 +132,19 @@ The project team can show concise evidence that bilingual interface text, access
 - **FR-020**: Translated labels and content MUST remain readable on small screens and large screens without clipped text or horizontal page overflow.
 - **FR-021**: The feature MUST include evidence that primary pages, primary controls, assistive text, and representative topics were reviewed in both supported languages.
 - **FR-022**: This feature MUST stay within bilingual language support and MUST NOT add additional languages, authentication, external translation services, real AI behavior, new learning domains, or unrelated product areas.
+- **FR-023**: Non-Markdown translated text MUST come from one selected-language translation source rather than hardcoded language-specific prose in application code.
+- **FR-024**: The translation source MAY be organized by content domain, but reviewers MUST be able to evaluate it as one complete selected-language catalog for English and one complete selected-language catalog for Portuguese (Brazil).
+- **FR-025**: Repeated or structured non-Markdown content such as tracks, topics, evidence items, and home principles MUST use stable semantic identifiers wherever possible instead of relying on display order alone.
+- **FR-026**: Structured translated arrays or objects MUST be used only when the receiving experience genuinely needs repeated or structured content; ordinary labels, headings, descriptions, and statuses MUST remain single translation entries.
+- **FR-027**: The implementation process MUST include safeguards that help catch unknown or misspelled translation entries before release.
 
 ### Key Entities *(include if feature involves data)*
 
 - **Language Preference**: The student's selected language for the application, either English or Portuguese (Brazil), with English used as the fallback default.
 - **Localized Interface Text**: Short user-facing copy such as navigation labels, button labels, form labels, help text, status text, and feedback messages.
 - **Localized Assistive Text**: Text intended for screen readers or other assistive technology, including accessible names, hidden descriptions, state announcements, and status messages.
+- **Localized Structured Product Content**: Non-Markdown product content such as home introduction copy, learning track summaries, topic metadata, accessibility help sections, personas, information architecture notes, and heuristic evaluation notes.
+- **Translation Catalog**: The selected-language source for non-Markdown translated interface, assistive, and structured product content, organized so English and Portuguese (Brazil) expose matching translation coverage.
 - **Localized Topic Content**: Full learning content for a specific topic in one supported language, including title, body, headings, examples, prompts, and study guidance.
 - **Language Control**: The user-facing preference control that presents English and Portuguese (Brazil) choices with flag icons, accessible names, selected state, and keyboard support.
 - **Bilingual Coverage Evidence**: Review notes, screenshots, content coverage records, or equivalent artifacts showing that interface text, assistive text, and topic content were checked in both languages.
@@ -140,7 +154,7 @@ The project team can show concise evidence that bilingual interface text, access
 ### Measurable Outcomes
 
 - **SC-001**: A student can switch from English to Portuguese (Brazil), and back to English, in under 30 seconds without leaving the current page.
-- **SC-002**: 100% of reviewed user-visible interface text in the primary product areas appears in the selected language.
+- **SC-002**: 100% of reviewed user-visible interface text and non-Markdown product content in the primary product areas appears in the selected language.
 - **SC-003**: 100% of reviewed screen-reader-only text, accessible control names, status messages, and assistive descriptions appear in the selected language.
 - **SC-004**: 100% of published topics included in the feature release have complete English and Portuguese (Brazil) content versions before release.
 - **SC-005**: 100% of reviewed topic pages show topic title, body, headings, examples, and prompts in the selected language with no silent mixed-language sections.
@@ -149,6 +163,8 @@ The project team can show concise evidence that bilingual interface text, access
 - **SC-008**: At least 3 of 3 usability reviewers can identify the current language and switch to the other supported language without reading separate instructions.
 - **SC-009**: In 100% of checked flows, switching language preserves the current page context, selected base theme, high-contrast setting, saved learning path, and learning progress.
 - **SC-010**: Bilingual presentation evidence covers primary pages, the language control, representative topic content, visible interface copy, and assistive text in both supported languages before the feature is considered ready for implementation completion.
+- **SC-011**: Bilingual coverage review confirms that 100% of reviewed non-Markdown translated strings and structured content are supplied by the selected-language translation catalog or are explicitly documented as non-translatable.
+- **SC-012**: Translation catalog review confirms English and Portuguese (Brazil) expose matching coverage for all reviewed non-Markdown domains, while localized Markdown topic files remain separate from the catalog.
 
 ## Assumptions
 
@@ -159,3 +175,4 @@ The project team can show concise evidence that bilingual interface text, access
 - Language preference can remain a student-local preference; accounts, cross-device synchronization, and server-side user profiles are not required for this feature.
 - Portuguese topic content should preserve the same learning intent, structure, and level of detail as the English version, even when wording differs naturally by language.
 - Flag icons are supplementary visual cues; accessible names and text labels remain the authoritative language identifiers.
+- Non-Markdown topic metadata such as titles, summaries, key ideas, prompts, and notes is treated as structured translated product content, while long-form topic study prose remains localized Markdown.
