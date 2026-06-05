@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { HomeView } from "@/features/foundation/views/home-view";
 
-export const metadata: Metadata = {
-  title: "Home",
-  description:
-    "Meet Diogenes and start with curated Computer Science learning tracks.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("metadata.pages.home");
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default function HomePage() {
   return <HomeView />;

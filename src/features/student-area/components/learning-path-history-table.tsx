@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import type { PresentedHistoryRow } from "@/features/student-area/server/history-presenter";
 import { buttonVariants } from "@/ui/components/button";
@@ -12,15 +13,17 @@ import {
 } from "@/ui/components/table";
 
 export function LearningPathHistoryTable({ rows }: { rows: PresentedHistoryRow[] }) {
+  const t = useTranslations("studentArea.history");
+
   return (
-    <Table aria-label="Saved learning paths">
+    <Table aria-label={t("tableLabel")}>
       <TableHeader>
         <TableRow>
-          <TableHead>Saved</TableHead>
-          <TableHead>Tracks</TableHead>
-          <TableHead>Progress</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead>{t("saved")}</TableHead>
+          <TableHead>{t("tracks")}</TableHead>
+          <TableHead>{t("progress")}</TableHead>
+          <TableHead>{t("status")}</TableHead>
+          <TableHead>{t("actions")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -36,18 +39,18 @@ export function LearningPathHistoryTable({ rows }: { rows: PresentedHistoryRow[]
               {row.resumeTarget && row.editTarget ? (
                 <div className="history-row-actions">
                   <Link className={buttonVariants({ size: "sm" })} href={row.resumeTarget} prefetch={false}>
-                    Resume Learning
+                    {t("resume")}
                   </Link>
                   <Link
                     className={buttonVariants({ size: "sm", variant: "secondary" })}
                     href={row.editTarget}
                     prefetch={false}
                   >
-                    Edit Path
+                    {t("edit")}
                   </Link>
                 </div>
               ) : (
-                <span className="status-label">No actions needed</span>
+                <span className="status-label">{t("noActions")}</span>
               )}
             </TableCell>
           </TableRow>

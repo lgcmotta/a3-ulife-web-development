@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { getCurrentStudentOrRedirect } from "@/server/student-area/student-record";
 import { StudentAreaShell } from "@/features/student-area/views/student-area-shell";
 import { StudentHistoryView } from "@/features/student-area/views/student-history-view";
 
-export const metadata: Metadata = {
-  title: "Learning Path History",
-  description: "Review saved personalized learning paths.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("metadata.pages.history");
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function LearningPathHistoryPage({
   searchParams,

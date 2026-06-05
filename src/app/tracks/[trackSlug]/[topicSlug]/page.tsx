@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { findTopicRoute, getTopicRouteParams } from "@/content/topic-routes";
 import { TopicView } from "@/features/foundation/views/topic-view";
@@ -19,11 +20,14 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: TopicPageProps): Promise<Metadata> {
-  const route = findTopicRoute(await params);
+  const locale = await getLocale();
+  const route = findTopicRoute(await params, locale);
 
   if (!route) {
+    const t = await getTranslations("metadata.pages.topicNotFound");
+
     return {
-      title: "Topic not found",
+      title: t("title"),
     };
   }
 
@@ -34,7 +38,8 @@ export async function generateMetadata({
 }
 
 export default async function TopicPage({ params }: TopicPageProps) {
-  const route = findTopicRoute(await params);
+  const locale = await getLocale();
+  const route = findTopicRoute(await params, locale);
 
   if (!route) {
     notFound();

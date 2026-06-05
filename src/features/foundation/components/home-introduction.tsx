@@ -1,14 +1,19 @@
 import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
 import { BookOpenCheck } from "lucide-react";
-import { diogenesProfile, homePrinciples } from "@/content/diogenes";
+import { getLocalizedContent } from "@/content/locales";
 import { Badge } from "@/ui/components/badge";
 import { PrimaryActions } from "@/features/foundation/components/primary-actions";
 
 export function HomeIntroduction() {
+  const locale = useLocale();
+  const t = useTranslations("home");
+  const { diogenesProfile, homePrinciples } = getLocalizedContent(locale);
+
   return (
     <section className="hero-section" aria-labelledby="home-heading">
       <Image
-        alt="Professor Diogenes in a study room with books and a chalkboard"
+        alt={t("heroImageAlt")}
         className="hero-image"
         fill
         priority
@@ -27,7 +32,7 @@ export function HomeIntroduction() {
         <p className="hero-support">{diogenesProfile.promise}</p>
         <PrimaryActions />
       </div>
-      <ul className="hero-principles" aria-label="Platform foundation principles">
+      <ul className="hero-principles" aria-label={t("principlesLabel")}>
         {homePrinciples.map((principle) => (
           <li key={principle}>{principle}</li>
         ))}

@@ -1,0 +1,252 @@
+{
+  "metadata": {
+    "siteTitle": "Legado de Diogenes",
+    "siteTitleTemplate": "{title} | Legado de Diogenes",
+    "siteDescription": "A simple educational web platform with curated Computer Science learning tracks for beginner students.",
+    "pages": {
+      "home": {
+        "title": "Home",
+        "description": "Meet Diogenes and start with curated Computer Science learning tracks."
+      },
+      "tracks": {
+        "title": "Learning Tracks",
+        "description": "Browse curated beginner-friendly Computer Science study paths."
+      },
+      "accessibility": {
+        "title": "Accessibility Help",
+        "description": "Learn how to navigate Legado de Diogenes with keyboard, screen reader structure, and visual theme support."
+      },
+      "topicNotFound": {
+        "title": "Topic not found"
+      },
+      "builder": {
+        "title": "Learning Path Builder",
+        "description": "Build a personalized learning path from the curated topics."
+      },
+      "history": {
+        "title": "Learning Path History",
+        "description": "Review saved learning paths and resume studying."
+      },
+      "learningSection": {
+        "title": "Learning Section",
+        "description": "Study a selected topic in the personalized learning path."
+      },
+      "learningComplete": {
+        "title": "Learning Path Complete",
+        "description": "Review the completed personalized learning path."
+      }
+    }
+  },
+  "layout": {
+    "skipLink": "Skip to main content"
+  },
+  "brand": {
+    "name": "Legado de Diogenes",
+    "homeLabel": "Legado de Diogenes home"
+  },
+  "navigation": {
+    "primaryLabel": "Primary navigation",
+    "items": {
+      "home": {
+        "label": "Home",
+        "description": "Understand Diogenes and the platform purpose"
+      },
+      "tracks": {
+        "label": "Learning Tracks",
+        "description": "Browse curated beginner study paths"
+      },
+      "accessibility": {
+        "label": "Accessibility Help",
+        "description": "Learn how to navigate and use the platform accessibly"
+      }
+    }
+  },
+  "preferences": {
+    "visualTheme": "Visual theme",
+    "baseTheme": {
+      "light": "Light theme",
+      "dark": "Dark theme",
+      "toggle": "Toggle base theme"
+    },
+    "highContrast": {
+      "label": "High contrast",
+      "toggle": "Toggle high contrast"
+    },
+    "language": {
+      "label": "Language",
+      "toggle": "Change language",
+      "english": "English",
+      "portugueseBrazil": "Portuguese (Brazil)",
+      "switchTo": "Switch to {language}",
+      "selected": "{language} selected"
+    }
+  },
+  "actions": {
+    "primary": "Primary actions",
+    "startLearning": "Start Learning",
+    "continueLearning": "Continue Learning",
+    "exploreTracks": "Explore tracks",
+    "accessibilityHelp": "Accessibility help",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "home": {
+    "heroImageAlt": "Professor Diogenes in a study room with books and a chalkboard",
+    "principlesLabel": "Platform foundation principles",
+    "preview": {
+      "eyebrow": "Foundation MVP",
+      "heading": "A simple route into Computer Science study",
+      "body": "Students begin with a short professor introduction, compare curated study tracks, open focused topic pages, and use accessibility guidance whenever they need help moving through the platform.",
+      "trackPreviewLabel": "Available track preview"
+    }
+  },
+  "tracks": {
+    "eyebrow": "Learning tracks",
+    "heading": "Choose a small, curated study path",
+    "intro": "Each track gives a beginner-friendly purpose and a short set of topics to inspect. Start with the track that best matches the study problem in front of you.",
+    "listLabel": "Learning track list",
+    "topicsCount": "{count, plural, one {# topic} other {# topics}}",
+    "expectedOutcome": "Expected outcome:"
+  },
+  "topic": {
+    "backToTracks": "Back to learning tracks",
+    "whyThisMatters": "Why this matters",
+    "mainIdeas": "Main ideas",
+    "practicePrompt": "Practice prompt",
+    "professorNote": "Professor's note",
+    "nextActionEyebrow": "Next study action",
+    "nextActionHeading": "What to do next",
+    "chooseAnotherTopic": "Choose another topic"
+  },
+  "accessibility": {
+    "eyebrow": "Accessibility help",
+    "heading": "Navigate the foundation independently",
+    "intro": "This page explains how to move through Legado de Diogenes with a keyboard, screen reader, light or dark theme, and optional high contrast while keeping the same learning content available to every student.",
+    "themesHeading": "Supported visual modes",
+    "assignmentEyebrow": "Assignment evidence",
+    "assignmentHeading": "Design decisions prepared for review",
+    "personaHeading": "Persona",
+    "informationArchitectureHeading": "Information architecture",
+    "heuristicIterationHeading": "Heuristic iteration",
+    "themeModes": {
+      "light": {
+        "label": "Light theme",
+        "purpose": "Balanced color-safe reading for normal presentation use"
+      },
+      "light-high": {
+        "label": "Light high contrast",
+        "purpose": "Light surfaces with stronger borders, focus indicators, and action contrast"
+      },
+      "dark": {
+        "label": "Dark theme",
+        "purpose": "Darker reading surfaces while preserving the same content and navigation"
+      },
+      "dark-high": {
+        "label": "Dark high contrast",
+        "purpose": "Dark surfaces with maximum separation for text, controls, and focus states"
+      }
+    }
+  },
+  "studentArea": {
+    "shell": {
+      "eyebrow": "Student area",
+      "heading": "Personalized learning paths",
+      "intro": "Review saved paths, build a focused sequence of topics, and return to learning sections without creating an account."
+    },
+    "tabs": {
+      "navLabel": "Student area",
+      "listLabel": "Student area sections",
+      "history": "Learning Path History",
+      "builder": "Learning Path Builder"
+    },
+    "history": {
+      "heading": "Learning Path History",
+      "unavailable": "History is temporarily unavailable. You can still open the builder and try again.",
+      "empty": "No saved learning paths are available yet. Build a small path from the curated tracks, save it, and return here to review progress.",
+      "addNew": "Add New Learning Path",
+      "tableLabel": "Saved learning paths",
+      "saved": "Saved",
+      "tracks": "Tracks",
+      "progress": "Progress",
+      "status": "Status",
+      "actions": "Actions",
+      "resume": "Resume Learning",
+      "edit": "Edit Path",
+      "noActions": "No actions needed",
+      "progressLabel": "{completed} of {total} topics complete",
+      "statuses": {
+        "notStarted": "Not started",
+        "inProgress": "In progress",
+        "completed": "Completed"
+      }
+    },
+    "builder": {
+      "heading": "Learning Path Builder",
+      "intro": "Select tracks and topics to build a personal study sequence.",
+      "actionsLabel": "Builder actions",
+      "discard": "Discard Changes",
+      "clear": "Clear Learning Path",
+      "availableTracks": "Available Tracks",
+      "currentPath": "Current Path",
+      "emptyCurrentPath": "Select at least one topic from the available tracks to begin building.",
+      "selectTrack": "Select {track}",
+      "trackFallback": "The selected track",
+      "topicFallback": "The selected topic",
+      "itemRemoved": "Item removed from your current path.",
+      "trackAdded": "{track} was added to your current path.",
+      "trackRemoved": "{track} was removed from your current path.",
+      "topicAdded": "{topic} was added to your current path.",
+      "topicRemoved": "{topic} was removed from your current path.",
+      "discarded": "Unsaved changes discarded.",
+      "cleared": "Builder selections cleared. Saved paths are unchanged until Save.",
+      "trackAlreadyFirst": "This track is already first.",
+      "trackAlreadyLast": "This track is already last.",
+      "topicAlreadyFirst": "This topic is already first in its track.",
+      "topicAlreadyLast": "This topic is already last in its track.",
+      "trackOrderUpdated": "Track order updated.",
+      "topicOrderUpdated": "Topic order updated inside its track.",
+      "dialogs": {
+        "discardTitle": "Discard changes",
+        "discardEditDescription": "This returns the builder to the last saved learning path. Unsaved changes will be lost.",
+        "discardCreateDescription": "This returns the builder to an empty learning path. Unsaved selections will be lost.",
+        "clearTitle": "Clear learning path",
+        "clearDescription": "This clears only the builder selections on this page. Saved paths and progress stay unchanged unless you save a new composition."
+      },
+      "menu": {
+        "actionsFor": "Actions for {label}",
+        "remove": "Remove",
+        "moveUp": "Move up",
+        "moveDown": "Move down"
+      },
+      "loadMessages": {
+        "notFound": "This saved learning path could not be found. A new empty builder is ready.",
+        "completed": "Completed learning paths are kept in history and cannot be edited."
+      }
+    },
+    "feedback": {
+      "saved": "Learning path saved.",
+      "savedMissing": "The saved learning path could not be found.",
+      "saveFailed": "The learning path could not be saved. Please try again.",
+      "startBeforeSave": "Save a learning path before starting.",
+      "openingNextTopic": "Opening your next topic.",
+      "learningOpenFailed": "Learning could not be opened. Please try again."
+    },
+    "learning": {
+      "topicActions": "Topic actions",
+      "endTopicActions": "End of topic actions",
+      "returnToBuilder": "Return to Builder",
+      "completeTopic": "Complete Topic",
+      "sectionUnavailable": "Learning section unavailable",
+      "pathNotFound": "No saved learning path was found for this student.",
+      "topicNotInPath": "This topic is not part of the saved learning path.",
+      "topicNotAvailable": "This topic is not available in the learning catalog.",
+      "contentNotLoaded": "The learning section content could not be loaded.",
+      "pathUnavailable": "Learning path unavailable",
+      "pathUnavailableBody": "This saved learning path could not be loaded.",
+      "completeEyebrow": "Path complete",
+      "completeHeading": "Congratulations, you finished your learning path",
+      "completeBody": "Your selected topics are marked complete. Return to the student area to review the history or build a new path."
+    }
+  }
+}

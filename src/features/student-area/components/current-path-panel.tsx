@@ -1,6 +1,7 @@
 "use client";
 
-import { learningTracks } from "@/content/tracks";
+import { useTranslations } from "next-intl";
+import type { LearningTrack } from "@/content/types";
 import { PathItemContextMenu } from "@/features/student-area/components/path-item-context-menu";
 import type {
   CurrentPathDraft,
@@ -10,9 +11,11 @@ import type {
 
 export function CurrentPathPanel({
   draft,
+  tracks,
   onItemAction,
 }: {
   draft: CurrentPathDraft;
+  tracks: LearningTrack[];
   onItemAction?: (
     level: PathItemLevel,
     trackSlug: string,
@@ -20,15 +23,17 @@ export function CurrentPathPanel({
     action: PathContextAction,
   ) => void;
 }) {
+  const t = useTranslations("studentArea.builder");
+
   return (
     <section className="current-path-panel" aria-labelledby="current-path-heading">
-      <h2 id="current-path-heading">Current Path</h2>
+      <h2 id="current-path-heading">{t("currentPath")}</h2>
       {draft.trackGroups.length === 0 ? (
-        <p>Select at least one topic from the available tracks to begin building.</p>
+        <p>{t("emptyCurrentPath")}</p>
       ) : (
         <ol className="current-path-list">
           {draft.trackGroups.map((group) => {
-            const track = learningTracks.find((candidate) => candidate.slug === group.trackSlug);
+            const track = tracks.find((candidate) => candidate.slug === group.trackSlug);
 
             return (
               <li key={group.trackSlug} className="current-track-group">

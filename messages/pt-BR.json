@@ -1,0 +1,252 @@
+{
+  "metadata": {
+    "siteTitle": "Legado de Diogenes",
+    "siteTitleTemplate": "{title} | Legado de Diogenes",
+    "siteDescription": "Uma plataforma educacional simples com trilhas de Ciencia da Computacao selecionadas para estudantes iniciantes.",
+    "pages": {
+      "home": {
+        "title": "Inicio",
+        "description": "Conheca Diogenes e comece com trilhas selecionadas de Ciencia da Computacao."
+      },
+      "tracks": {
+        "title": "Trilhas de aprendizagem",
+        "description": "Explore caminhos de estudo de Ciencia da Computacao amigaveis para iniciantes."
+      },
+      "accessibility": {
+        "title": "Ajuda de acessibilidade",
+        "description": "Aprenda a navegar pelo Legado de Diogenes com teclado, estrutura para leitores de tela e suporte a tema visual."
+      },
+      "topicNotFound": {
+        "title": "Topico nao encontrado"
+      },
+      "builder": {
+        "title": "Construtor de trilha de aprendizagem",
+        "description": "Monte uma trilha de aprendizagem personalizada a partir dos topicos selecionados."
+      },
+      "history": {
+        "title": "Historico de trilhas de aprendizagem",
+        "description": "Revise trilhas salvas e retome os estudos."
+      },
+      "learningSection": {
+        "title": "Secao de aprendizagem",
+        "description": "Estude um topico selecionado na trilha de aprendizagem personalizada."
+      },
+      "learningComplete": {
+        "title": "Trilha de aprendizagem concluida",
+        "description": "Revise a trilha de aprendizagem personalizada concluida."
+      }
+    }
+  },
+  "layout": {
+    "skipLink": "Pular para o conteudo principal"
+  },
+  "brand": {
+    "name": "Legado de Diogenes",
+    "homeLabel": "Pagina inicial do Legado de Diogenes"
+  },
+  "navigation": {
+    "primaryLabel": "Navegacao principal",
+    "items": {
+      "home": {
+        "label": "Inicio",
+        "description": "Entenda Diogenes e o objetivo da plataforma"
+      },
+      "tracks": {
+        "label": "Trilhas de aprendizagem",
+        "description": "Explore caminhos de estudo selecionados para iniciantes"
+      },
+      "accessibility": {
+        "label": "Ajuda de acessibilidade",
+        "description": "Aprenda a navegar e usar a plataforma de forma acessivel"
+      }
+    }
+  },
+  "preferences": {
+    "visualTheme": "Tema visual",
+    "baseTheme": {
+      "light": "Tema claro",
+      "dark": "Tema escuro",
+      "toggle": "Alternar tema base"
+    },
+    "highContrast": {
+      "label": "Alto contraste",
+      "toggle": "Alternar alto contraste"
+    },
+    "language": {
+      "label": "Idioma",
+      "toggle": "Alterar idioma",
+      "english": "Ingles",
+      "portugueseBrazil": "Portugues (Brasil)",
+      "switchTo": "Mudar para {language}",
+      "selected": "{language} selecionado"
+    }
+  },
+  "actions": {
+    "primary": "Acoes principais",
+    "startLearning": "Comecar aprendizagem",
+    "continueLearning": "Continuar aprendizagem",
+    "exploreTracks": "Explorar trilhas",
+    "accessibilityHelp": "Ajuda de acessibilidade",
+    "continue": "Continuar",
+    "cancel": "Cancelar",
+    "save": "Salvar"
+  },
+  "home": {
+    "heroImageAlt": "Professor Diogenes em uma sala de estudos com livros e quadro",
+    "principlesLabel": "Principios da plataforma",
+    "preview": {
+      "eyebrow": "MVP de base",
+      "heading": "Um caminho simples para estudar Ciencia da Computacao",
+      "body": "Estudantes comecam com uma breve apresentacao do professor, comparam trilhas de estudo selecionadas, abrem paginas focadas de topicos e usam orientacoes de acessibilidade quando precisam de ajuda para se mover pela plataforma.",
+      "trackPreviewLabel": "Previa das trilhas disponiveis"
+    }
+  },
+  "tracks": {
+    "eyebrow": "Trilhas de aprendizagem",
+    "heading": "Escolha um caminho de estudo pequeno e selecionado",
+    "intro": "Cada trilha oferece um objetivo amigavel para iniciantes e um conjunto curto de topicos para inspecionar. Comece pela trilha que melhor combina com o problema de estudo a sua frente.",
+    "listLabel": "Lista de trilhas de aprendizagem",
+    "topicsCount": "{count, plural, one {# topico} other {# topicos}}",
+    "expectedOutcome": "Resultado esperado:"
+  },
+  "topic": {
+    "backToTracks": "Voltar para as trilhas de aprendizagem",
+    "whyThisMatters": "Por que isso importa",
+    "mainIdeas": "Ideias principais",
+    "practicePrompt": "Proposta de pratica",
+    "professorNote": "Nota do professor",
+    "nextActionEyebrow": "Proxima acao de estudo",
+    "nextActionHeading": "O que fazer depois",
+    "chooseAnotherTopic": "Escolher outro topico"
+  },
+  "accessibility": {
+    "eyebrow": "Ajuda de acessibilidade",
+    "heading": "Navegue pela base com independencia",
+    "intro": "Esta pagina explica como se mover pelo Legado de Diogenes com teclado, leitor de tela, tema claro ou escuro e alto contraste opcional, mantendo o mesmo conteudo de aprendizagem disponivel para todos os estudantes.",
+    "themesHeading": "Modos visuais suportados",
+    "assignmentEyebrow": "Evidencia do trabalho",
+    "assignmentHeading": "Decisoes de design preparadas para revisao",
+    "personaHeading": "Persona",
+    "informationArchitectureHeading": "Arquitetura da informacao",
+    "heuristicIterationHeading": "Iteracao heuristica",
+    "themeModes": {
+      "light": {
+        "label": "Tema claro",
+        "purpose": "Leitura equilibrada e segura em cores para uso normal em apresentacoes"
+      },
+      "light-high": {
+        "label": "Alto contraste claro",
+        "purpose": "Superficies claras com bordas, indicadores de foco e contraste de acao mais fortes"
+      },
+      "dark": {
+        "label": "Tema escuro",
+        "purpose": "Superficies de leitura mais escuras mantendo o mesmo conteudo e navegacao"
+      },
+      "dark-high": {
+        "label": "Alto contraste escuro",
+        "purpose": "Superficies escuras com separacao maxima para texto, controles e estados de foco"
+      }
+    }
+  },
+  "studentArea": {
+    "shell": {
+      "eyebrow": "Area do estudante",
+      "heading": "Trilhas de aprendizagem personalizadas",
+      "intro": "Revise trilhas salvas, monte uma sequencia focada de topicos e retorne as secoes de aprendizagem sem criar uma conta."
+    },
+    "tabs": {
+      "navLabel": "Area do estudante",
+      "listLabel": "Secoes da area do estudante",
+      "history": "Historico de trilhas de aprendizagem",
+      "builder": "Construtor de trilha de aprendizagem"
+    },
+    "history": {
+      "heading": "Historico de trilhas de aprendizagem",
+      "unavailable": "O historico esta temporariamente indisponivel. Voce ainda pode abrir o construtor e tentar novamente.",
+      "empty": "Ainda nao ha trilhas de aprendizagem salvas. Monte uma trilha pequena a partir das trilhas selecionadas, salve-a e volte aqui para revisar o progresso.",
+      "addNew": "Adicionar nova trilha de aprendizagem",
+      "tableLabel": "Trilhas de aprendizagem salvas",
+      "saved": "Salvo",
+      "tracks": "Trilhas",
+      "progress": "Progresso",
+      "status": "Status",
+      "actions": "Acoes",
+      "resume": "Retomar aprendizagem",
+      "edit": "Editar trilha",
+      "noActions": "Nenhuma acao necessaria",
+      "progressLabel": "{completed} de {total} topicos concluidos",
+      "statuses": {
+        "notStarted": "Nao iniciada",
+        "inProgress": "Em andamento",
+        "completed": "Concluida"
+      }
+    },
+    "builder": {
+      "heading": "Construtor de trilha de aprendizagem",
+      "intro": "Selecione trilhas e topicos para montar uma sequencia pessoal de estudo.",
+      "actionsLabel": "Acoes do construtor",
+      "discard": "Descartar alteracoes",
+      "clear": "Limpar trilha de aprendizagem",
+      "availableTracks": "Trilhas disponiveis",
+      "currentPath": "Trilha atual",
+      "emptyCurrentPath": "Selecione pelo menos um topico das trilhas disponiveis para comecar a montar.",
+      "selectTrack": "Selecionar {track}",
+      "trackFallback": "A trilha selecionada",
+      "topicFallback": "O topico selecionado",
+      "itemRemoved": "Item removido da sua trilha atual.",
+      "trackAdded": "{track} foi adicionada a sua trilha atual.",
+      "trackRemoved": "{track} foi removida da sua trilha atual.",
+      "topicAdded": "{topic} foi adicionado a sua trilha atual.",
+      "topicRemoved": "{topic} foi removido da sua trilha atual.",
+      "discarded": "Alteracoes nao salvas descartadas.",
+      "cleared": "Selecoes do construtor limpas. Trilhas salvas permanecem inalteradas ate salvar.",
+      "trackAlreadyFirst": "Esta trilha ja e a primeira.",
+      "trackAlreadyLast": "Esta trilha ja e a ultima.",
+      "topicAlreadyFirst": "Este topico ja e o primeiro na trilha.",
+      "topicAlreadyLast": "Este topico ja e o ultimo na trilha.",
+      "trackOrderUpdated": "Ordem das trilhas atualizada.",
+      "topicOrderUpdated": "Ordem dos topicos atualizada dentro da trilha.",
+      "dialogs": {
+        "discardTitle": "Descartar alteracoes",
+        "discardEditDescription": "Isto retorna o construtor para a ultima trilha de aprendizagem salva. Alteracoes nao salvas serao perdidas.",
+        "discardCreateDescription": "Isto retorna o construtor para uma trilha de aprendizagem vazia. Selecoes nao salvas serao perdidas.",
+        "clearTitle": "Limpar trilha de aprendizagem",
+        "clearDescription": "Isto limpa apenas as selecoes do construtor nesta pagina. Trilhas salvas e progresso permanecem inalterados, a menos que voce salve uma nova composicao."
+      },
+      "menu": {
+        "actionsFor": "Acoes para {label}",
+        "remove": "Remover",
+        "moveUp": "Mover para cima",
+        "moveDown": "Mover para baixo"
+      },
+      "loadMessages": {
+        "notFound": "Esta trilha de aprendizagem salva nao foi encontrada. Um novo construtor vazio esta pronto.",
+        "completed": "Trilhas de aprendizagem concluidas ficam no historico e nao podem ser editadas."
+      }
+    },
+    "feedback": {
+      "saved": "Trilha de aprendizagem salva.",
+      "savedMissing": "A trilha de aprendizagem salva nao foi encontrada.",
+      "saveFailed": "A trilha de aprendizagem nao pode ser salva. Tente novamente.",
+      "startBeforeSave": "Salve uma trilha de aprendizagem antes de comecar.",
+      "openingNextTopic": "Abrindo seu proximo topico.",
+      "learningOpenFailed": "Nao foi possivel abrir a aprendizagem. Tente novamente."
+    },
+    "learning": {
+      "topicActions": "Acoes do topico",
+      "endTopicActions": "Acoes do fim do topico",
+      "returnToBuilder": "Voltar ao construtor",
+      "completeTopic": "Concluir topico",
+      "sectionUnavailable": "Secao de aprendizagem indisponivel",
+      "pathNotFound": "Nenhuma trilha de aprendizagem salva foi encontrada para este estudante.",
+      "topicNotInPath": "Este topico nao faz parte da trilha de aprendizagem salva.",
+      "topicNotAvailable": "Este topico nao esta disponivel no catalogo de aprendizagem.",
+      "contentNotLoaded": "O conteudo da secao de aprendizagem nao pode ser carregado.",
+      "pathUnavailable": "Trilha de aprendizagem indisponivel",
+      "pathUnavailableBody": "Esta trilha de aprendizagem salva nao pode ser carregada.",
+      "completeEyebrow": "Trilha concluida",
+      "completeHeading": "Parabens, voce concluiu sua trilha de aprendizagem",
+      "completeBody": "Os topicos selecionados foram marcados como concluidos. Volte para a area do estudante para revisar o historico ou montar uma nova trilha."
+    }
+  }
+}

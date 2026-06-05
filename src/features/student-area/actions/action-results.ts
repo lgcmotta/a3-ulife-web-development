@@ -35,8 +35,12 @@ export function createActionError(message: string, relatedAction = "error") {
   } satisfies StudentActionResult<never>;
 }
 
-export function friendlyActionError(error: unknown, fallback: string) {
-  if (error instanceof Error && error.message) {
+export function friendlyActionError(
+  error: unknown,
+  fallback: string,
+  { useErrorMessage = true }: { useErrorMessage?: boolean } = {},
+) {
+  if (useErrorMessage && error instanceof Error && error.message) {
     return createActionError(error.message);
   }
 

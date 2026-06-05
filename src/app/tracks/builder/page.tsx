@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { getCurrentStudentOrRedirect } from "@/server/student-area/student-record";
 import { StudentAreaShell } from "@/features/student-area/views/student-area-shell";
 import { StudentBuilderView } from "@/features/student-area/views/student-builder-view";
 
-export const metadata: Metadata = {
-  title: "Learning Path Builder",
-  description: "Build a personalized sequence of learning tracks and topics.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("metadata.pages.builder");
+
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function LearningPathBuilderPage({
   searchParams,

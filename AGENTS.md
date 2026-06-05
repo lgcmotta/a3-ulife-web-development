@@ -198,5 +198,5 @@ The baseline quality rules are:
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/007-topic-action-buttons/plan.md
+at specs/008-language-support/plan.md
 <!-- SPECKIT END -->

@@ -5,20 +5,41 @@ import { cn } from "@/ui/utils";
 export const studentTabs = [
   {
     href: "/tracks/history",
-    label: "Learning Path History",
+    labelKey: "history",
   },
   {
     href: "/tracks/builder",
-    label: "Learning Path Builder",
+    labelKey: "builder",
   },
-];
+] as const;
 
-export function StudentTabs({ activePath }: { activePath: "/tracks/history" | "/tracks/builder" }) {
+export type StudentTabsLabels = {
+  navLabel: string;
+  listLabel: string;
+  history: string;
+  builder: string;
+};
+
+const defaultLabels: StudentTabsLabels = {
+  navLabel: "Student area",
+  listLabel: "Student area sections",
+  history: "Learning Path History",
+  builder: "Learning Path Builder",
+};
+
+export function StudentTabs({
+  activePath,
+  labels = defaultLabels,
+}: {
+  activePath: "/tracks/history" | "/tracks/builder";
+  labels?: StudentTabsLabels;
+}) {
   return (
-    <nav aria-label="Student area">
-      <div className="student-tabs" role="tablist" aria-label="Student area sections">
+    <nav aria-label={labels.navLabel}>
+      <div className="student-tabs" role="tablist" aria-label={labels.listLabel}>
         {studentTabs.map((tab) => {
           const selected = tab.href === activePath;
+          const label = labels[tab.labelKey];
 
           return (
             <Link
@@ -30,7 +51,7 @@ export function StudentTabs({ activePath }: { activePath: "/tracks/history" | "/
               prefetch={false}
               role="tab"
             >
-              {tab.label}
+              {label}
             </Link>
           );
         })}

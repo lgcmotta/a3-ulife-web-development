@@ -1,21 +1,23 @@
-import { accessibilityHelpSections } from "@/content/accessibility-help";
-import { informationArchitecture } from "@/content/evidence/information-architecture";
-import { heuristicFindings } from "@/content/evidence/heuristic-evaluation";
-import { personas } from "@/content/evidence/personas";
+import { useLocale, useTranslations } from "next-intl";
+import { getLocalizedContent } from "@/content/locales";
 import { themes } from "@/accessibility/theme";
 
 export function AccessibilityView() {
+  const locale = useLocale();
+  const t = useTranslations("accessibility");
+  const {
+    accessibilityHelpSections,
+    informationArchitecture,
+    heuristicFindings,
+    personas,
+  } = getLocalizedContent(locale);
+
   return (
     <section className="content-container page-section" aria-labelledby="accessibility-heading">
       <div className="page-intro">
-        <p className="eyebrow">Accessibility help</p>
-        <h1 id="accessibility-heading">Navigate the foundation independently</h1>
-        <p>
-          This page explains how to move through Legado de Diogenes with a
-          keyboard, screen reader, light or dark theme, and optional high
-          contrast while keeping the same learning content available to every
-          student.
-        </p>
+        <p className="eyebrow">{t("eyebrow")}</p>
+        <h1 id="accessibility-heading">{t("heading")}</h1>
+        <p>{t("intro")}</p>
       </div>
       <div className="help-grid">
         {accessibilityHelpSections.map((section) => (
@@ -27,25 +29,26 @@ export function AccessibilityView() {
         ))}
       </div>
       <section className="evidence-section" aria-labelledby="themes-heading">
-        <h2 id="themes-heading">Supported visual modes</h2>
+        <h2 id="themes-heading">{t("themesHeading")}</h2>
         <ul className="evidence-list">
           {themes.map((theme) => (
             <li key={theme.id}>
-              <strong>{theme.label}:</strong> {theme.purpose}
+              <strong>{t(`themeModes.${theme.id}.label`)}:</strong>{" "}
+              {t(`themeModes.${theme.id}.purpose`)}
             </li>
           ))}
         </ul>
       </section>
       <section className="evidence-section" aria-labelledby="assignment-evidence-heading">
-        <p className="eyebrow">Assignment evidence</p>
-        <h2 id="assignment-evidence-heading">Design decisions prepared for review</h2>
+        <p className="eyebrow">{t("assignmentEyebrow")}</p>
+        <h2 id="assignment-evidence-heading">{t("assignmentHeading")}</h2>
         <div className="evidence-grid">
           <article>
-            <h3>Persona</h3>
+            <h3>{t("personaHeading")}</h3>
             <p>{personas[0].scenario}</p>
           </article>
           <article>
-            <h3>Information architecture</h3>
+            <h3>{t("informationArchitectureHeading")}</h3>
             <ul>
               {informationArchitecture.mainAreas.map((area) => (
                 <li key={area}>{area}</li>
@@ -53,7 +56,7 @@ export function AccessibilityView() {
             </ul>
           </article>
           <article>
-            <h3>Heuristic iteration</h3>
+            <h3>{t("heuristicIterationHeading")}</h3>
             <p>{heuristicFindings[0].iterationNote}</p>
           </article>
         </div>

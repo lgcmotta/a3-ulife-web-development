@@ -1,16 +1,20 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import type { SavedLearningPath } from "@/server/student-area/types";
 import { buttonVariants } from "@/ui/components/button";
 
 export function LearningCompleteView({ path }: { path: SavedLearningPath | null }) {
+  const actions = useTranslations("actions");
+  const t = useTranslations("studentArea.learning");
+
   if (!path) {
     return (
       <section className="content-container page-section" aria-labelledby="learning-complete-heading">
-        <h1 id="learning-complete-heading">Learning path unavailable</h1>
-        <p>This saved learning path could not be loaded.</p>
+        <h1 id="learning-complete-heading">{t("pathUnavailable")}</h1>
+        <p>{t("pathUnavailableBody")}</p>
         <Link className={buttonVariants()} href="/tracks/history" prefetch={false}>
-          Continue
+          {actions("continue")}
         </Link>
       </section>
     );
@@ -18,14 +22,11 @@ export function LearningCompleteView({ path }: { path: SavedLearningPath | null 
 
   return (
     <section className="content-container page-section" aria-labelledby="learning-complete-heading">
-      <p className="eyebrow">Path complete</p>
-      <h1 id="learning-complete-heading">Congratulations, you finished your learning path</h1>
-      <p>
-        Your selected topics are marked complete. Return to the student area to review the
-        history or build a new path.
-      </p>
+      <p className="eyebrow">{t("completeEyebrow")}</p>
+      <h1 id="learning-complete-heading">{t("completeHeading")}</h1>
+      <p>{t("completeBody")}</p>
       <Link className={buttonVariants()} href="/tracks/history" prefetch={false}>
-        Continue
+        {actions("continue")}
       </Link>
     </section>
   );

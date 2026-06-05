@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { BookOpenCheck, Eraser, RotateCcw, Save } from "lucide-react";
 
 import type { BuilderState } from "@/features/student-area/server/builder-selection";
@@ -20,11 +21,18 @@ export function BuilderActionBar({
   onLearning: () => void;
   pending: boolean;
 }) {
+  const actions = useTranslations("actions");
+  const builder = useTranslations("studentArea.builder");
+  const learningActionLabel =
+    state.learningActionLabel === "Continue Learning"
+      ? actions("continueLearning")
+      : actions("startLearning");
+
   return (
-    <div className="builder-action-bar" aria-label="Builder actions">
+    <div className="builder-action-bar" aria-label={builder("actionsLabel")}>
       <Button disabled={!state.canSave || pending} onClick={onSave} type="button">
         <Save aria-hidden="true" size={18} />
-        Save
+        {actions("save")}
       </Button>
       <Button
         disabled={!state.canStartLearning || pending}
@@ -33,7 +41,7 @@ export function BuilderActionBar({
         variant="secondary"
       >
         <BookOpenCheck aria-hidden="true" size={18} />
-        {state.learningActionLabel}
+        {learningActionLabel}
       </Button>
       <Button
         disabled={!state.draft.dirty || pending}
@@ -42,11 +50,11 @@ export function BuilderActionBar({
         variant="secondary"
       >
         <RotateCcw aria-hidden="true" size={18} />
-        Discard Changes
+        {builder("discard")}
       </Button>
       <Button disabled={!state.canClear || pending} onClick={onClear} type="button" variant="secondary">
         <Eraser aria-hidden="true" size={18} />
-        Clear Learning Path
+        {builder("clear")}
       </Button>
     </div>
   );

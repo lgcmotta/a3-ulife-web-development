@@ -1,3 +1,5 @@
+import { getLocale, getTranslations } from "next-intl/server";
+import { getLocalizedTracks } from "@/content/locales";
 import { EmptyHistoryState } from "@/features/student-area/components/empty-history-state";
 import { LearningPathHistoryTable } from "@/features/student-area/components/learning-path-history-table";
 import { presentHistoryRows } from "@/features/student-area/server/history-presenter";
@@ -28,7 +30,23 @@ export async function StudentHistoryView({
   studentId: string;
   demo?: boolean;
 }) {
-  let rows = presentHistoryRows(demo ? demoHistory : []);
+  const locale = await getLocale();
+  const t = await getTranslations("studentArea.history");
+  const catalog = getLocalizedTracks(locale);
+  const presenterOptions = {
+    locale,
+    catalog,
+    labels: {
+      progress: (completed: number, total: number) =>
+        t("progressLabel", { completed, total }),
+      statuses: {
+        "not-started": t("statuses.notStarted"),
+        "in-progress": t("statuses.inProgress"),
+        completed: t("statuses.completed"),
+      },
+    },
+  };
+  let rows = presentHistoryRows(demo ? demoHistory : [], [], presenterOptions);
   let error: string | null = null;
 
   if (!demo) {
@@ -39,15 +57,15 @@ export async function StudentHistoryView({
         await Promise.all(history.map((entry) => store.loadSavedPath(studentId, entry.pathId)))
       ).filter(isSavedLearningPath);
 
-      rows = presentHistoryRows(history, savedPaths);
+      rows = presentHistoryRows(history, savedPaths, presenterOptions);
     } catch {
-      error = "History is temporarily unavailable. You can still open the builder and try again.";
+      error = t("unavailable");
     }
   }
 
   return (
     <section aria-labelledby="history-heading" className="student-panel">
-      <h2 id="history-heading">Learning Path History</h2>
+      <h2 id="history-heading">{t("heading")}</h2>
       {error ? <p role="status">{error}</p> : null}
       {rows.length > 0 ? <LearningPathHistoryTable rows={rows} /> : <EmptyHistoryState />}
     </section>

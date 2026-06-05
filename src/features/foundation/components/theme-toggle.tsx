@@ -28,7 +28,27 @@ const baseThemeLabels = {
   dark: "Dark theme",
 } satisfies Record<BaseThemeId, string>;
 
-export function ThemeToggle() {
+export type ThemeToggleLabels = {
+  visualTheme: string;
+  baseTheme: Record<BaseThemeId, string>;
+  baseThemeToggle: string;
+  highContrast: string;
+  highContrastToggle: string;
+};
+
+const defaultLabels: ThemeToggleLabels = {
+  visualTheme: "Visual theme",
+  baseTheme: baseThemeLabels,
+  baseThemeToggle: "Toggle base theme",
+  highContrast: "High contrast",
+  highContrastToggle: "Toggle high contrast",
+};
+
+export function ThemeToggle({
+  labels = defaultLabels,
+}: {
+  labels?: ThemeToggleLabels;
+}) {
   const preference = useSyncExternalStore(
     subscribeToThemePreference,
     getThemePreferenceSnapshot,
@@ -37,7 +57,7 @@ export function ThemeToggle() {
   const baseThemeLabelId = useId();
   const highContrastLabelId = useId();
   const ThemeIcon = themeIcons[preference.baseTheme];
-  const baseThemeLabel = baseThemeLabels[preference.baseTheme];
+  const baseThemeLabel = labels.baseTheme[preference.baseTheme];
   const isDarkTheme = preference.baseTheme === "dark";
 
   function setBaseTheme(baseTheme: BaseThemeId) {
@@ -78,14 +98,14 @@ export function ThemeToggle() {
   }
 
   return (
-    <div className="theme-toggle" aria-label="Visual theme">
+    <div className="theme-toggle" aria-label={labels.visualTheme}>
       <div className="base-theme-control">
         <ThemeIcon aria-hidden="true" size={18} />
         <span className="theme-control-label" id={baseThemeLabelId}>
             {baseThemeLabel}
         </span>
         <Switch
-          aria-label="Toggle base theme"
+          aria-label={labels.baseThemeToggle}
           aria-labelledby={baseThemeLabelId}
           checked={isDarkTheme}
           onClick={toggleBaseTheme}
@@ -95,10 +115,10 @@ export function ThemeToggle() {
       <div className="contrast-control">
         <Contrast aria-hidden="true" size={18} />
         <span className="theme-control-label" id={highContrastLabelId}>
-          High contrast
+          {labels.highContrast}
         </span>
         <Switch
-          aria-label="Toggle high contrast"
+          aria-label={labels.highContrastToggle}
           aria-labelledby={highContrastLabelId}
           checked={preference.highContrast}
           onClick={toggleHighContrast}

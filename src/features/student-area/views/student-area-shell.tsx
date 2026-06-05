@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 import { StudentFeedback } from "@/features/student-area/components/student-feedback";
 import { StudentTabs } from "@/features/student-area/components/student-tabs";
@@ -10,17 +11,25 @@ export function StudentAreaShell({
   activePath: "/tracks/history" | "/tracks/builder";
   children: ReactNode;
 }) {
+  const t = useTranslations("studentArea.shell");
+  const tabs = useTranslations("studentArea.tabs");
+
   return (
     <section className="content-container page-section" aria-labelledby="student-area-heading">
       <div className="page-intro">
-        <p className="eyebrow">Student area</p>
-        <h1 id="student-area-heading">Personalized learning paths</h1>
-        <p>
-          Review saved paths, build a focused sequence of topics, and return to learning
-          sections without creating an account.
-        </p>
+        <p className="eyebrow">{t("eyebrow")}</p>
+        <h1 id="student-area-heading">{t("heading")}</h1>
+        <p>{t("intro")}</p>
       </div>
-      <StudentTabs activePath={activePath} />
+      <StudentTabs
+        activePath={activePath}
+        labels={{
+          navLabel: tabs("navLabel"),
+          listLabel: tabs("listLabel"),
+          history: tabs("history"),
+          builder: tabs("builder"),
+        }}
+      />
       <StudentFeedback />
       {children}
     </section>
