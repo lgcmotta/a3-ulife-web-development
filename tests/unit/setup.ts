@@ -23,5 +23,6 @@ afterEach(() => {
   document.documentElement.dataset.theme = "light";
   document.documentElement.dataset.contrast = "normal";
   document.cookie = "legado-de-diogenes-language=; path=/; max-age=0";
+  document.cookie = "legado-de-diogenes-theme-preference=; path=/; max-age=0";
   window.localStorage.clear();
 });

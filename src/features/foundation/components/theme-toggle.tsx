@@ -2,20 +2,9 @@
 
 import { Contrast, Moon, Sun } from "lucide-react";
 import type { KeyboardEvent } from "react";
-import { useId, useSyncExternalStore } from "react";
-import {
-  defaultVisualPreference,
-  resolveVisualPreference,
-  type BaseThemeId,
-} from "@/accessibility/theme";
-import {
-  applyThemePreference,
-  getThemePreferenceSnapshot,
-  notifyThemePreferenceChange,
-  subscribeToThemePreference,
-  writeBaseThemePreference,
-  writeHighContrastPreference,
-} from "@/storage/theme-preference";
+import { useId } from "react";
+import type { BaseThemeId } from "@/accessibility/theme";
+import { useThemePreference } from "@/features/foundation/components/preference-providers";
 import { Switch } from "@/ui/components/switch";
 
 const themeIcons = {
@@ -49,43 +38,19 @@ export function ThemeToggle({
 }: {
   labels?: ThemeToggleLabels;
 }) {
-  const preference = useSyncExternalStore(
-    subscribeToThemePreference,
-    getThemePreferenceSnapshot,
-    () => defaultVisualPreference,
-  );
+  const { preference, setBaseTheme, setHighContrast } = useThemePreference();
   const baseThemeLabelId = useId();
   const highContrastLabelId = useId();
   const ThemeIcon = themeIcons[preference.baseTheme];
   const baseThemeLabel = labels.baseTheme[preference.baseTheme];
   const isDarkTheme = preference.baseTheme === "dark";
 
-  function setBaseTheme(baseTheme: BaseThemeId) {
-    if (baseTheme === preference.baseTheme) {
-      return;
-    }
-
-    const nextPreference = resolveVisualPreference({
-      baseTheme,
-      highContrast: preference.highContrast,
-    });
-    writeBaseThemePreference(baseTheme);
-    applyThemePreference(nextPreference);
-    notifyThemePreferenceChange();
-  }
-
   function toggleBaseTheme() {
     setBaseTheme(isDarkTheme ? "light" : "dark");
   }
 
   function toggleHighContrast() {
-    const nextPreference = resolveVisualPreference({
-      baseTheme: preference.baseTheme,
-      highContrast: !preference.highContrast,
-    });
-    writeHighContrastPreference(nextPreference.highContrast);
-    applyThemePreference(nextPreference);
-    notifyThemePreferenceChange();
+    setHighContrast(!preference.highContrast);
   }
 
   function handleSwitchKeyDown(event: KeyboardEvent<HTMLButtonElement>, toggle: () => void) {
@@ -102,7 +67,7 @@ export function ThemeToggle({
       <div className="base-theme-control">
         <ThemeIcon aria-hidden="true" size={18} />
         <span className="theme-control-label" id={baseThemeLabelId}>
-            {baseThemeLabel}
+          {baseThemeLabel}
         </span>
         <Switch
           aria-label={labels.baseThemeToggle}

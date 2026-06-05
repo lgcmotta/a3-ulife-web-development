@@ -1,19 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useSyncExternalStore } from "react";
-import {
-  defaultLocale,
-  localeOptions,
-  type SupportedLocale,
-} from "@/i18n/locales";
-import {
-  applyLanguagePreference,
-  getLanguagePreferenceSnapshot,
-  notifyLanguagePreferenceChange,
-  subscribeToLanguagePreference,
-  writeLanguagePreference,
-} from "@/storage/language-preference";
+import { useLanguagePreference } from "@/features/foundation/components/preference-providers";
+import { localeOptions, type SupportedLocale } from "@/i18n/locales";
 import { cn } from "@/ui/utils";
 
 export type LanguageToggleLabels = {
@@ -44,23 +32,7 @@ export function LanguageToggle({
 }: {
   labels?: LanguageToggleLabels;
 }) {
-  const router = useRouter();
-  const selectedLocale = useSyncExternalStore(
-    subscribeToLanguagePreference,
-    getLanguagePreferenceSnapshot,
-    () => defaultLocale,
-  );
-
-  function selectLocale(locale: SupportedLocale) {
-    if (locale === selectedLocale) {
-      return;
-    }
-
-    writeLanguagePreference(locale);
-    applyLanguagePreference(locale);
-    notifyLanguagePreferenceChange();
-    router.refresh();
-  }
+  const { selectedLocale, selectLocale } = useLanguagePreference();
 
   return (
     <div className="language-control" role="group" aria-label={labels.groupLabel}>

@@ -3,6 +3,7 @@ import type { VisualTheme } from "@/content/types";
 export const LEGACY_THEME_STORAGE_KEY = "legado-de-diogenes-theme";
 export const BASE_THEME_STORAGE_KEY = "legado-de-diogenes-base-theme";
 export const HIGH_CONTRAST_STORAGE_KEY = "legado-de-diogenes-high-contrast";
+export const themePreferenceCookie = "legado-de-diogenes-theme-preference";
 
 export type BaseThemeId = "light" | "dark";
 
@@ -235,6 +236,10 @@ export function isContrastMode(value: string | null | undefined): value is Contr
   return value === "normal" || value === "high";
 }
 
+export function isThemeCombination(value: unknown): value is ThemeCombination {
+  return typeof value === "string" && value in visualPreferences;
+}
+
 export function resolveBaseTheme(value: string | null | undefined): BaseThemeId {
   return isBaseThemeId(value) ? value : defaultBaseTheme;
 }
@@ -278,4 +283,8 @@ export function resolveVisualPreference(input?: {
       : resolveHighContrast(input?.highContrast);
 
   return visualPreferences[getThemeCombination(baseTheme, highContrast)];
+}
+
+export function resolveVisualPreferenceFromCombination(value: unknown): VisualPreference {
+  return isThemeCombination(value) ? visualPreferences[value] : defaultVisualPreference;
 }

@@ -51,7 +51,20 @@ export function readAppliedLanguagePreference(): SupportedLocale {
 }
 
 export function getLanguagePreferenceSnapshot(): SupportedLocale {
-  return readStoredLanguagePreference() ?? readLanguageCookie() ?? readAppliedLanguagePreference();
+  return readLanguageCookie() ?? readStoredLanguagePreference() ?? readAppliedLanguagePreference();
+}
+
+export function syncLanguagePreferenceFromClient(): SupportedLocale {
+  const cookieLocale = readLanguageCookie();
+  const storedLocale = readStoredLanguagePreference();
+  const nextLocale = cookieLocale ?? storedLocale ?? readAppliedLanguagePreference();
+
+  if (!cookieLocale && storedLocale) {
+    writeLanguagePreference(storedLocale);
+  }
+
+  applyLanguagePreference(nextLocale);
+  return nextLocale;
 }
 
 export function applyLanguagePreference(locale: SupportedLocale) {
@@ -88,7 +101,7 @@ export function subscribeToLanguagePreference(onStoreChange: () => void) {
   }
 
   const handleChange = () => {
-    applyLanguagePreference(getLanguagePreferenceSnapshot());
+    syncLanguagePreferenceFromClient();
     onStoreChange();
   };
 

@@ -10,7 +10,7 @@ import {
   subscribeToLanguagePreference,
   writeLanguagePreference,
 } from "@/storage/language-preference";
-import { languagePreferenceStorageKey } from "@/i18n/locales";
+import { languagePreferenceCookie, languagePreferenceStorageKey } from "@/i18n/locales";
 
 describe("language preference", () => {
   it("falls back to English when no supported preference exists", () => {
@@ -37,6 +37,14 @@ describe("language preference", () => {
     expect(document.documentElement.dataset.language).toBe("pt-BR");
     expect(window.localStorage.getItem(BASE_THEME_STORAGE_KEY)).toBe("dark");
     expect(window.localStorage.getItem(HIGH_CONTRAST_STORAGE_KEY)).toBe("true");
+  });
+
+  it("prefers the cookie-backed language preference over local storage", () => {
+    window.localStorage.setItem(languagePreferenceStorageKey, "en");
+    document.cookie = `${languagePreferenceCookie}=pt-BR; path=/`;
+
+    expect(readLanguageCookie()).toBe("pt-BR");
+    expect(getLanguagePreferenceSnapshot()).toBe("pt-BR");
   });
 
   it("notifies subscribers after language changes", () => {
