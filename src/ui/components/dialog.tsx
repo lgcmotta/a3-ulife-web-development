@@ -70,7 +70,7 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="absolute top-4 right-4 rounded-xs border border-[var(--border)] bg-[var(--control)] p-1 text-[var(--control-foreground)] transition-colors hover:bg-[var(--control-hover)] hover:text-[var(--control-hover-foreground)] focus:outline focus:outline-3 focus:outline-offset-2 focus:outline-[var(--focus)] disabled:pointer-events-none disabled:bg-[var(--disabled)] disabled:text-[var(--disabled-foreground)] data-[state=open]:bg-[var(--control-selected)] data-[state=open]:text-[var(--control-selected-foreground)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            className="absolute top-4 right-4 rounded-xs border border-[var(--border)] bg-[var(--control)] p-1 text-[var(--control-foreground)] hover:bg-[var(--control-hover)] hover:text-[var(--control-hover-foreground)] focus:outline focus:outline-3 focus:outline-offset-2 focus:outline-[var(--focus)] disabled:pointer-events-none disabled:bg-[var(--disabled)] disabled:text-[var(--disabled-foreground)] data-[state=open]:bg-[var(--control-selected)] data-[state=open]:text-[var(--control-selected-foreground)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
           >
             <XIcon />
             <span className="sr-only">Close</span>

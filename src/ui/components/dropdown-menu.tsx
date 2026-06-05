@@ -59,7 +59,7 @@ function DropdownMenuItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-[var(--surface-foreground)] outline-hidden transition-colors focus:bg-[var(--control-selected)] focus:text-[var(--control-selected-foreground)] data-[disabled]:pointer-events-none data-[disabled]:bg-[var(--disabled)] data-[disabled]:text-[var(--disabled-foreground)] data-[inset]:pl-8 data-[variant=destructive]:text-[var(--danger)]",
+        "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-[var(--surface-foreground)] outline-hidden focus:bg-[var(--control-selected)] focus:text-[var(--control-selected-foreground)] data-[disabled]:pointer-events-none data-[disabled]:bg-[var(--disabled)] data-[disabled]:text-[var(--disabled-foreground)] data-[inset]:pl-8 data-[variant=destructive]:text-[var(--danger)]",
         className,
       )}
       {...props}
@@ -77,7 +77,7 @@ function DropdownMenuCheckboxItem({
     <DropdownMenuPrimitive.CheckboxItem
       data-slot="dropdown-menu-checkbox-item"
       className={cn(
-        "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm text-[var(--surface-foreground)] outline-hidden transition-colors focus:bg-[var(--control-selected)] focus:text-[var(--control-selected-foreground)] data-[disabled]:pointer-events-none data-[disabled]:bg-[var(--disabled)] data-[disabled]:text-[var(--disabled-foreground)]",
+        "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm text-[var(--surface-foreground)] outline-hidden focus:bg-[var(--control-selected)] focus:text-[var(--control-selected-foreground)] data-[disabled]:pointer-events-none data-[disabled]:bg-[var(--disabled)] data-[disabled]:text-[var(--disabled-foreground)]",
         className,
       )}
       checked={checked}
@@ -108,7 +108,7 @@ function DropdownMenuRadioItem({
     <DropdownMenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
       className={cn(
-        "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm text-[var(--surface-foreground)] outline-hidden transition-colors focus:bg-[var(--control-selected)] focus:text-[var(--control-selected-foreground)] data-[disabled]:pointer-events-none data-[disabled]:bg-[var(--disabled)] data-[disabled]:text-[var(--disabled-foreground)]",
+        "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm text-[var(--surface-foreground)] outline-hidden focus:bg-[var(--control-selected)] focus:text-[var(--control-selected-foreground)] data-[disabled]:pointer-events-none data-[disabled]:bg-[var(--disabled)] data-[disabled]:text-[var(--disabled-foreground)]",
         className,
       )}
       {...props}
