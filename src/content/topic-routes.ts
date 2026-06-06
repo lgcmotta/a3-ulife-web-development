@@ -1,4 +1,5 @@
-import { getTopic, getTrack, learningTracks } from "@/content/tracks";
+import { getLocalizedTopic, getLocalizedTrack, getLocalizedTracks } from "@/content/locales";
+import { learningTracks } from "@/content/tracks";
 
 export type TopicRouteParams = {
   trackSlug: string;
@@ -14,15 +15,24 @@ export function getTopicRouteParams(): TopicRouteParams[] {
   );
 }
 
-export function findTopicRoute({ trackSlug, topicSlug }: TopicRouteParams) {
-  const track = getTrack(trackSlug);
-  const topic = getTopic(trackSlug, topicSlug);
+export function findTopicRoute({ trackSlug, topicSlug }: TopicRouteParams, locale?: string) {
+  const track = getLocalizedTrack(locale, trackSlug);
+  const topic = getLocalizedTopic(locale, trackSlug, topicSlug);
 
   if (!track || !topic) {
     return null;
   }
 
   return { track, topic };
+}
+
+export function getLocalizedTopicRouteParams(locale?: string): TopicRouteParams[] {
+  return getLocalizedTracks(locale).flatMap((track) =>
+    track.topics.map((topic) => ({
+      trackSlug: track.slug,
+      topicSlug: topic.slug,
+    })),
+  );
 }
 
 export function topicHref(trackSlug: string, topicSlug: string) {

@@ -1,0 +1,51 @@
+{
+  "eyebrow": "Accessibility help",
+  "heading": "Navigate the foundation independently",
+  "intro": "This page explains how to move through Legado de Diogenes with a keyboard, screen reader, light or dark theme, and optional high contrast while keeping the same learning content available to every student.",
+  "themesHeading": "Supported visual modes",
+  "assignmentEyebrow": "Assignment evidence",
+  "assignmentHeading": "Design decisions prepared for review",
+  "personaHeading": "Persona",
+  "informationArchitectureHeading": "Information architecture",
+  "heuristicIterationHeading": "Heuristic iteration",
+  "helpSections": {
+    "mainNavigation": {
+      "title": "Start from the main navigation",
+      "content": "Use the header links to move between Home, Learning Tracks, and Accessibility Help. Topic pages include a Back to learning tracks link so you can return to the track overview without retracing every previous step.",
+      "appliesTo": "Main areas"
+    },
+    "keyboardControls": {
+      "title": "Move through controls with the keyboard",
+      "content": "Press Tab to move forward through links, topic cards, the base theme switch, and the High contrast switch. Press Shift+Tab to move backward, then use Enter or Space to activate the focused item. The skip link moves focus directly to the main content.",
+      "appliesTo": "Keyboard navigation"
+    },
+    "headingsLandmarks": {
+      "title": "Use headings and landmarks as a page map",
+      "content": "Each page has a primary navigation region, one main content region, and clear headings for the current area. Screen reader users can jump by headings to compare tracks, find topic sections, and reach the next study action.",
+      "appliesTo": "Screen reader structure"
+    },
+    "visualContrast": {
+      "title": "Switch to stronger visual contrast",
+      "content": "Use the base theme switch to move between Light theme and Dark theme, then turn High contrast on or off independently. High-contrast mode strengthens text, borders, focus outlines, and button contrast without changing the content order. Current navigation state is also shown with text and underline, not color alone.",
+      "appliesTo": "Visual accessibility"
+    }
+  },
+  "themeModes": {
+    "light": {
+      "label": "Light theme",
+      "purpose": "Balanced color-safe reading for normal presentation use"
+    },
+    "light-high": {
+      "label": "Light high contrast",
+      "purpose": "Light surfaces with stronger borders, focus indicators, and action contrast"
+    },
+    "dark": {
+      "label": "Dark theme",
+      "purpose": "Darker reading surfaces while preserving the same content and navigation"
+    },
+    "dark-high": {
+      "label": "Dark high contrast",
+      "purpose": "Dark surfaces with maximum separation for text, controls, and focus states"
+    }
+  }
+}

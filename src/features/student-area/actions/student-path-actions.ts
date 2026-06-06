@@ -1,8 +1,14 @@
 "use server";
 
+import { getLocale, getTranslations } from "next-intl/server";
+import { getLocalizedTracks } from "@/content/locales";
 import { learningTracks } from "@/content/tracks";
 import { resolveActionStudentId } from "@/features/student-area/actions/action-student";
-import { createActionSuccess, friendlyActionError } from "@/features/student-area/actions/action-results";
+import {
+  createActionError,
+  createActionSuccess,
+  friendlyActionError,
+} from "@/features/student-area/actions/action-results";
 import { markSavedState, type BuilderState } from "@/features/student-area/server/builder-selection";
 import {
   createHistoryEntry,
@@ -20,6 +26,9 @@ export async function saveBuilderCompositionAction(
   trackGroups: PathTrackGroup[],
 ) {
   const store = createRedisStudentAreaStore();
+  const locale = await getLocale();
+  const t = await getTranslations("studentArea.feedback");
+  const localizedTracks = getLocalizedTracks(locale);
 
   try {
     studentId = await resolveActionStudentId(studentId, store);
@@ -28,7 +37,7 @@ export async function saveBuilderCompositionAction(
       : null;
 
     if (state.savedPathId && !existingPath) {
-      throw new Error("The saved learning path could not be found.");
+      return createActionError(t("savedMissing"), "save");
     }
 
     const pathId = existingPath?.pathId ?? encodePublicId(await store.allocateId(studentCounters.path));
@@ -52,17 +61,17 @@ export async function saveBuilderCompositionAction(
     await store.saveHistory(studentId, upsertHistoryEntry(history, historyEntry));
 
     return createActionSuccess(
-      "Learning path saved.",
+      t("saved"),
       markSavedState(
         {
           ...state,
-          availableTracks: learningTracks,
+          availableTracks: localizedTracks,
         },
         savedPath,
       ),
       "save",
     );
   } catch (error) {
-    return friendlyActionError(error, "The learning path could not be saved. Please try again.");
+    return friendlyActionError(error, t("saveFailed"), { useErrorMessage: false });
   }
 }

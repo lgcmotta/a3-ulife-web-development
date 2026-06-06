@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Accessibility, BookOpen, Home } from "lucide-react";
-import { landmarkLabels } from "@/accessibility/landmarks";
 import { mainNavigation } from "@/routes/navigation";
 
 const icons = {
@@ -14,9 +14,10 @@ const icons = {
 
 export function PrimaryNavigation() {
   const pathname = usePathname();
+  const t = useTranslations("navigation");
 
   return (
-    <nav aria-label={landmarkLabels.primaryNavigation} className="primary-nav">
+    <nav aria-label={t("primaryLabel")} className="primary-nav">
       {mainNavigation.map((item) => {
         const Icon = icons[item.area];
         const isCurrent =
@@ -32,7 +33,7 @@ export function PrimaryNavigation() {
             key={item.href}
           >
             <Icon aria-hidden="true" size={17} />
-            <span>{item.label}</span>
+            <span>{t(`items.${item.area}.label`)}</span>
           </Link>
         );
       })}

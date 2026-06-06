@@ -1,0 +1,38 @@
+{
+  "siteTitle": "Legado de Diogenes",
+  "siteTitleTemplate": "{title} | Legado de Diogenes",
+  "siteDescription": "Uma plataforma educacional simples com trilhas de Ciencia da Computacao selecionadas para estudantes iniciantes.",
+  "pages": {
+    "home": {
+      "title": "Inicio",
+      "description": "Conheca Diogenes e comece com trilhas selecionadas de Ciencia da Computacao."
+    },
+    "tracks": {
+      "title": "Trilhas de aprendizagem",
+      "description": "Explore caminhos de estudo de Ciencia da Computacao amigaveis para iniciantes."
+    },
+    "accessibility": {
+      "title": "Ajuda de acessibilidade",
+      "description": "Aprenda a navegar pelo Legado de Diogenes com teclado, estrutura para leitores de tela e suporte a tema visual."
+    },
+    "topicNotFound": {
+      "title": "Topico nao encontrado"
+    },
+    "builder": {
+      "title": "Construtor de trilha de aprendizagem",
+      "description": "Monte uma trilha de aprendizagem personalizada a partir dos topicos selecionados."
+    },
+    "history": {
+      "title": "Historico de trilhas de aprendizagem",
+      "description": "Revise trilhas salvas e retome os estudos."
+    },
+    "learningSection": {
+      "title": "Secao de aprendizagem",
+      "description": "Estude um topico selecionado na trilha de aprendizagem personalizada."
+    },
+    "learningComplete": {
+      "title": "Trilha de aprendizagem concluida",
+      "description": "Revise a trilha de aprendizagem personalizada concluida."
+    }
+  }
+}

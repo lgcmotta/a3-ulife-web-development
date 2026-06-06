@@ -1,0 +1,20 @@
+{
+  "visualTheme": "Visual theme",
+  "baseTheme": {
+    "light": "Light theme",
+    "dark": "Dark theme",
+    "toggle": "Toggle base theme"
+  },
+  "highContrast": {
+    "label": "High contrast",
+    "toggle": "Toggle high contrast"
+  },
+  "language": {
+    "label": "Language",
+    "toggle": "Change language",
+    "english": "English",
+    "portugueseBrazil": "Portuguese (Brazil)",
+    "switchTo": "Switch to {language}",
+    "selected": "{language} selected"
+  }
+}

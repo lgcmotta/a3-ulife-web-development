@@ -355,12 +355,17 @@ a {
     text-underline-offset: 0.28em;
 }
 
+.preference-controls,
 .theme-toggle {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
     justify-content: flex-end;
+}
+
+.preference-controls {
+    gap: 1rem;
 }
 
 .base-theme-control,
@@ -380,6 +385,48 @@ a {
     color: var(--control-foreground);
     font-size: 0.92rem;
     font-weight: 800;
+    line-height: 1;
+}
+
+.language-control {
+    align-items: center;
+    background: var(--control);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    display: inline-flex;
+    gap: 0.2rem;
+    padding: 0.2rem;
+}
+
+.language-option {
+    align-items: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    color: var(--control-foreground);
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    font-weight: 800;
+    justify-content: center;
+    min-height: 2.25rem;
+    min-width: 2.65rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.language-option:hover {
+    background: var(--control-hover);
+    color: var(--control-hover-foreground);
+}
+
+.language-option-selected {
+    background: var(--control-selected);
+    color: var(--control-selected-foreground);
+    text-decoration: none;
+}
+
+.language-flag {
+    font-size: 1.5rem; /* or 1.5rem */
     line-height: 1;
 }
 
@@ -458,14 +505,14 @@ a {
 }
 
 .hero-section {
-    min-height: 72vh;
+    min-height: clamp(44rem, 72vh, 56rem);
     position: relative;
     overflow: hidden;
 }
 
 .hero-image {
     object-fit: cover;
-    object-position: center;
+    object-position: 62% center;
 }
 
 .hero-overlay {
@@ -479,7 +526,7 @@ a {
     color: #ffffff;
     display: grid;
     gap: 1.1rem;
-    max-width: 48rem;
+    max-width: 56rem;
     padding: clamp(4rem, 10vw, 7rem) clamp(1.25rem, 7vw, 6rem);
     position: relative;
     z-index: 1;
@@ -533,6 +580,7 @@ a {
     position: absolute;
     right: 0;
     z-index: 2;
+    height: 3rem;
 }
 
 .hero-principles li {
@@ -543,7 +591,8 @@ a {
 
 .content-container {
     margin-inline: auto;
-    max-width: 1180px;
+    /*max-width: 1300px;*/
+    max-width: 100dvw;
     padding-inline: clamp(1rem, 4vw, 2rem);
 }
 
@@ -899,10 +948,12 @@ h3 {
     }
 
     .brand-mark,
+    .preference-controls,
     .theme-toggle {
         justify-content: center;
     }
 
+    .preference-controls,
     .theme-toggle {
         min-width: 0;
     }
@@ -960,6 +1011,7 @@ h3 {
         justify-content: center;
     }
 
+    .preference-controls,
     .theme-toggle {
         align-items: center;
         flex-direction: column;

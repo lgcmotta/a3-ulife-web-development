@@ -1,0 +1,38 @@
+{
+  "siteTitle": "Legado de Diogenes",
+  "siteTitleTemplate": "{title} | Legado de Diogenes",
+  "siteDescription": "A simple educational web platform with curated Computer Science learning tracks for beginner students.",
+  "pages": {
+    "home": {
+      "title": "Home",
+      "description": "Meet Diogenes and start with curated Computer Science learning tracks."
+    },
+    "tracks": {
+      "title": "Learning Tracks",
+      "description": "Browse curated beginner-friendly Computer Science study paths."
+    },
+    "accessibility": {
+      "title": "Accessibility Help",
+      "description": "Learn how to navigate Legado de Diogenes with keyboard, screen reader structure, and visual theme support."
+    },
+    "topicNotFound": {
+      "title": "Topic not found"
+    },
+    "builder": {
+      "title": "Learning Path Builder",
+      "description": "Build a personalized learning path from the curated topics."
+    },
+    "history": {
+      "title": "Learning Path History",
+      "description": "Review saved learning paths and resume studying."
+    },
+    "learningSection": {
+      "title": "Learning Section",
+      "description": "Study a selected topic in the personalized learning path."
+    },
+    "learningComplete": {
+      "title": "Learning Path Complete",
+      "description": "Review the completed personalized learning path."
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "visualTheme": "Tema visual",
+  "baseTheme": {
+    "light": "Tema claro",
+    "dark": "Tema escuro",
+    "toggle": "Alternar tema base"
+  },
+  "highContrast": {
+    "label": "Alto contraste",
+    "toggle": "Alternar alto contraste"
+  },
+  "language": {
+    "label": "Idioma",
+    "toggle": "Alterar idioma",
+    "english": "Ingles",
+    "portugueseBrazil": "Portugues (Brasil)",
+    "switchTo": "Mudar para {language}",
+    "selected": "{language} selecionado"
+  }
+}

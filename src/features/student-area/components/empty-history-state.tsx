@@ -1,17 +1,17 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { studentAreaRoutes } from "@/routes/navigation";
 import { buttonVariants } from "@/ui/components/button";
 
 export function EmptyHistoryState() {
+  const t = useTranslations("studentArea.history");
+
   return (
     <div className="student-empty-state">
-      <p>
-        No saved learning paths are available yet. Build a small path from the curated
-        tracks, save it, and return here to review progress.
-      </p>
+      <p>{t("empty")}</p>
       <Link className={buttonVariants()} href={studentAreaRoutes.builder} prefetch={false}>
-        Add New Learning Path
+        {t("addNew")}
       </Link>
     </div>
   );

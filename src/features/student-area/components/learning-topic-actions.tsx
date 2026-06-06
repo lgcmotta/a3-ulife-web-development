@@ -1,15 +1,11 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { completeTopicAction } from "@/features/student-area/actions/complete-topic-action";
 import { Button, buttonVariants } from "@/ui/components/button";
 import { cn } from "@/ui/utils";
 
 type LearningTopicActionsPlacement = "start" | "end";
-
-const groupLabels: Record<LearningTopicActionsPlacement, string> = {
-  start: "Topic actions",
-  end: "End of topic actions",
-};
 
 export function LearningTopicActions({
   studentId,
@@ -22,6 +18,12 @@ export function LearningTopicActions({
   topicSlug: string;
   placement: LearningTopicActionsPlacement;
 }) {
+  const t = useTranslations("studentArea.learning");
+  const groupLabels: Record<LearningTopicActionsPlacement, string> = {
+    start: t("topicActions"),
+    end: t("endTopicActions"),
+  };
+
   return (
     <div
       aria-label={groupLabels[placement]}
@@ -36,11 +38,11 @@ export function LearningTopicActions({
         href={`/tracks/builder?edit=${pathId}`}
         prefetch={false}
       >
-        Return to Builder
+        {t("returnToBuilder")}
       </Link>
       <form action={completeTopicAction.bind(null, studentId, pathId, topicSlug)}>
         <Button className="learning-topic-actions__control" type="submit">
-          Complete Topic
+          {t("completeTopic")}
         </Button>
       </form>
     </div>

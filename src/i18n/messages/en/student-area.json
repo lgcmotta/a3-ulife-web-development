@@ -1,0 +1,101 @@
+{
+  "shell": {
+    "eyebrow": "Student area",
+    "heading": "Personalized learning paths",
+    "intro": "Review saved paths, build a focused sequence of topics, and return to learning sections without creating an account."
+  },
+  "tabs": {
+    "navLabel": "Student area",
+    "listLabel": "Student area sections",
+    "history": "Learning Path History",
+    "builder": "Learning Path Builder"
+  },
+  "history": {
+    "heading": "Learning Path History",
+    "unavailable": "History is temporarily unavailable. You can still open the builder and try again.",
+    "empty": "No saved learning paths are available yet. Build a small path from the curated tracks, save it, and return here to review progress.",
+    "addNew": "Add New Learning Path",
+    "tableLabel": "Saved learning paths",
+    "saved": "Saved",
+    "tracks": "Tracks",
+    "progress": "Progress",
+    "status": "Status",
+    "actions": "Actions",
+    "resume": "Resume Learning",
+    "edit": "Edit Path",
+    "noActions": "No actions needed",
+    "progressLabel": "{completed} of {total} topics complete",
+    "statuses": {
+      "notStarted": "Not started",
+      "inProgress": "In progress",
+      "completed": "Completed"
+    }
+  },
+  "builder": {
+    "heading": "Learning Path Builder",
+    "intro": "Select tracks and topics to build a personal study sequence.",
+    "actionsLabel": "Builder actions",
+    "discard": "Discard Changes",
+    "clear": "Clear Learning Path",
+    "availableTracks": "Available Tracks",
+    "currentPath": "Current Path",
+    "emptyCurrentPath": "Select at least one topic from the available tracks to begin building.",
+    "selectTrack": "Select {track}",
+    "trackFallback": "The selected track",
+    "topicFallback": "The selected topic",
+    "itemRemoved": "Item removed from your current path.",
+    "trackAdded": "{track} was added to your current path.",
+    "trackRemoved": "{track} was removed from your current path.",
+    "topicAdded": "{topic} was added to your current path.",
+    "topicRemoved": "{topic} was removed from your current path.",
+    "discarded": "Unsaved changes discarded.",
+    "cleared": "Builder selections cleared. Saved paths are unchanged until Save.",
+    "trackAlreadyFirst": "This track is already first.",
+    "trackAlreadyLast": "This track is already last.",
+    "topicAlreadyFirst": "This topic is already first in its track.",
+    "topicAlreadyLast": "This topic is already last in its track.",
+    "trackOrderUpdated": "Track order updated.",
+    "topicOrderUpdated": "Topic order updated inside its track.",
+    "dialogs": {
+      "discardTitle": "Discard changes",
+      "discardEditDescription": "This returns the builder to the last saved learning path. Unsaved changes will be lost.",
+      "discardCreateDescription": "This returns the builder to an empty learning path. Unsaved selections will be lost.",
+      "clearTitle": "Clear learning path",
+      "clearDescription": "This clears only the builder selections on this page. Saved paths and progress stay unchanged unless you save a new composition."
+    },
+    "menu": {
+      "actionsFor": "Actions for {label}",
+      "remove": "Remove",
+      "moveUp": "Move up",
+      "moveDown": "Move down"
+    },
+    "loadMessages": {
+      "notFound": "This saved learning path could not be found. A new empty builder is ready.",
+      "completed": "Completed learning paths are kept in history and cannot be edited."
+    }
+  },
+  "feedback": {
+    "saved": "Learning path saved.",
+    "savedMissing": "The saved learning path could not be found.",
+    "saveFailed": "The learning path could not be saved. Please try again.",
+    "startBeforeSave": "Save a learning path before starting.",
+    "openingNextTopic": "Opening your next topic.",
+    "learningOpenFailed": "Learning could not be opened. Please try again."
+  },
+  "learning": {
+    "topicActions": "Topic actions",
+    "endTopicActions": "End of topic actions",
+    "returnToBuilder": "Return to Builder",
+    "completeTopic": "Complete Topic",
+    "sectionUnavailable": "Learning section unavailable",
+    "pathNotFound": "No saved learning path was found for this student.",
+    "topicNotInPath": "This topic is not part of the saved learning path.",
+    "topicNotAvailable": "This topic is not available in the learning catalog.",
+    "contentNotLoaded": "The learning section content could not be loaded.",
+    "pathUnavailable": "Learning path unavailable",
+    "pathUnavailableBody": "This saved learning path could not be loaded.",
+    "completeEyebrow": "Path complete",
+    "completeHeading": "Congratulations, you finished your learning path",
+    "completeBody": "Your selected topics are marked complete. Return to the student area to review the history or build a new path."
+  }
+}

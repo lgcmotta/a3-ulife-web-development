@@ -1,8 +1,9 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { defaultLocale, resolveLocale, type SupportedLocale } from "@/i18n/locales";
 
 const markdownDirectory = path.join(process.cwd(), "src/content/learning-sections");
-const learningSectionSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+const learningSectionSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export function getLearningSectionFileName(topicSlug: string) {
   if (!learningSectionSlugPattern.test(topicSlug)) {
@@ -10,6 +11,13 @@ export function getLearningSectionFileName(topicSlug: string) {
   }
 
   return `${topicSlug}.md`;
+}
+
+export function getLearningSectionFilePath(
+  topicSlug: string,
+  locale: SupportedLocale = defaultLocale,
+) {
+  return path.join(markdownDirectory, locale, getLearningSectionFileName(topicSlug));
 }
 
 export function parseMarkdownMetadata(markdownContent: string) {
@@ -26,13 +34,20 @@ export function parseMarkdownMetadata(markdownContent: string) {
   };
 }
 
-export async function loadLearningSectionMarkdown(topicSlug: string) {
+export async function loadLearningSectionMarkdown(
+  topicSlug: string,
+  locale: unknown = defaultLocale,
+) {
+  const selectedLocale = resolveLocale(locale);
   const markdownFileName = getLearningSectionFileName(topicSlug);
-  const markdownContent = await readFile(path.join(markdownDirectory, markdownFileName), "utf8");
+  const markdownFilePath = getLearningSectionFilePath(topicSlug, selectedLocale);
+  const markdownContent = await readFile(markdownFilePath, "utf8");
   const metadata = parseMarkdownMetadata(markdownContent);
 
   return {
+    locale: selectedLocale,
     markdownFileName,
+    markdownFilePath,
     markdownContent,
     ...metadata,
   };

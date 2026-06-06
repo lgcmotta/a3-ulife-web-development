@@ -1,8 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 
-import { learningTracks } from "@/content/tracks";
 import { startOrContinueLearningAction } from "@/features/student-area/actions/learning-navigation-actions";
 import { saveBuilderCompositionAction } from "@/features/student-area/actions/student-path-actions";
 import { BuilderActionBar } from "@/features/student-area/components/builder-action-bar";
@@ -38,18 +38,6 @@ function createLocalFeedback(
   } satisfies BuilderFeedbackMessage;
 }
 
-function trackTitle(trackSlug: string) {
-  return learningTracks.find((track) => track.slug === trackSlug)?.title ?? "The selected track";
-}
-
-function topicTitle(trackSlug: string, topicSlug: string) {
-  return (
-    learningTracks
-      .find((track) => track.slug === trackSlug)
-      ?.topics.find((topic) => topic.slug === topicSlug)?.title ?? "The selected topic"
-  );
-}
-
 export function StudentBuilderClient({
   studentId,
   initialState,
@@ -57,6 +45,7 @@ export function StudentBuilderClient({
   studentId: string;
   initialState: BuilderState;
 }) {
+  const t = useTranslations("studentArea.builder");
   const [state, setState] = useState(initialState);
   const [dialog, setDialog] = useState<"discard" | "clear" | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -66,13 +55,25 @@ export function StudentBuilderClient({
     showStudentFeedback(feedback);
   }
 
+  function trackTitle(trackSlug: string) {
+    return state.availableTracks.find((track) => track.slug === trackSlug)?.title ?? t("trackFallback");
+  }
+
+  function topicTitle(trackSlug: string, topicSlug: string) {
+    return (
+      state.availableTracks
+        .find((track) => track.slug === trackSlug)
+        ?.topics.find((topic) => topic.slug === topicSlug)?.title ?? t("topicFallback")
+    );
+  }
+
   function applyTrackToggle(trackSlug: string, selected: boolean) {
     const nextDraft = toggleTrackInDraft(state.draft, state.availableTracks, trackSlug, selected);
     updateDraft(
       nextDraft,
       createLocalFeedback(
         "success",
-        `${trackTitle(trackSlug)} was ${selected ? "added to" : "removed from"} your current path.`,
+        t(selected ? "trackAdded" : "trackRemoved", { track: trackTitle(trackSlug) }),
         "toggle-track",
       ),
     );
@@ -90,7 +91,7 @@ export function StudentBuilderClient({
       nextDraft,
       createLocalFeedback(
         "success",
-        `${topicTitle(trackSlug, topicSlug)} was ${selected ? "added to" : "removed from"} your current path.`,
+        t(selected ? "topicAdded" : "topicRemoved", { topic: topicTitle(trackSlug, topicSlug) }),
         "toggle-topic",
       ),
     );
@@ -107,7 +108,7 @@ export function StudentBuilderClient({
         level === "track"
           ? toggleTrackInDraft(state.draft, state.availableTracks, trackSlug, false)
           : toggleTopicInDraft(state.draft, state.availableTracks, trackSlug, topicSlug ?? "", false);
-      updateDraft(nextDraft, createLocalFeedback("success", "Item removed from your current path.", action));
+      updateDraft(nextDraft, createLocalFeedback("success", t("itemRemoved"), action));
       return;
     }
 
@@ -120,11 +121,26 @@ export function StudentBuilderClient({
     });
 
     if (!result.ok) {
-      showStudentFeedback(createLocalFeedback("error", result.feedback, "blocked-reorder"));
+      const boundaryKey =
+        level === "track"
+          ? action === "move-up"
+            ? "trackAlreadyFirst"
+            : "trackAlreadyLast"
+          : action === "move-up"
+            ? "topicAlreadyFirst"
+            : "topicAlreadyLast";
+      showStudentFeedback(createLocalFeedback("error", t(boundaryKey), "blocked-reorder"));
       return;
     }
 
-    updateDraft(result.draft, createLocalFeedback("success", result.feedback, action));
+    updateDraft(
+      result.draft,
+      createLocalFeedback(
+        "success",
+        t(level === "track" ? "trackOrderUpdated" : "topicOrderUpdated"),
+        action,
+      ),
+    );
   }
 
   function applySave() {
@@ -143,7 +159,7 @@ export function StudentBuilderClient({
     setState(nextState);
     setDialog(null);
     showStudentFeedback(
-      createLocalFeedback("success", "Unsaved changes discarded.", "discard"),
+      createLocalFeedback("success", t("discarded"), "discard"),
     );
   }
 
@@ -152,7 +168,7 @@ export function StudentBuilderClient({
     setState((current) => withDraft(current, nextDraft));
     setDialog(null);
     showStudentFeedback(
-      createLocalFeedback("success", "Builder selections cleared. Saved paths are unchanged until Save.", "clear"),
+      createLocalFeedback("success", t("cleared"), "clear"),
     );
   }
 
@@ -185,25 +201,29 @@ export function StudentBuilderClient({
           onToggleTrack={applyTrackToggle}
           onToggleTopic={applyTopicToggle}
         />
-        <CurrentPathPanel draft={state.draft} onItemAction={applyItemAction} />
+        <CurrentPathPanel
+          draft={state.draft}
+          tracks={state.availableTracks}
+          onItemAction={applyItemAction}
+        />
       </div>
       <BuilderConfirmationDialog
         open={dialog === "discard"}
-        title="Discard changes"
+        title={t("dialogs.discardTitle")}
         description={
           state.mode === "edit"
-            ? "This returns the builder to the last saved learning path. Unsaved changes will be lost."
-            : "This returns the builder to an empty learning path. Unsaved selections will be lost."
+            ? t("dialogs.discardEditDescription")
+            : t("dialogs.discardCreateDescription")
         }
-        confirmLabel="Discard Changes"
+        confirmLabel={t("discard")}
         onOpenChange={(open) => setDialog(open ? "discard" : null)}
         onConfirm={applyDiscard}
       />
       <BuilderConfirmationDialog
         open={dialog === "clear"}
-        title="Clear learning path"
-        description="This clears only the builder selections on this page. Saved paths and progress stay unchanged unless you save a new composition."
-        confirmLabel="Clear Learning Path"
+        title={t("dialogs.clearTitle")}
+        description={t("dialogs.clearDescription")}
+        confirmLabel={t("clear")}
         onOpenChange={(open) => setDialog(open ? "clear" : null)}
         onConfirm={applyClear}
       />

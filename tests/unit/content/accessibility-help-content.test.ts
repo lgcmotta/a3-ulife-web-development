@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { accessibilityHelpSections } from "@/content/accessibility-help";
+import { getLocalizedContent } from "@/content/locales";
 
 describe("accessibility help content", () => {
   it("covers the required platform-specific accessibility guidance", () => {
+    const { accessibilityHelpSections } = getLocalizedContent("en");
     const copy = accessibilityHelpSections
       .map((section) => `${section.title} ${section.appliesTo} ${section.content}`)
       .join(" ")
@@ -20,6 +21,8 @@ describe("accessibility help content", () => {
   });
 
   it("keeps accessibility help concise and non-generic", () => {
+    const { accessibilityHelpSections } = getLocalizedContent("en");
+
     expect(accessibilityHelpSections).toHaveLength(4);
     for (const section of accessibilityHelpSections) {
       expect(section.content.length).toBeGreaterThan(120);

@@ -1,0 +1,14 @@
+{
+  "primaryLabel": "Primary navigation",
+  "items": {
+    "home": {
+      "label": "Home"
+    },
+    "tracks": {
+      "label": "Learning Tracks"
+    },
+    "accessibility": {
+      "label": "Accessibility Help"
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "personas": {
+    "marina": {
+      "name": "Marina, first-semester CS student",
+      "studentStage": "Beginner student taking introductory programming and web classes",
+      "goals": {
+        "understandFirst": "Understand what to study first without opening many disconnected resources",
+        "shortExplanations": "Find short explanations before committing to a full lesson",
+        "mobileUse": "Use the platform on a phone while commuting or between classes"
+      },
+      "needs": {
+        "plainLabels": "Plain language labels",
+        "predictableNavigation": "Predictable navigation",
+        "readableMobile": "Readable mobile layout",
+        "nextAction": "Clear next study action after each topic"
+      },
+      "frustrations": {
+        "unorderedTopics": "Long lists of topics with no order",
+        "assumedVocabulary": "Pages that assume prior vocabulary",
+        "changingNavigation": "Navigation that changes between screens"
+      },
+      "scenario": "Marina opens the platform before a study session, reads who Diogenes is, chooses a beginner track, and opens one topic to decide what to practice next."
+    }
+  },
+  "informationArchitecture": {
+    "mainAreas": {
+      "home": "Home or introduction area",
+      "tracksOverview": "Learning tracks overview",
+      "historyTab": "Student area history tab",
+      "builderTab": "Student area builder tab",
+      "topicDetail": "Topic detail area",
+      "learningSection": "Personalized learning section area",
+      "accessibilityHelp": "Accessibility help area"
+    },
+    "navigationRelationships": {
+      "homeLinks": "Home introduces the purpose and links to Start Learning, Learning Tracks, and Accessibility Help.",
+      "startLearningRoute": "Start Learning on Home and Learning Tracks opens the default student area tab at /tracks/history.",
+      "studentTabs": "Learning Path History and Learning Path Builder are sibling tabs with URL-backed routes.",
+      "historyToBuilder": "Learning Path History lists saved paths and links to /tracks/builder when students need a new path.",
+      "builderToLearning": "Learning Path Builder lets students configure the current path and start or continue the saved path.",
+      "savedLearningSections": "Saved learning paths open detailed learning sections and each section returns to the builder.",
+      "completionRoute": "Completing the final topic opens a completion screen with a route back to /tracks/history.",
+      "tracksToTopics": "Learning Tracks lists curated paths and links to foundation topic detail pages.",
+      "topicsToTracks": "Topic pages explain one study unit and return students to Learning Tracks.",
+      "globalAccessibility": "Accessibility Help is reachable from every main page through primary navigation."
+    },
+    "contentHierarchy": {
+      "pageHeading": "Each page starts with one main heading and a short orientation paragraph.",
+      "repeatedItems": "Repeated track and topic items use consistent labels and supporting descriptions.",
+      "studentSeparation": "Student-area content separates history review from builder editing to reduce task switching confusion.",
+      "builderLayout": "Builder content keeps the source catalog in a left tree and the current path in a main ordered view.",
+      "learningActions": "Learning sections keep Complete Topic and Return to Builder actions before long markdown content.",
+      "primaryActions": "Primary actions appear before secondary details on both desktop and mobile."
+    },
+    "wireframeNotes": {
+      "desktopHome": "Desktop home uses a full-width professor image with overlayed introduction text and visible next-section preview.",
+      "mobileHome": "Mobile home places the same introduction first, then stacks actions and content summaries.",
+      "trackOverview": "Track overview uses repeated cards with title, purpose, recommendation, and topic links.",
+      "topicDetail": "Topic detail uses a narrow reading column with key ideas and a next study action.",
+      "studentHistory": "Student history uses a tab shell, then either an accessible table or an empty state with Add New Learning Path.",
+      "studentBuilder": "Student builder uses a two-column desktop layout and stacks the action bar, catalog tree, and current path on mobile.",
+      "learningSection": "Learning section pages use a constrained reading column so markdown tables, links, and lists stay readable."
+    }
+  },
+  "heuristicFindings": {
+    "visibilityOfStatus": {
+      "heuristic": "Visibility of system status",
+      "finding": "Students need to know which main area they are in while moving between Home, Tracks, and Accessibility Help.",
+      "severity": "medium",
+      "decision": "addressed-now",
+      "iterationNote": "Primary navigation includes current-page state and topic pages include return navigation."
+    },
+    "recognition": {
+      "heuristic": "Recognition rather than recall",
+      "finding": "Track options should explain their purpose without requiring students to remember course terminology.",
+      "severity": "medium",
+      "decision": "addressed-now",
+      "iterationNote": "Each track includes a beginner-friendly summary, description, and recommended-for statement."
+    },
+    "foundationAccessibility": {
+      "heuristic": "Accessibility and flexibility of use",
+      "finding": "Students need keyboard navigation and a high-contrast option to use the foundation independently.",
+      "severity": "high",
+      "decision": "addressed-now",
+      "iterationNote": "The foundation includes skip link, focus states, semantic regions, and a high-contrast theme toggle."
+    },
+    "userControl": {
+      "heuristic": "User control and freedom",
+      "finding": "Students can make significant path edits and need a way to avoid losing or accidentally applying changes.",
+      "severity": "high",
+      "decision": "addressed-now",
+      "iterationNote": "The builder separates Save from Continue Learning, disables invalid actions, and requires confirmation for discard and clear."
+    },
+    "realWorldMatch": {
+      "heuristic": "Match between system and real world",
+      "finding": "The builder must preserve the learning-track hierarchy so students do not see topics detached from their study context.",
+      "severity": "medium",
+      "decision": "addressed-now",
+      "iterationNote": "The current path groups selected topics under their parent track and only permits topic reordering inside that group."
+    },
+    "errorPrevention": {
+      "heuristic": "Error prevention",
+      "finding": "Students may try to continue learning with unsaved edits or save an empty path.",
+      "severity": "high",
+      "decision": "addressed-now",
+      "iterationNote": "The action bar disables invalid actions and server actions return friendly feedback for blocked operations."
+    },
+    "builderAccessibility": {
+      "heuristic": "Accessibility and flexibility of use",
+      "finding": "The personalized builder introduces tabs, tree controls, context menus, dialogs, toasts, and long reading pages.",
+      "severity": "high",
+      "decision": "addressed-now",
+      "iterationNote": "Student-area tabs expose selected state, controls have readable labels, destructive dialogs are explicit, and learning sections place Complete Topic before long content."
+    }
+  }
+}

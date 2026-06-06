@@ -2,20 +2,9 @@
 
 import { Contrast, Moon, Sun } from "lucide-react";
 import type { KeyboardEvent } from "react";
-import { useId, useSyncExternalStore } from "react";
-import {
-  defaultVisualPreference,
-  resolveVisualPreference,
-  type BaseThemeId,
-} from "@/accessibility/theme";
-import {
-  applyThemePreference,
-  getThemePreferenceSnapshot,
-  notifyThemePreferenceChange,
-  subscribeToThemePreference,
-  writeBaseThemePreference,
-  writeHighContrastPreference,
-} from "@/storage/theme-preference";
+import { useId } from "react";
+import type { BaseThemeId } from "@/accessibility/theme";
+import { useThemePreference } from "@/features/foundation/components/preference-providers";
 import { Switch } from "@/ui/components/switch";
 
 const themeIcons = {
@@ -28,44 +17,40 @@ const baseThemeLabels = {
   dark: "Dark theme",
 } satisfies Record<BaseThemeId, string>;
 
-export function ThemeToggle() {
-  const preference = useSyncExternalStore(
-    subscribeToThemePreference,
-    getThemePreferenceSnapshot,
-    () => defaultVisualPreference,
-  );
+export type ThemeToggleLabels = {
+  visualTheme: string;
+  baseTheme: Record<BaseThemeId, string>;
+  baseThemeToggle: string;
+  highContrast: string;
+  highContrastToggle: string;
+};
+
+const defaultLabels: ThemeToggleLabels = {
+  visualTheme: "Visual theme",
+  baseTheme: baseThemeLabels,
+  baseThemeToggle: "Toggle base theme",
+  highContrast: "High contrast",
+  highContrastToggle: "Toggle high contrast",
+};
+
+export function ThemeToggle({
+  labels = defaultLabels,
+}: {
+  labels?: ThemeToggleLabels;
+}) {
+  const { preference, setBaseTheme, setHighContrast } = useThemePreference();
   const baseThemeLabelId = useId();
   const highContrastLabelId = useId();
   const ThemeIcon = themeIcons[preference.baseTheme];
-  const baseThemeLabel = baseThemeLabels[preference.baseTheme];
+  const baseThemeLabel = labels.baseTheme[preference.baseTheme];
   const isDarkTheme = preference.baseTheme === "dark";
-
-  function setBaseTheme(baseTheme: BaseThemeId) {
-    if (baseTheme === preference.baseTheme) {
-      return;
-    }
-
-    const nextPreference = resolveVisualPreference({
-      baseTheme,
-      highContrast: preference.highContrast,
-    });
-    writeBaseThemePreference(baseTheme);
-    applyThemePreference(nextPreference);
-    notifyThemePreferenceChange();
-  }
 
   function toggleBaseTheme() {
     setBaseTheme(isDarkTheme ? "light" : "dark");
   }
 
   function toggleHighContrast() {
-    const nextPreference = resolveVisualPreference({
-      baseTheme: preference.baseTheme,
-      highContrast: !preference.highContrast,
-    });
-    writeHighContrastPreference(nextPreference.highContrast);
-    applyThemePreference(nextPreference);
-    notifyThemePreferenceChange();
+    setHighContrast(!preference.highContrast);
   }
 
   function handleSwitchKeyDown(event: KeyboardEvent<HTMLButtonElement>, toggle: () => void) {
@@ -78,14 +63,14 @@ export function ThemeToggle() {
   }
 
   return (
-    <div className="theme-toggle" aria-label="Visual theme">
+    <div className="theme-toggle" aria-label={labels.visualTheme}>
       <div className="base-theme-control">
         <ThemeIcon aria-hidden="true" size={18} />
         <span className="theme-control-label" id={baseThemeLabelId}>
-            {baseThemeLabel}
+          {baseThemeLabel}
         </span>
         <Switch
-          aria-label="Toggle base theme"
+          aria-label={labels.baseThemeToggle}
           aria-labelledby={baseThemeLabelId}
           checked={isDarkTheme}
           onClick={toggleBaseTheme}
@@ -95,10 +80,10 @@ export function ThemeToggle() {
       <div className="contrast-control">
         <Contrast aria-hidden="true" size={18} />
         <span className="theme-control-label" id={highContrastLabelId}>
-          High contrast
+          {labels.highContrast}
         </span>
         <Switch
-          aria-label="Toggle high contrast"
+          aria-label={labels.highContrastToggle}
           aria-labelledby={highContrastLabelId}
           checked={preference.highContrast}
           onClick={toggleHighContrast}

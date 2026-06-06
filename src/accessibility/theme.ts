@@ -1,26 +1,11 @@
 import type { VisualTheme } from "@/content/types";
 
 export const LEGACY_THEME_STORAGE_KEY = "legado-de-diogenes-theme";
-export const THEME_STORAGE_KEY = LEGACY_THEME_STORAGE_KEY;
 export const BASE_THEME_STORAGE_KEY = "legado-de-diogenes-base-theme";
 export const HIGH_CONTRAST_STORAGE_KEY = "legado-de-diogenes-high-contrast";
+export const themePreferenceCookie = "legado-de-diogenes-theme-preference";
 
-export const baseThemes = [
-  {
-    id: "light",
-    label: "Light",
-    purpose: "Balanced color-safe reading for normal presentation use",
-    isDefault: true,
-  },
-  {
-    id: "dark",
-    label: "Dark",
-    purpose: "Darker reading surfaces for students who prefer reduced brightness",
-    isDefault: false,
-  },
-] as const;
-
-export type BaseThemeId = (typeof baseThemes)[number]["id"];
+export type BaseThemeId = "light" | "dark";
 
 export const contrastModes = ["normal", "high"] as const;
 
@@ -41,7 +26,6 @@ export type VisualPreference = {
 
 export const defaultBaseTheme: BaseThemeId = "light";
 export const defaultHighContrast = false;
-export const defaultTheme = defaultBaseTheme;
 
 export const visualPreferences: Record<ThemeCombination, VisualPreference> = {
   "light-normal": {
@@ -252,8 +236,8 @@ export function isContrastMode(value: string | null | undefined): value is Contr
   return value === "normal" || value === "high";
 }
 
-export function isThemeId(value: string | null | undefined): value is ThemeId {
-  return themes.some((theme) => theme.id === value);
+export function isThemeCombination(value: unknown): value is ThemeCombination {
+  return typeof value === "string" && value in visualPreferences;
 }
 
 export function resolveBaseTheme(value: string | null | undefined): BaseThemeId {
@@ -301,10 +285,6 @@ export function resolveVisualPreference(input?: {
   return visualPreferences[getThemeCombination(baseTheme, highContrast)];
 }
 
-export function resolveTheme(value: string | null | undefined): ThemeId {
-  return isThemeId(value) ? value : "light";
-}
-
-export function getThemeLabel(themeId: ThemeId) {
-  return themes.find((theme) => theme.id === themeId)?.label ?? "Light theme";
+export function resolveVisualPreferenceFromCombination(value: unknown): VisualPreference {
+  return isThemeCombination(value) ? visualPreferences[value] : defaultVisualPreference;
 }

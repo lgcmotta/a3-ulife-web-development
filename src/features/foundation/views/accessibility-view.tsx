@@ -1,21 +1,47 @@
-import { accessibilityHelpSections } from "@/content/accessibility-help";
-import { informationArchitecture } from "@/content/evidence/information-architecture";
-import { heuristicFindings } from "@/content/evidence/heuristic-evaluation";
-import { personas } from "@/content/evidence/personas";
+import { useTranslations } from "next-intl";
+import {
+  accessibilityHelpSectionOrder,
+  heuristicFindingOrder,
+  informationArchitectureOrder,
+  personaOrder,
+} from "@/content/catalog-structure";
 import { themes } from "@/accessibility/theme";
 
 export function AccessibilityView() {
+  const t = useTranslations("accessibility");
+  const evidence = useTranslations("evidence");
+  const rawAccessibility = t.raw as (key: string) => unknown;
+  const rawEvidence = evidence.raw as (key: string) => unknown;
+  const helpSections = rawAccessibility("helpSections") as Record<
+    (typeof accessibilityHelpSectionOrder)[number],
+    { title: string; content: string; appliesTo: string }
+  >;
+  const personas = rawEvidence("personas") as Record<
+    (typeof personaOrder)[number],
+    { scenario: string }
+  >;
+  const informationArchitecture = rawEvidence("informationArchitecture") as {
+    mainAreas: Record<(typeof informationArchitectureOrder.mainAreas)[number], string>;
+  };
+  const heuristicFindings = rawEvidence("heuristicFindings") as Record<
+    (typeof heuristicFindingOrder)[number],
+    { iterationNote: string }
+  >;
+  const accessibilityHelpSections = accessibilityHelpSectionOrder.map(
+    (sectionId) => helpSections[sectionId],
+  );
+  const persona = personas[personaOrder[0]];
+  const mainAreas = informationArchitectureOrder.mainAreas.map(
+    (areaId) => informationArchitecture.mainAreas[areaId],
+  );
+  const firstHeuristicFinding = heuristicFindings[heuristicFindingOrder[0]];
+
   return (
     <section className="content-container page-section" aria-labelledby="accessibility-heading">
       <div className="page-intro">
-        <p className="eyebrow">Accessibility help</p>
-        <h1 id="accessibility-heading">Navigate the foundation independently</h1>
-        <p>
-          This page explains how to move through Legado de Diogenes with a
-          keyboard, screen reader, light or dark theme, and optional high
-          contrast while keeping the same learning content available to every
-          student.
-        </p>
+        <p className="eyebrow">{t("eyebrow")}</p>
+        <h1 id="accessibility-heading">{t("heading")}</h1>
+        <p>{t("intro")}</p>
       </div>
       <div className="help-grid">
         {accessibilityHelpSections.map((section) => (
@@ -27,34 +53,35 @@ export function AccessibilityView() {
         ))}
       </div>
       <section className="evidence-section" aria-labelledby="themes-heading">
-        <h2 id="themes-heading">Supported visual modes</h2>
+        <h2 id="themes-heading">{t("themesHeading")}</h2>
         <ul className="evidence-list">
           {themes.map((theme) => (
             <li key={theme.id}>
-              <strong>{theme.label}:</strong> {theme.purpose}
+              <strong>{t(`themeModes.${theme.id}.label`)}:</strong>{" "}
+              {t(`themeModes.${theme.id}.purpose`)}
             </li>
           ))}
         </ul>
       </section>
       <section className="evidence-section" aria-labelledby="assignment-evidence-heading">
-        <p className="eyebrow">Assignment evidence</p>
-        <h2 id="assignment-evidence-heading">Design decisions prepared for review</h2>
+        <p className="eyebrow">{t("assignmentEyebrow")}</p>
+        <h2 id="assignment-evidence-heading">{t("assignmentHeading")}</h2>
         <div className="evidence-grid">
           <article>
-            <h3>Persona</h3>
-            <p>{personas[0].scenario}</p>
+            <h3>{t("personaHeading")}</h3>
+            <p>{persona.scenario}</p>
           </article>
           <article>
-            <h3>Information architecture</h3>
+            <h3>{t("informationArchitectureHeading")}</h3>
             <ul>
-              {informationArchitecture.mainAreas.map((area) => (
+              {mainAreas.map((area) => (
                 <li key={area}>{area}</li>
               ))}
             </ul>
           </article>
           <article>
-            <h3>Heuristic iteration</h3>
-            <p>{heuristicFindings[0].iterationNote}</p>
+            <h3>{t("heuristicIterationHeading")}</h3>
+            <p>{firstHeuristicFinding.iterationNote}</p>
           </article>
         </div>
       </section>

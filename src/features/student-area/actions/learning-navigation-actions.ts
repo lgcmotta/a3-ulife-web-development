@@ -1,5 +1,6 @@
 "use server";
 
+import { getTranslations } from "next-intl/server";
 import { resolveActionStudentId } from "@/features/student-area/actions/action-student";
 import {
   createActionError,
@@ -11,24 +12,25 @@ import { createRedisStudentAreaStore } from "@/server/student-area/repository";
 
 export async function startOrContinueLearningAction(studentId: string, pathId: string | null) {
   const store = createRedisStudentAreaStore();
+  const t = await getTranslations("studentArea.feedback");
 
   try {
     studentId = await resolveActionStudentId(studentId, store);
 
     if (!pathId) {
-      return createActionError("Save a learning path before starting.", "start-learning");
+      return createActionError(t("startBeforeSave"), "start-learning");
     }
 
     const savedPath = await store.loadSavedPath(studentId, pathId);
 
     if (!savedPath) {
-      return createActionError("Save a learning path before starting.", "start-learning");
+      return createActionError(t("startBeforeSave"), "start-learning");
     }
 
-    return createActionSuccess("Opening your next topic.", {
+    return createActionSuccess(t("openingNextTopic"), {
       url: getLearningDestination(savedPath),
     });
   } catch (error) {
-    return friendlyActionError(error, "Learning could not be opened. Please try again.");
+    return friendlyActionError(error, t("learningOpenFailed"), { useErrorMessage: false });
   }
 }

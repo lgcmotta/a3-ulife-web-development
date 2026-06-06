@@ -1,0 +1,31 @@
+{
+  "eyebrow": "Learning tracks",
+  "heading": "Choose a small, curated study path",
+  "intro": "Each track gives a beginner-friendly purpose and a short set of topics to inspect. Start with the track that best matches the study problem in front of you.",
+  "listLabel": "Learning track list",
+  "topicsCount": "{count, plural, one {# topic} other {# topics}}",
+  "expectedOutcome": "Expected outcome:",
+  "items": {
+    "programming-foundations": {
+      "title": "Programming Foundations",
+      "summary": "Build the habits behind clear programs before focusing on syntax alone.",
+      "description": "This track helps beginners slow down, describe a problem, follow how values change, and debug with evidence. It is designed for students who feel unsure where to begin when an exercise is placed in front of them.",
+      "recommendedFor": "Students writing their first programs or returning after a difficult first course.",
+      "outcome": "After this track, students can plan a small program, trace its behavior, and use a repeatable debugging routine."
+    },
+    "web-and-accessibility": {
+      "title": "Web and Accessibility",
+      "summary": "Learn how structure, layout, and inclusive interaction make pages easier to use.",
+      "description": "This track connects beginner web interface decisions with usability and accessibility. Students study how headings, landmarks, responsive layout, labels, focus order, and visual contrast affect real people using the same page in different ways.",
+      "recommendedFor": "Students building their first web assignment or improving a class prototype.",
+      "outcome": "After this track, students can review a simple web page for structure, mobile readability, keyboard access, and non-color cues."
+    },
+    "study-methods": {
+      "title": "Study Methods for CS",
+      "summary": "Use practical routines for reading, planning, and asking for help in Computer Science.",
+      "description": "This track supports the habits around technical learning: reading with a purpose, planning short study sessions, and asking questions that give professors, monitors, and classmates enough context to help.",
+      "recommendedFor": "Students who know what to study but need a calmer way to keep going.",
+      "outcome": "After this track, students can prepare a focused study session, summarize technical material, and ask specific questions when blocked."
+    }
+  }
+}

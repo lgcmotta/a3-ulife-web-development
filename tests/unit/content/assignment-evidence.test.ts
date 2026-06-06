@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { heuristicFindings } from "@/content/evidence/heuristic-evaluation";
-import { informationArchitecture } from "@/content/evidence/information-architecture";
-import { personas } from "@/content/evidence/personas";
+import { getLocalizedContent } from "@/content/locales";
 
 describe("assignment evidence", () => {
   it("includes persona, IA, wireframe, heuristic, and iteration evidence", () => {
+    const { heuristicFindings, informationArchitecture, personas } =
+      getLocalizedContent("en");
+
     expect(personas.length).toBeGreaterThanOrEqual(1);
     expect(personas[0].studentStage.toLowerCase()).toContain("beginner");
     expect(informationArchitecture.mainAreas).toContain("Home or introduction area");
@@ -16,6 +17,7 @@ describe("assignment evidence", () => {
   });
 
   it("keeps deferred evidence within later-scope boundaries", () => {
+    const { heuristicFindings } = getLocalizedContent("en");
     const deferred = heuristicFindings.filter(
       (finding) => finding.decision === "deferred",
     );

@@ -9,8 +9,8 @@ import {
   HIGH_CONTRAST_STORAGE_KEY,
   LEGACY_THEME_STORAGE_KEY,
   resolveHighContrast,
-  resolveTheme,
   resolveVisualPreference,
+  themePreferenceCookie,
   themeTokenSets,
   themes,
   visualPreferences,
@@ -23,6 +23,7 @@ import {
   readStoredBaseThemePreference,
   readStoredHighContrastPreference,
   readStoredThemePreference,
+  readThemeCookie,
 } from "@/storage/theme-preference";
 
 describe("theme helpers", () => {
@@ -33,9 +34,9 @@ describe("theme helpers", () => {
   });
 
   it("falls back to the readable default for unknown values", () => {
-    expect(resolveTheme("dark-high")).toBe("dark-high");
-    expect(resolveTheme("unknown")).toBe("light");
-    expect(resolveTheme(null)).toBe("light");
+    expect(resolveVisualPreference({ baseTheme: "unknown" })).toBe(
+      visualPreferences["light-normal"],
+    );
     expect(resolveHighContrast("high")).toBe(true);
     expect(resolveHighContrast("not-valid")).toBe(false);
   });
@@ -125,6 +126,19 @@ describe("theme helpers", () => {
     window.localStorage.setItem(HIGH_CONTRAST_STORAGE_KEY, "false");
 
     expect(getThemePreferenceSnapshot()).toBe(visualPreferences["dark-normal"]);
+  });
+
+  it("reads the cookie-backed preference before applied root attributes", () => {
+    document.documentElement.dataset.theme = "light";
+    document.documentElement.dataset.contrast = "normal";
+    document.cookie = `${themePreferenceCookie}=dark-high; path=/`;
+
+    expect(readThemeCookie()).toBe(visualPreferences["dark-high"]);
+    expect(getThemePreferenceSnapshot()).toBe(visualPreferences["dark-high"]);
+
+    document.cookie = `${themePreferenceCookie}=not-a-theme; path=/`;
+
+    expect(readThemeCookie()).toBeNull();
   });
 
   it("reads and applies root visual attributes without using legacy values", () => {

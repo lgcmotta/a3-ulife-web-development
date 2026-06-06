@@ -1,0 +1,14 @@
+{
+  "primaryLabel": "Navegacao principal",
+  "items": {
+    "home": {
+      "label": "Inicio"
+    },
+    "tracks": {
+      "label": "Trilhas de aprendizagem"
+    },
+    "accessibility": {
+      "label": "Ajuda de acessibilidade"
+    }
+  }
+}

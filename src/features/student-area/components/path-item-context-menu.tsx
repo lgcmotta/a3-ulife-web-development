@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { EllipsisVertical } from "lucide-react";
 
 import type { PathContextAction, PathItemLevel } from "@/server/student-area/types";
@@ -9,12 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/ui/components/dropdown-menu";
-
-const actions: Array<{ label: string; action: PathContextAction }> = [
-  { label: "Remove", action: "remove" },
-  { label: "Move up", action: "move-up" },
-  { label: "Move down", action: "move-down" },
-];
 
 export function PathItemContextMenu({
   label,
@@ -34,11 +29,18 @@ export function PathItemContextMenu({
     action: PathContextAction,
   ) => void;
 }) {
+  const t = useTranslations("studentArea.builder.menu");
+  const actions: Array<{ label: string; action: PathContextAction }> = [
+    { label: t("remove"), action: "remove" },
+    { label: t("moveUp"), action: "move-up" },
+    { label: t("moveDown"), action: "move-down" },
+  ];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
-          aria-label={`Actions for ${label}`}
+          aria-label={t("actionsFor", { label })}
           className="item-action-button"
           type="button"
         >

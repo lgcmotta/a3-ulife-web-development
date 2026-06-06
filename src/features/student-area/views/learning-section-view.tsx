@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { LearningSectionContent } from "@/features/student-area/components/learning-section-content";
 import { LearningTopicActions } from "@/features/student-area/components/learning-topic-actions";
@@ -16,29 +17,31 @@ export async function LearningSectionView({
   path: SavedLearningPath | null;
   topicSlug: string;
 }) {
-  const topicContext = findTopicBySlug(topicSlug);
+  const locale = await getLocale();
+  const t = await getTranslations("studentArea.learning");
+  const topicContext = findTopicBySlug(topicSlug, locale);
 
   if (!path) {
-    return <LearningSectionError message="No saved learning path was found for this student." />;
+    return <LearningSectionError message={t("pathNotFound")} />;
   }
 
   if (path.pathId.length === 0 || !path.trackGroups.some((group) =>
     group.topicItems.some((topic) => topic.topicSlug === topicSlug),
   )) {
-    return <LearningSectionError message="This topic is not part of the saved learning path." />;
+    return <LearningSectionError message={t("topicNotInPath")} />;
   }
 
   if (!topicContext) {
-    return <LearningSectionError message="This topic is not available in the learning catalog." />;
+    return <LearningSectionError message={t("topicNotAvailable")} />;
   }
 
   let markdownContent: string;
 
   try {
-    const markdown = await loadLearningSectionMarkdown(topicSlug);
+    const markdown = await loadLearningSectionMarkdown(topicSlug, locale);
     markdownContent = markdown.markdownContent;
   } catch {
-    return <LearningSectionError message="The learning section content could not be loaded." />;
+    return <LearningSectionError message={t("contentNotLoaded")} />;
   }
 
   return (
@@ -65,13 +68,15 @@ export async function LearningSectionView({
   );
 }
 
-function LearningSectionError({ message }: { message: string }) {
+async function LearningSectionError({ message }: { message: string }) {
+  const t = await getTranslations("studentArea.learning");
+
   return (
     <section className="content-container page-section" aria-labelledby="learning-error-heading">
-      <h1 id="learning-error-heading">Learning section unavailable</h1>
+      <h1 id="learning-error-heading">{t("sectionUnavailable")}</h1>
       <p>{message}</p>
       <Link className={buttonVariants()} href="/tracks/builder" prefetch={false}>
-        Return to Builder
+        {t("returnToBuilder")}
       </Link>
     </section>
   );

@@ -1,0 +1,31 @@
+{
+  "eyebrow": "Trilhas de aprendizagem",
+  "heading": "Escolha um caminho de estudo pequeno e selecionado",
+  "intro": "Cada trilha oferece um objetivo amigavel para iniciantes e um conjunto curto de topicos para inspecionar. Comece pela trilha que melhor combina com o problema de estudo a sua frente.",
+  "listLabel": "Lista de trilhas de aprendizagem",
+  "topicsCount": "{count, plural, one {# topico} other {# topicos}}",
+  "expectedOutcome": "Resultado esperado:",
+  "items": {
+    "programming-foundations": {
+      "title": "Fundamentos de Programacao",
+      "summary": "Construa os habitos por tras de programas claros antes de focar apenas na sintaxe.",
+      "description": "Esta trilha ajuda iniciantes a desacelerar, descrever um problema, acompanhar como valores mudam e depurar com evidencias. Ela foi pensada para estudantes que se sentem inseguros sobre por onde comecar quando um exercicio aparece diante deles.",
+      "recommendedFor": "Estudantes escrevendo seus primeiros programas ou retornando depois de uma primeira disciplina dificil.",
+      "outcome": "Depois desta trilha, estudantes conseguem planejar um programa pequeno, rastrear seu comportamento e usar uma rotina repetivel de depuracao."
+    },
+    "web-and-accessibility": {
+      "title": "Web e Acessibilidade",
+      "summary": "Aprenda como estrutura, layout e interacao inclusiva tornam paginas mais faceis de usar.",
+      "description": "Esta trilha conecta decisoes iniciais de interface web com usabilidade e acessibilidade. Estudantes estudam como titulos, marcos, layout responsivo, rotulos, ordem de foco e contraste visual afetam pessoas reais usando a mesma pagina de maneiras diferentes.",
+      "recommendedFor": "Estudantes criando seu primeiro trabalho web ou melhorando um prototipo de aula.",
+      "outcome": "Depois desta trilha, estudantes conseguem revisar uma pagina simples quanto a estrutura, leitura em telas pequenas, acesso por teclado e pistas que nao dependem so de cor."
+    },
+    "study-methods": {
+      "title": "Metodos de Estudo para CS",
+      "summary": "Use rotinas praticas para ler, planejar e pedir ajuda em Ciencia da Computacao.",
+      "description": "Esta trilha apoia os habitos ao redor da aprendizagem tecnica: ler com objetivo, planejar sessoes curtas de estudo e fazer perguntas que deem a professores, monitores e colegas contexto suficiente para ajudar.",
+      "recommendedFor": "Estudantes que sabem o que estudar, mas precisam de uma forma mais calma de continuar.",
+      "outcome": "Depois desta trilha, estudantes conseguem preparar uma sessao focada de estudo, resumir material tecnico e fazer perguntas especificas quando travam."
+    }
+  }
+}

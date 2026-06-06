@@ -1,5 +1,4 @@
-"use client";
-
+import { useTranslations } from "next-intl";
 import { Button } from "@/ui/components/button";
 import {
   Dialog,
@@ -25,6 +24,8 @@ export function BuilderConfirmationDialog({
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
 }) {
+  const actions = useTranslations("actions");
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -34,7 +35,7 @@ export function BuilderConfirmationDialog({
         </DialogHeader>
         <DialogFooter>
           <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
-            Cancel
+            {actions("cancel")}
           </Button>
           <Button type="button" onClick={onConfirm}>
             {confirmLabel}
