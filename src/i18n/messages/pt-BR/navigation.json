@@ -1,8 +1,8 @@
 {
-  "primaryLabel": "Navegacao principal",
+  "primaryLabel": "Navegação principal",
   "items": {
     "home": {
-      "label": "Inicio"
+      "label": "Início"
     },
     "tracks": {
       "label": "Trilhas de aprendizagem"

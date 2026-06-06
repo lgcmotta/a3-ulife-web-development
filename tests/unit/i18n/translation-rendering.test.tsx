@@ -24,7 +24,7 @@ describe("representative translation rendering", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: "Mudar para Portugues (Brasil)" }).textContent,
-    ).toBe("Portugues (Brasil)");
+      screen.getByRole("button", { name: "Mudar para Português (Brasil)" }).textContent,
+    ).toBe("Português (Brasil)");
   });
 });

@@ -1,116 +1,116 @@
 {
   "personas": {
     "marina": {
-      "name": "Marina, estudante do primeiro semestre de Ciencia da Computacao",
-      "studentStage": "Estudante iniciante cursando disciplinas introdutorias de programacao e web",
+      "name": "Marina, estudante do primeiro semestre de Ciência da Computação",
+      "studentStage": "Estudante iniciante cursando disciplinas introdutórias de programação e web",
       "goals": {
         "understandFirst": "Entender o que estudar primeiro sem abrir muitos recursos desconectados",
-        "shortExplanations": "Encontrar explicacoes curtas antes de se comprometer com uma aula completa",
+        "shortExplanations": "Encontrar explicações curtas antes de se comprometer com uma aula completa",
         "mobileUse": "Usar a plataforma no celular durante deslocamentos ou intervalos entre aulas"
       },
       "needs": {
-        "plainLabels": "Rotulos em linguagem simples",
-        "predictableNavigation": "Navegacao previsivel",
-        "readableMobile": "Layout movel legivel",
-        "nextAction": "Proxima acao de estudo clara depois de cada topico"
+        "plainLabels": "Rótulos em linguagem simples",
+        "predictableNavigation": "Navegação previsível",
+        "readableMobile": "Layout móvel legível",
+        "nextAction": "Próxima ação de estudo clara depois de cada tópico"
       },
       "frustrations": {
-        "unorderedTopics": "Listas longas de topicos sem ordem",
-        "assumedVocabulary": "Paginas que presumem vocabulario anterior",
-        "changingNavigation": "Navegacao que muda entre telas"
+        "unorderedTopics": "Listas longas de tópicos sem ordem",
+        "assumedVocabulary": "Páginas que presumem vocabulário anterior",
+        "changingNavigation": "Navegação que muda entre telas"
       },
-      "scenario": "Marina abre a plataforma antes de uma sessao de estudo, le quem e Diogenes, escolhe uma trilha para iniciantes e abre um topico para decidir o que praticar em seguida."
+      "scenario": "Marina abre a plataforma antes de uma sessão de estudo, lê quem é Diogenes, escolhe uma trilha para iniciantes e abre um tópico para decidir o que praticar em seguida."
     }
   },
   "informationArchitecture": {
     "mainAreas": {
-      "home": "Area inicial ou de introducao",
-      "tracksOverview": "Visao geral das trilhas de aprendizagem",
-      "historyTab": "Aba de historico da area do estudante",
-      "builderTab": "Aba do construtor da area do estudante",
-      "topicDetail": "Area de detalhe do topico",
-      "learningSection": "Area de secao personalizada de aprendizagem",
-      "accessibilityHelp": "Area de ajuda de acessibilidade"
+      "home": "Área inicial ou de introdução",
+      "tracksOverview": "Visão geral das trilhas de aprendizagem",
+      "historyTab": "Aba de histórico da área do estudante",
+      "builderTab": "Aba do construtor da área do estudante",
+      "topicDetail": "Área de detalhe do tópico",
+      "learningSection": "Área de seção personalizada de aprendizagem",
+      "accessibilityHelp": "Área de ajuda de acessibilidade"
     },
     "navigationRelationships": {
-      "homeLinks": "Inicio apresenta o objetivo e leva para Comecar aprendizagem, Trilhas de aprendizagem e Ajuda de acessibilidade.",
-      "startLearningRoute": "Comecar aprendizagem em Inicio e Trilhas de aprendizagem abre a aba padrao da area do estudante em /tracks/history.",
-      "studentTabs": "Historico de trilhas de aprendizagem e Construtor de trilha de aprendizagem sao abas irmas com rotas proprias.",
-      "historyToBuilder": "Historico de trilhas de aprendizagem lista caminhos salvos e leva para /tracks/builder quando estudantes precisam criar uma nova trilha.",
+      "homeLinks": "Início apresenta o objetivo e leva para Começar aprendizagem, Trilhas de aprendizagem e Ajuda de acessibilidade.",
+      "startLearningRoute": "Começar aprendizagem em Início e Trilhas de aprendizagem abre a aba padrão da área do estudante em /tracks/history.",
+      "studentTabs": "Histórico de trilhas de aprendizagem e Construtor de trilha de aprendizagem são abas irmãs com rotas próprias.",
+      "historyToBuilder": "Histórico de trilhas de aprendizagem lista caminhos salvos e leva para /tracks/builder quando estudantes precisam criar uma nova trilha.",
       "builderToLearning": "Construtor de trilha de aprendizagem permite configurar a trilha atual e iniciar ou continuar a trilha salva.",
-      "savedLearningSections": "Trilhas salvas abrem secoes detalhadas de aprendizagem, e cada secao retorna ao construtor.",
-      "completionRoute": "Concluir o topico final abre uma tela de conclusao com rota de volta para /tracks/history.",
-      "tracksToTopics": "Trilhas de aprendizagem lista caminhos selecionados e leva para paginas de detalhe de topicos da base.",
-      "topicsToTracks": "Paginas de topicos explicam uma unidade de estudo e retornam para Trilhas de aprendizagem.",
-      "globalAccessibility": "Ajuda de acessibilidade fica acessivel a partir de todas as paginas principais pela navegacao primaria."
+      "savedLearningSections": "Trilhas salvas abrem seções detalhadas de aprendizagem, e cada seção retorna ao construtor.",
+      "completionRoute": "Concluir o tópico final abre uma tela de conclusão com rota de volta para /tracks/history.",
+      "tracksToTopics": "Trilhas de aprendizagem lista caminhos selecionados e leva para páginas de detalhe de tópicos da base.",
+      "topicsToTracks": "Páginas de tópicos explicam uma unidade de estudo e retornam para Trilhas de aprendizagem.",
+      "globalAccessibility": "Ajuda de acessibilidade fica acessível a partir de todas as páginas principais pela navegação primária."
     },
     "contentHierarchy": {
-      "pageHeading": "Cada pagina comeca com um titulo principal e um paragrafo curto de orientacao.",
-      "repeatedItems": "Itens repetidos de trilha e topico usam rotulos e descricoes de apoio consistentes.",
-      "studentSeparation": "A area do estudante separa revisao de historico de edicao no construtor para reduzir troca de tarefa.",
-      "builderLayout": "O construtor mantem o catalogo de origem em uma arvore lateral e a trilha atual em uma visao ordenada principal.",
-      "learningActions": "Secoes de aprendizagem mantem as acoes Concluir topico e Voltar ao construtor antes do conteudo longo em Markdown.",
-      "primaryActions": "Acoes principais aparecem antes de detalhes secundarios tanto no desktop quanto no mobile."
+      "pageHeading": "Cada página começa com um título principal e um parágrafo curto de orientação.",
+      "repeatedItems": "Itens repetidos de trilha e tópico usam rótulos e descrições de apoio consistentes.",
+      "studentSeparation": "A área do estudante separa revisão de histórico de edição no construtor para reduzir troca de tarefa.",
+      "builderLayout": "O construtor mantém o catálogo de origem em uma árvore lateral e a trilha atual em uma visão ordenada principal.",
+      "learningActions": "Seções de aprendizagem mantêm as ações Concluir tópico e Voltar ao construtor antes do conteúdo longo em Markdown.",
+      "primaryActions": "Ações principais aparecem antes de detalhes secundários tanto no desktop quanto no mobile."
     },
     "wireframeNotes": {
-      "desktopHome": "No desktop, a pagina inicial usa uma imagem larga do professor com texto introdutorio sobreposto e uma previa visivel da proxima secao.",
-      "mobileHome": "No mobile, a pagina inicial apresenta a mesma introducao primeiro, depois empilha acoes e resumos de conteudo.",
-      "trackOverview": "A visao de trilhas usa cartoes repetidos com titulo, objetivo, recomendacao e links de topicos.",
-      "topicDetail": "O detalhe do topico usa uma coluna estreita de leitura com ideias-chave e uma proxima acao de estudo.",
-      "studentHistory": "O historico do estudante usa uma estrutura de abas, seguida por uma tabela acessivel ou um estado vazio com Adicionar nova trilha de aprendizagem.",
-      "studentBuilder": "O construtor do estudante usa layout de duas colunas no desktop e empilha barra de acoes, arvore de catalogo e trilha atual no mobile.",
-      "learningSection": "Paginas de secao de aprendizagem usam uma coluna de leitura limitada para manter tabelas, links e listas em Markdown legiveis."
+      "desktopHome": "No desktop, a página inicial usa uma imagem larga do professor com texto introdutório sobreposto e uma prévia visível da próxima seção.",
+      "mobileHome": "No mobile, a página inicial apresenta a mesma introdução primeiro, depois empilha ações e resumos de conteúdo.",
+      "trackOverview": "A visão de trilhas usa cartões repetidos com título, objetivo, recomendação e links de tópicos.",
+      "topicDetail": "O detalhe do tópico usa uma coluna estreita de leitura com ideias-chave e uma próxima ação de estudo.",
+      "studentHistory": "O histórico do estudante usa uma estrutura de abas, seguida por uma tabela acessível ou um estado vazio com Adicionar nova trilha de aprendizagem.",
+      "studentBuilder": "O construtor do estudante usa layout de duas colunas no desktop e empilha barra de ações, árvore de catálogo e trilha atual no mobile.",
+      "learningSection": "Páginas de seção de aprendizagem usam uma coluna de leitura limitada para manter tabelas, links e listas em Markdown legíveis."
     }
   },
   "heuristicFindings": {
     "visibilityOfStatus": {
       "heuristic": "Visibilidade do status do sistema",
-      "finding": "Estudantes precisam saber em qual area principal estao ao se mover entre Inicio, Trilhas e Ajuda de acessibilidade.",
+      "finding": "Estudantes precisam saber em qual área principal estão ao se mover entre Início, Trilhas e Ajuda de acessibilidade.",
       "severity": "medium",
       "decision": "addressed-now",
-      "iterationNote": "A navegacao principal inclui estado de pagina atual, e paginas de topico incluem navegacao de retorno."
+      "iterationNote": "A navegação principal inclui estado de página atual, e páginas de tópico incluem navegação de retorno."
     },
     "recognition": {
-      "heuristic": "Reconhecimento em vez de memorizacao",
-      "finding": "Opcoes de trilha devem explicar seu objetivo sem exigir que estudantes lembrem terminologia da disciplina.",
+      "heuristic": "Reconhecimento em vez de memorização",
+      "finding": "Opções de trilha devem explicar seu objetivo sem exigir que estudantes lembrem terminologia da disciplina.",
       "severity": "medium",
       "decision": "addressed-now",
-      "iterationNote": "Cada trilha inclui resumo amigavel para iniciantes, descricao e indicacao de recomendacao."
+      "iterationNote": "Cada trilha inclui resumo amigável para iniciantes, descrição e indicação de recomendação."
     },
     "foundationAccessibility": {
       "heuristic": "Acessibilidade e flexibilidade de uso",
-      "finding": "Estudantes precisam de navegacao por teclado e opcao de alto contraste para usar a base de forma independente.",
+      "finding": "Estudantes precisam de navegação por teclado e opção de alto contraste para usar a base de forma independente.",
       "severity": "high",
       "decision": "addressed-now",
-      "iterationNote": "A base inclui link de pular, estados de foco, regioes semanticas e alternancia de alto contraste."
+      "iterationNote": "A base inclui link de pular, estados de foco, regiões semânticas e alternância de alto contraste."
     },
     "userControl": {
-      "heuristic": "Controle e liberdade do usuario",
-      "finding": "Estudantes podem fazer edicoes significativas na trilha e precisam evitar perder ou aplicar mudancas por acidente.",
+      "heuristic": "Controle e liberdade do usuário",
+      "finding": "Estudantes podem fazer edições significativas na trilha e precisam evitar perder ou aplicar mudanças por acidente.",
       "severity": "high",
       "decision": "addressed-now",
-      "iterationNote": "O construtor separa Salvar de Continuar aprendizagem, desativa acoes invalidas e exige confirmacao para descartar e limpar."
+      "iterationNote": "O construtor separa Salvar de Continuar aprendizagem, desativa ações inválidas e exige confirmação para descartar e limpar."
     },
     "realWorldMatch": {
       "heuristic": "Compatibilidade entre sistema e mundo real",
-      "finding": "O construtor deve preservar a hierarquia das trilhas para que estudantes nao vejam topicos separados de seu contexto de estudo.",
+      "finding": "O construtor deve preservar a hierarquia das trilhas para que estudantes não vejam tópicos separados de seu contexto de estudo.",
       "severity": "medium",
       "decision": "addressed-now",
-      "iterationNote": "A trilha atual agrupa topicos selecionados sob a trilha pai e permite reordenar topicos apenas dentro desse grupo."
+      "iterationNote": "A trilha atual agrupa tópicos selecionados sob a trilha pai e permite reordenar tópicos apenas dentro desse grupo."
     },
     "errorPrevention": {
-      "heuristic": "Prevencao de erros",
-      "finding": "Estudantes podem tentar continuar aprendendo com edicoes nao salvas ou salvar uma trilha vazia.",
+      "heuristic": "Prevenção de erros",
+      "finding": "Estudantes podem tentar continuar aprendendo com edições não salvas ou salvar uma trilha vazia.",
       "severity": "high",
       "decision": "addressed-now",
-      "iterationNote": "A barra de acoes desativa acoes invalidas, e acoes de servidor retornam feedback amigavel para bloqueios."
+      "iterationNote": "A barra de ações desativa ações inválidas, e ações de servidor retornam feedback amigável para bloqueios."
     },
     "builderAccessibility": {
       "heuristic": "Acessibilidade e flexibilidade de uso",
-      "finding": "O construtor personalizado introduz abas, controles em arvore, menus de contexto, dialogos, avisos e paginas longas de leitura.",
+      "finding": "O construtor personalizado introduz abas, controles em árvore, menus de contexto, diálogos, avisos e páginas longas de leitura.",
       "severity": "high",
       "decision": "addressed-now",
-      "iterationNote": "Abas da area do estudante expõem estado selecionado, controles tem rotulos legiveis, dialogos destrutivos sao explicitos e secoes de aprendizagem colocam Concluir topico antes do conteudo longo."
+      "iterationNote": "Abas da área do estudante expõem estado selecionado, controles têm rótulos legíveis, diálogos destrutivos são explícitos e seções de aprendizagem colocam Concluir tópico antes do conteúdo longo."
     }
   }
 }

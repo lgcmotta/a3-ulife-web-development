@@ -1,31 +1,31 @@
-# Estrutura Semantica
+# Estrutura Semântica
 
-Estrutura semantica significa usar elementos de pagina por seu significado, nao apenas por sua aparencia. Um titulo deve introduzir uma secao. A navegacao deve conter links para se mover pelo site. Um botao deve executar uma acao. Um rotulo deve explicar um controle. Quando estrutura e objetivo combinam, a pagina fica mais facil de entender para todo mundo. Ela tambem fica muito mais usavel para pessoas que dependem de leitores de tela, navegacao por teclado ou recursos do navegador que resumem regioes da pagina.
+Estrutura semântica significa usar elementos de página por seu significado, não apenas por sua aparência. Um título deve introduzir uma seção. A navegação deve conter links para se mover pelo site. Um botão deve executar uma ação. Um rótulo deve explicar um controle. Quando estrutura e objetivo combinam, a página fica mais fácil de entender para todo mundo. Ela também fica muito mais usável para pessoas que dependem de leitores de tela, navegação por teclado ou recursos do navegador que resumem regiões da página.
 
-Iniciantes as vezes constroem uma pagina escolhendo caixas visuais primeiro: um bloco grande de texto aqui, uma linha de links ali, uma area colorida no rodape. Planejamento visual e util, mas deve vir acompanhado de um contorno. Se o contorno e confuso, a pagina provavelmente tambem sera. Um contorno forte comeca com um unico titulo principal e usa titulos menores para dividir o conteudo. Esses titulos devem fazer sentido quando lidos como lista. Por exemplo, uma pagina de topico pode ter "Bases da Resolucao de Problemas" como titulo principal e depois "Por que isso importa", "Rotina de pratica" e "O que fazer depois" como titulos de secao.
+Iniciantes às vezes constroem uma página escolhendo caixas visuais primeiro: um bloco grande de texto aqui, uma linha de links ali, uma área colorida no rodapé. Planejamento visual é útil, mas deve vir acompanhado de um contorno. Se o contorno é confuso, a página provavelmente também será. Um contorno forte começa com um único título principal e usa títulos menores para dividir o conteúdo. Esses títulos devem fazer sentido quando lidos como lista. Por exemplo, uma página de tópico pode ter "Bases da Resolução de Problemas" como título principal e depois "Por que isso importa", "Rotina de prática" e "O que fazer depois" como títulos de seção.
 
-| Parte da pagina | Objetivo semantico | Pergunta util |
+| Parte da página | Objetivo semântico | Pergunta útil |
 | --- | --- | --- |
-| Cabecalho | Identifica o site ou a secao | O estudante sabe onde esta? |
-| Navegacao | Lista opcoes de movimento | Os destinos dos links estao claros? |
-| Conteudo principal | Guarda o conteudo unico da pagina | O titulo principal nomeia a pagina? |
-| Titulos de secao | Dividem conteudo em pontos de leitura | O contorno explica o conteudo? |
-| Rotulos | Nomeiam controles e entradas | O controle faria sentido sem o layout? |
+| Cabeçalho | Identifica o site ou a seção | O estudante sabe onde está? |
+| Navegação | Lista opções de movimento | Os destinos dos links estão claros? |
+| Conteúdo principal | Guarda o conteúdo único da página | O título principal nomeia a página? |
+| Títulos de seção | Dividem conteúdo em pontos de leitura | O contorno explica o conteúdo? |
+| Rótulos | Nomeiam controles e entradas | O controle faria sentido sem o layout? |
 
-Usuarios de leitor de tela frequentemente navegam por titulos, marcos e links. Se todo titulo e escolhido apenas por tamanho de fonte, a lista de titulos pode pular niveis ou repetir frases vagas. Se links dizem apenas "clique aqui", uma lista de links se torna inutil. A [pagina da W3C Web Accessibility Initiative sobre estrutura de pagina](https://www.w3.org/WAI/tutorials/page-structure/) explica como titulos e regioes apoiam a navegacao. O [guia da MDN sobre semantica HTML](https://developer.mozilla.org/en-US/docs/Glossary/Semantics) oferece uma visao breve de por que o significado dos elementos importa.
+Usuários de leitor de tela frequentemente navegam por títulos, marcos e links. Se todo título é escolhido apenas por tamanho de fonte, a lista de títulos pode pular níveis ou repetir frases vagas. Se links dizem apenas "clique aqui", uma lista de links se torna inútil. A [página da W3C Web Accessibility Initiative sobre estrutura de página](https://www.w3.org/WAI/tutorials/page-structure/) explica como títulos e regiões apoiam a navegação. O [guia da MDN sobre semântica HTML](https://developer.mozilla.org/en-US/docs/Glossary/Semantics) oferece uma visão breve de por que o significado dos elementos importa.
 
-Estrutura semantica tambem ajuda usuarios que enxergam a pagina. Titulos claros apoiam leitura rapida. Links significativos reduzem hesitacao. Um estado visivel de pagina atual ajuda estudantes a saber onde estao. Um formulario com rotulos e mais facil de revisar antes de enviar. Acessibilidade e usabilidade nao sao preocupacoes separadas aqui; sao duas visoes da mesma qualidade de design.
+Estrutura semântica também ajuda usuários que enxergam a página. Títulos claros apoiam leitura rápida. Links significativos reduzem hesitação. Um estado visível de página atual ajuda estudantes a saber onde estão. Um formulário com rótulos é mais fácil de revisar antes de enviar. Acessibilidade e usabilidade não são preocupações separadas aqui; são duas visões da mesma qualidade de design.
 
-Uma forma pratica de testar estrutura e remover da imaginacao quase toda a decoracao visual. Pergunte se a pagina ainda faz sentido como um contorno simples. Se o primeiro titulo diz "Bem-vindo", mas a pagina e na verdade um construtor de trilha de aprendizagem, o titulo nao esta fazendo o suficiente. Se tres botoes diferentes dizem "Continuar" mas levam a resultados diferentes, seus rotulos precisam de mais contexto. Se um cartao de topico contem titulo, resumo, resultado esperado e lista de links, essa ordem deve continuar logica mesmo em uma tela estreita.
+Uma forma prática de testar estrutura é remover da imaginação quase toda a decoração visual. Pergunte se a página ainda faz sentido como um contorno simples. Se o primeiro título diz "Bem-vindo", mas a página é na verdade um construtor de trilha de aprendizagem, o título não está fazendo o suficiente. Se três botões diferentes dizem "Continuar" mas levam a resultados diferentes, seus rótulos precisam de mais contexto. Se um cartão de tópico contém título, resumo, resultado esperado e lista de links, essa ordem deve continuar lógica mesmo em uma tela estreita.
 
-Estrutura semantica nao deve virar algo pesado ou academico. Voce nao precisa de uma nova regiao para cada frase. Use estrutura onde ela ajuda pessoas a se mover, entender ou agir. Uma pagina educacional pequena pode precisar de cabecalho, navegacao principal, conteudo principal, algumas secoes e links claros. Isso basta. Marcos demais ou titulos repetidos podem se tornar ruido.
+Estrutura semântica não deve virar algo pesado ou acadêmico. Você não precisa de uma nova região para cada frase. Use estrutura onde ela ajuda pessoas a se mover, entender ou agir. Uma página educacional pequena pode precisar de cabeçalho, navegação principal, conteúdo principal, algumas seções e links claros. Isso basta. Marcos demais ou títulos repetidos podem se tornar ruído.
 
-Ao construir com componentes, mantenha a mesma disciplina. Um cartao reutilizavel ainda pode receber um nivel real de titulo. Um botao customizado ainda deve renderizar um botao quando executa uma acao. Uma aba deve expor estado selecionado, nao apenas uma mudanca de cor. Se um componente esconde responsabilidade semantica, toda pagina que o usa herda o problema.
+Ao construir com componentes, mantenha a mesma disciplina. Um cartão reutilizável ainda pode receber um nível real de título. Um botão customizado ainda deve renderizar um botão quando executa uma ação. Uma aba deve expor estado selecionado, não apenas uma mudança de cor. Se um componente esconde responsabilidade semântica, toda página que o usa herda o problema.
 
-## Rotina de pratica
+## Rotina de prática
 
-Escolha uma pagina desta plataforma e escreva seu contorno no papel. Inclua titulo principal, titulos de secao, regiao de navegacao e acao primaria. Depois pergunte se um estudante conseguiria prever o objetivo da pagina usando apenas esse contorno. Se nao, revise rotulos e titulos antes de mudar o estilo visual.
+Escolha uma página desta plataforma e escreva seu contorno no papel. Inclua título principal, títulos de seção, região de navegação e ação primária. Depois pergunte se um estudante conseguiria prever o objetivo da página usando apenas esse contorno. Se não, revise rótulos e títulos antes de mudar o estilo visual.
 
 ## O que fazer depois
 
-Abra uma pagina de topico e inspecione todo rotulo de link. Substitua rotulos vagos por texto que nomeia o destino ou resultado. Depois verifique se a pagina tem um titulo principal claro e uma sequencia logica de secoes.
+Abra uma página de tópico e inspecione todo rótulo de link. Substitua rótulos vagos por texto que nomeia o destino ou resultado. Depois verifique se a página tem um título principal claro e uma sequência lógica de seções.
