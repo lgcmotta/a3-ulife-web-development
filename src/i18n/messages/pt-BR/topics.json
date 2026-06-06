@@ -1,130 +1,130 @@
 {
   "items": {
     "problem-solving-basics": {
-      "title": "Bases da Resolucao de Problemas",
-      "summary": "Aprenda a transformar um exercicio de programacao em entradas, saidas, restricoes e um plano curto antes de escrever codigo.",
-      "whyItMatters": "Muitos erros de iniciantes acontecem antes da primeira linha de codigo. Um estudante pode entender a sintaxe e ainda nao saber o que o programa deve receber, calcular ou devolver. Planejar o problema em linguagem simples torna o codigo mais facil de escrever, explicar e testar.",
-      "studyNext": "Escolha um exercicio pequeno, escreva a entrada e a saida em uma frase cada, depois liste tres passos que o programa deve seguir antes de codificar.",
+      "title": "Bases da Resolução de Problemas",
+      "summary": "Aprenda a transformar um exercício de programação em entradas, saídas, restrições e um plano curto antes de escrever código.",
+      "whyItMatters": "Muitos erros de iniciantes acontecem antes da primeira linha de código. Um estudante pode entender a sintaxe e ainda não saber o que o programa deve receber, calcular ou devolver. Planejar o problema em linguagem simples torna o código mais fácil de escrever, explicar e testar.",
+      "studyNext": "Escolha um exercício pequeno, escreva a entrada e a saída em uma frase cada, depois liste três passos que o programa deve seguir antes de codificar.",
       "keyIdeas": {
-        "identifyInputs": "Identificar as informacoes que o programa recebe",
+        "identifyInputs": "Identificar as informações que o programa recebe",
         "stateResult": "Declarar o resultado que o programa deve produzir",
-        "breakWorkIntoActions": "Dividir o trabalho em acoes ordenadas",
-        "checkSampleCase": "Verificar um exemplo a mao"
+        "breakWorkIntoActions": "Dividir o trabalho em ações ordenadas",
+        "checkSampleCase": "Verificar um exemplo à mão"
       },
-      "practicePrompt": "Planeje uma calculadora de media de notas sem codigo: nomeie os valores de entrada, o calculo e a mensagem que o estudante deve ver no fim.",
-      "professorNote": "Diogenes pediria primeiro a historia da solucao. Se voce nao consegue explicar os passos para um colega, o computador nao os tornara mais claros."
+      "practicePrompt": "Planeje uma calculadora de média de notas sem código: nomeie os valores de entrada, o cálculo e a mensagem que o estudante deve ver no fim.",
+      "professorNote": "Diogenes pediria primeiro a história da solução. Se você não consegue explicar os passos para um colega, o computador não os tornará mais claros."
     },
     "variables-and-flow": {
-      "title": "Variaveis e Fluxo",
-      "summary": "Entenda como valores armazenados, condicoes e repeticoes moldam o caminho que um programa segue.",
-      "whyItMatters": "Variaveis nao sao apenas nomes em uma pagina; elas sao a memoria do programa em um momento especifico. Condicoes e lacos decidem quais instrucoes rodam em seguida. Quando estudantes aprendem a rastrear essas mudancas, codigo confuso vira uma sequencia que pode ser inspecionada.",
-      "studyNext": "Rastreie um programa curto linha por linha e mantenha uma tabela mostrando o valor de cada variavel depois de cada passo importante.",
+      "title": "Variáveis e Fluxo",
+      "summary": "Entenda como valores armazenados, condições e repetições moldam o caminho que um programa segue.",
+      "whyItMatters": "Variáveis não são apenas nomes em uma página; elas são a memória do programa em um momento específico. Condições e laços decidem quais instruções rodam em seguida. Quando estudantes aprendem a rastrear essas mudanças, código confuso vira uma sequência que pode ser inspecionada.",
+      "studyNext": "Rastreie um programa curto linha por linha e mantenha uma tabela mostrando o valor de cada variável depois de cada passo importante.",
       "keyIdeas": {
-        "trackState": "Acompanhar valores de variaveis como estado do programa",
-        "readConditions": "Ler condicoes como decisoes de sim ou nao",
-        "describeLoops": "Descrever lacos pela regra de parada",
+        "trackState": "Acompanhar valores de variáveis como estado do programa",
+        "readConditions": "Ler condições como decisões de sim ou não",
+        "describeLoops": "Descrever laços pela regra de parada",
         "useTracing": "Usar rastreamento para encontrar onde expectativas mudam"
       },
-      "practicePrompt": "Crie uma tabela de rastreamento para um laco que conta de 1 a 5 e registra o total acumulado depois de cada passagem.",
-      "professorNote": "Um laco e mais facil de confiar quando voce sabe quando ele comeca, o que muda a cada vez e por que ele finalmente para."
+      "practicePrompt": "Crie uma tabela de rastreamento para um laço que conta de 1 a 5 e registra o total acumulado depois de cada passagem.",
+      "professorNote": "Um laço é mais fácil de confiar quando você sabe quando ele começa, o que muda a cada vez e por que ele finalmente para."
     },
     "debugging-habits": {
-      "title": "Habitos de Depuracao",
-      "summary": "Pratique encontrar erros reproduzindo o problema, lendo as evidencias e mudando uma coisa por vez.",
-      "whyItMatters": "Depurar e trabalho normal de programacao, nao sinal de fracasso. O risco e tentar mudancas aleatorias ate o erro desaparecer. Uma rotina calma ajuda estudantes a entender a causa, confirmar a correcao e evitar criar um novo problema.",
-      "studyNext": "Quando um erro aparecer, escreva o que voce esperava, o que aconteceu de fato e a unica mudanca focada que testara em seguida.",
+      "title": "Hábitos de Depuração",
+      "summary": "Pratique encontrar erros reproduzindo o problema, lendo as evidências e mudando uma coisa por vez.",
+      "whyItMatters": "Depurar é trabalho normal de programação, não sinal de fracasso. O risco é tentar mudanças aleatórias até o erro desaparecer. Uma rotina calma ajuda estudantes a entender a causa, confirmar a correção e evitar criar um novo problema.",
+      "studyNext": "Quando um erro aparecer, escreva o que você esperava, o que aconteceu de fato e a única mudança focada que testará em seguida.",
       "keyIdeas": {
-        "reproduceIssue": "Reproduzir o problema antes de mudar codigo",
+        "reproduceIssue": "Reproduzir o problema antes de mudar código",
         "readErrors": "Ler mensagens de erro em busca de local e causa",
-        "changeOneThing": "Mudar uma variavel ou linha por vez",
-        "confirmFix": "Confirmar a correcao com a mesma entrada"
+        "changeOneThing": "Mudar uma variável ou linha por vez",
+        "confirmFix": "Confirmar a correção com a mesma entrada"
       },
-      "practicePrompt": "Pegue um programa pequeno quebrado e mantenha um diario de depuracao com tres colunas: observacao, hipotese e resultado.",
+      "practicePrompt": "Pegue um programa pequeno quebrado e mantenha um diário de depuração com três colunas: observação, hipótese e resultado.",
       "professorNote": "Diogenes trata uma mensagem de erro como uma pista de um examinador cuidadoso. Leia devagar antes de discutir com ela."
     },
     "semantic-structure": {
-      "title": "Estrutura Semantica",
-      "summary": "Use regioes de pagina, titulos, rotulos e ordem de leitura significativos para que pessoas e tecnologias assistivas entendam a pagina.",
-      "whyItMatters": "Uma pagina web e mais facil de usar quando sua estrutura corresponde ao seu objetivo. Titulos ajudam estudantes a escanear, marcos ajudam usuarios de leitor de tela a saltar entre regioes, e rotulos claros explicam o que cada link ou controle fara.",
-      "studyNext": "Revise uma pagina e liste seu titulo principal, regiao de navegacao, regiao de conteudo principal e cada link cujo objetivo nao esteja claro.",
+      "title": "Estrutura Semântica",
+      "summary": "Use regiões de página, títulos, rótulos e ordem de leitura significativos para que pessoas e tecnologias assistivas entendam a página.",
+      "whyItMatters": "Uma página web é mais fácil de usar quando sua estrutura corresponde ao seu objetivo. Títulos ajudam estudantes a escanear, marcos ajudam usuários de leitor de tela a saltar entre regiões, e rótulos claros explicam o que cada link ou controle fará.",
+      "studyNext": "Revise uma página e liste seu título principal, região de navegação, região de conteúdo principal e cada link cujo objetivo não esteja claro.",
       "keyIdeas": {
-        "mainHeading": "Usar um titulo principal claro por pagina",
-        "semanticGroups": "Agrupar navegacao e conteudo principal semanticamente",
-        "descriptiveLabels": "Escrever rotulos que descrevem destino ou acao",
+        "mainHeading": "Usar um título principal claro por página",
+        "semanticGroups": "Agrupar navegação e conteúdo principal semanticamente",
+        "descriptiveLabels": "Escrever rótulos que descrevem destino ou ação",
         "alignedOrder": "Manter ordem visual e ordem de leitura alinhadas"
       },
-      "practicePrompt": "Esboce o contorno de uma pagina de topico usando apenas titulos e nomes de regioes, depois verifique se o contorno ainda explica a pagina.",
-      "professorNote": "Boa estrutura e silenciosa. A maioria das pessoas so percebe quando ela falta, mas tecnologias assistivas dependem dela desde o inicio."
+      "practicePrompt": "Esboce o contorno de uma página de tópico usando apenas títulos e nomes de regiões, depois verifique se o contorno ainda explica a página.",
+      "professorNote": "Boa estrutura e silenciosa. A maioria das pessoas só percebe quando ela falta, mas tecnologias assistivas dependem dela desde o início."
     },
     "responsive-layouts": {
       "title": "Layouts Responsivos",
-      "summary": "Planeje paginas que continuem legiveis e navegaveis em celulares, notebooks e telas de apresentacao.",
-      "whyItMatters": "Estudantes podem abrir um projeto de aula em um celular, notebook ou projetor. Se o texto fica apertado, links se movem de forma imprevisivel ou aparece rolagem horizontal, o conteudo pode estar tecnicamente presente, mas praticamente dificil de usar.",
-      "studyNext": "Esboce a mesma pagina em layout largo e estreito, depois marque qual titulo, navegacao e acao principal devem continuar faceis de encontrar primeiro.",
+      "summary": "Planeje páginas que continuem legíveis e navegáveis em celulares, notebooks e telas de apresentação.",
+      "whyItMatters": "Estudantes podem abrir um projeto de aula em um celular, notebook ou projetor. Se o texto fica apertado, links se movem de forma imprevisível ou aparece rolagem horizontal, o conteúdo pode estar tecnicamente presente, mas praticamente difícil de usar.",
+      "studyNext": "Esboce a mesma página em layout largo e estreito, depois marque qual título, navegação e ação principal devem continuar fáceis de encontrar primeiro.",
       "keyIdeas": {
-        "flexibleSections": "Usar secoes flexiveis em vez de layouts de largura fixa",
-        "comfortableLineLength": "Manter comprimento de linha confortavel para leitura",
-        "avoidHorizontalScroll": "Evitar rolagem horizontal no conteudo principal",
-        "prioritizeActions": "Priorizar acoes importantes em telas estreitas"
+        "flexibleSections": "Usar seções flexíveis em vez de layouts de largura fixa",
+        "comfortableLineLength": "Manter comprimento de linha confortável para leitura",
+        "avoidHorizontalScroll": "Evitar rolagem horizontal no conteúdo principal",
+        "prioritizeActions": "Priorizar ações importantes em telas estreitas"
       },
-      "practicePrompt": "Compare uma visao geral de trilhas em tres colunas com uma versao mobile de uma coluna e decida qual ordem de conteudo apoia melhor a leitura rapida.",
-      "professorNote": "Design responsivo nao e decoracao. E a promessa de que a aula ainda funciona quando a tela muda."
+      "practicePrompt": "Compare uma visão geral de trilhas em três colunas com uma versão mobile de uma coluna e decida qual ordem de conteúdo apoia melhor a leitura rápida.",
+      "professorNote": "Design responsivo não é decoração. É a promessa de que a aula ainda funciona quando a tela muda."
     },
     "accessible-navigation": {
-      "title": "Navegacao Acessivel",
-      "summary": "Torne links, controles, foco e local atual compreensiveis sem depender apenas de cor ou passagem do mouse.",
-      "whyItMatters": "A navegacao e o mapa do estudante pela plataforma. Se o mapa so funciona visualmente, so funciona com mouse ou esconde a localizacao atual, estudantes usando teclado ou tecnologia assistiva perdem confianca rapidamente.",
-      "studyNext": "Use apenas o teclado para se mover por uma pagina e anote cada ponto em que foco, objetivo do link ou estado da pagina atual nao estiver claro.",
+      "title": "Navegação Acessível",
+      "summary": "Torne links, controles, foco e local atual compreensíveis sem depender apenas de cor ou passagem do mouse.",
+      "whyItMatters": "A navegação é o mapa do estudante pela plataforma. Se o mapa só funciona visualmente, só funciona com mouse ou esconde a localização atual, estudantes usando teclado ou tecnologia assistiva perdem confiança rapidamente.",
+      "studyNext": "Use apenas o teclado para se mover por uma página e anote cada ponto em que foco, objetivo do link ou estado da página atual não estiver claro.",
       "keyIdeas": {
-        "keyboardOrder": "Manter a ordem do teclado proxima da ordem visual",
-        "visibleFocus": "Mostrar foco visivel em todo item interativo",
+        "keyboardOrder": "Manter a ordem do teclado próxima da ordem visual",
+        "visibleFocus": "Mostrar foco visível em todo item interativo",
         "destinationLabels": "Nomear links pelo destino ou resultado",
         "currentLocation": "Indicar local atual com texto ou sublinhado"
       },
-      "practicePrompt": "Teste um menu de navegacao com Tab e Shift+Tab, depois observe se cada item em foco pode ser identificado sem enxergar cor.",
-      "professorNote": "Se um estudante pode se perder na navegacao, o conteudo ainda nao foi realmente alcancado."
+      "practicePrompt": "Teste um menu de navegação com Tab e Shift+Tab, depois observe se cada item em foco pode ser identificado sem enxergar cor.",
+      "professorNote": "Se um estudante pode se perder na navegação, o conteúdo ainda não foi realmente alcançado."
     },
     "reading-technical-texts": {
-      "title": "Leitura de Textos Tecnicos",
-      "summary": "Leia definicoes, diagramas e exemplos de forma ativa, em vez de tentar memorizar cada frase.",
-      "whyItMatters": "Textos de Ciencia da Computacao frequentemente combinam vocabulario, diagramas, codigo e suposicoes em pouco espaco. Iniciantes aprendem mais quando separam o que um termo significa, como aparece em um exemplo e qual pergunta ainda permanece.",
-      "studyNext": "Escolha um artigo curto e marque uma definicao, um exemplo de codigo e uma pergunta para levar para a aula.",
+      "title": "Leitura de Textos Técnicos",
+      "summary": "Leia definições, diagramas e exemplos de forma ativa, em vez de tentar memorizar cada frase.",
+      "whyItMatters": "Textos de Ciência da Computação frequentemente combinam vocabulário, diagramas, código e suposições em pouco espaço. Iniciantes aprendem mais quando separam o que um termo significa, como aparece em um exemplo e qual pergunta ainda permanece.",
+      "studyNext": "Escolha um artigo curto e marque uma definição, um exemplo de código e uma pergunta para levar para a aula.",
       "keyIdeas": {
-        "separateVocabulary": "Separar vocabulario de procedimento",
-        "connectDiagrams": "Conectar diagramas a explicacao escrita",
-        "summarize": "Resumir a ideia principal com suas proprias palavras",
-        "saveQuestions": "Guardar perguntas em vez de pular a confusao"
+        "separateVocabulary": "Separar vocabulário de procedimento",
+        "connectDiagrams": "Conectar diagramas a explicação escrita",
+        "summarize": "Resumir a ideia principal com suas próprias palavras",
+        "saveQuestions": "Guardar perguntas em vez de pular a confusão"
       },
-      "practicePrompt": "Leia uma explicacao curta sobre arrays e escreva tres notas: uma definicao, um caso de uso e um ponto que ainda parece confuso.",
-      "professorNote": "Nao meca leitura por paginas concluidas. Meca pelo que voce consegue explicar depois de fechar a pagina."
+      "practicePrompt": "Leia uma explicação curta sobre arrays e escreva três notas: uma definição, um caso de uso e um ponto que ainda parece confuso.",
+      "professorNote": "Não meça leitura por páginas concluídas. Meça pelo que você consegue explicar depois de fechar a página."
     },
     "planning-study-sessions": {
-      "title": "Planejamento de Sessoes de Estudo",
-      "summary": "Transforme um topico amplo em uma sessao pequena com objetivo, atividade de pratica e revisao rapida.",
-      "whyItMatters": "Um topico como algoritmos ou acessibilidade web pode parecer grande demais para comecar. Um plano curto reduz essa friccao ao nomear um conceito, uma atividade e uma forma de verificar o que foi aprendido.",
-      "studyNext": "Escreva um plano de 30 minutos com um conceito para revisar, um exercicio para tentar e uma nota para guardar para a proxima sessao.",
+      "title": "Planejamento de Sessões de Estudo",
+      "summary": "Transforme um tópico amplo em uma sessão pequena com objetivo, atividade de prática e revisão rápida.",
+      "whyItMatters": "Um tópico como algoritmos ou acessibilidade web pode parecer grande demais para começar. Um plano curto reduz essa fricção ao nomear um conceito, uma atividade e uma forma de verificar o que foi aprendido.",
+      "studyNext": "Escreva um plano de 30 minutos com um conceito para revisar, um exercício para tentar e uma nota para guardar para a próxima sessão.",
       "keyIdeas": {
         "smallGoal": "Escolher um objetivo pequeno de aprendizagem",
-        "activePractice": "Combinar leitura com pratica ativa",
-        "shortReview": "Reservar tempo para uma revisao curta",
-        "easyRestart": "Deixar a proxima sessao facil de retomar"
+        "activePractice": "Combinar leitura com prática ativa",
+        "shortReview": "Reservar tempo para uma revisão curta",
+        "easyRestart": "Deixar a próxima sessão fácil de retomar"
       },
-      "practicePrompt": "Planeje uma sessao de 30 minutos para lacos: 10 minutos de leitura, 15 minutos resolvendo um exercicio e 5 minutos escrevendo o que mudou no seu entendimento.",
-      "professorNote": "Um bom plano de estudo e pequeno o bastante para comecar hoje e claro o bastante para continuar amanha."
+      "practicePrompt": "Planeje uma sessão de 30 minutos para laços: 10 minutos de leitura, 15 minutos resolvendo um exercício e 5 minutos escrevendo o que mudou no seu entendimento.",
+      "professorNote": "Um bom plano de estudo e pequeno o bastante para começar hoje e claro o bastante para continuar amanhã."
     },
     "asking-better-questions": {
       "title": "Fazendo Perguntas Melhores",
-      "summary": "Prepare perguntas que incluam contexto, o que voce tentou, o que aconteceu e o ponto exato em que ficou preso.",
-      "whyItMatters": "Professores e colegas ajudam mais rapido quando veem a tarefa, a tentativa e o bloqueio. Uma pergunta precisa tambem ajuda o estudante a perceber se o problema e vocabulario, logica, sintaxe ou depuracao.",
+      "summary": "Prepare perguntas que incluam contexto, o que você tentou, o que aconteceu e o ponto exato em que ficou preso.",
+      "whyItMatters": "Professores e colegas ajudam mais rápido quando veem a tarefa, a tentativa e o bloqueio. Uma pergunta precisa também ajuda o estudante a perceber se o problema é vocabulário, lógica, sintaxe ou depuração.",
       "studyNext": "Reescreva uma pergunta vaga adicionando a tarefa, sua tentativa, o resultado esperado e o ponto exato que confundiu.",
       "keyIdeas": {
         "stateTask": "Declarar a tarefa ou conceito",
-        "showAttempt": "Mostrar a tentativa ou raciocinio ate aqui",
-        "nameBlocker": "Nomear o bloqueio especifico",
-        "askNextStep": "Pedir o proximo passo, nao a resposta inteira"
+        "showAttempt": "Mostrar a tentativa ou raciocínio até aqui",
+        "nameBlocker": "Nomear o bloqueio específico",
+        "askNextStep": "Pedir o próximo passo, não a resposta inteira"
       },
-      "practicePrompt": "Transforme 'meu codigo nao funciona' em um pedido completo de ajuda com contexto, solucao tentada, resultado observado e uma pergunta focada.",
-      "professorNote": "Uma pergunta cuidadosa nao e confissao de fraqueza. E o caminho mais curto da confusao para um feedback util."
+      "practicePrompt": "Transforme 'meu código não funciona' em um pedido completo de ajuda com contexto, solução tentada, resultado observado e uma pergunta focada.",
+      "professorNote": "Uma pergunta cuidadosa não é confissão de fraqueza. É o caminho mais curto da confusão para um feedback útil."
     }
   }
 }

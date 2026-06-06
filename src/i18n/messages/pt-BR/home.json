@@ -1,22 +1,22 @@
 {
   "heroImageAlt": "Professor Diogenes em uma sala de estudos com livros e quadro",
-  "principlesLabel": "Principios da plataforma",
+  "principlesLabel": "Princípios da plataforma",
   "diogenesProfile": {
     "name": "Diogenes",
-    "role": "Professor aposentado de Ciencia da Computacao e guia de aprendizagem",
-    "introduction": "O professor Diogenes Carvalho Matias compartilha trilhas de estudo de Ciencia da Computacao cuidadosamente organizadas para estudantes que estao comecando o curso e precisam de material confiavel em uma ordem clara.",
-    "teachingTone": "Sua orientacao valoriza explicacoes simples, pequenos passos de pratica e habitos pacientes de estudo que ajudam iniciantes a entender antes de correr para o codigo.",
-    "promise": "Escolha uma trilha, abra um topico, leia o foco de estudo e saia de cada pagina com uma proxima acao pratica."
+    "role": "Professor aposentado de Ciência da Computação e guia de aprendizagem",
+    "introduction": "O professor Diogenes Carvalho Matias compartilha trilhas de estudo de Ciência da Computação cuidadosamente organizadas para estudantes que estão começando o curso e precisam de material confiável em uma ordem clara.",
+    "teachingTone": "Sua orientação valoriza explicações simples, pequenos passos de prática e hábitos pacientes de estudo que ajudam iniciantes a entender antes de correr para o código.",
+    "promise": "Escolha uma trilha, abra um tópico, leia o foco de estudo e saia de cada página com uma próxima ação prática."
   },
   "principles": {
-    "reliableBeginnerTopics": "Topicos confiaveis para iniciantes selecionados por objetivo de aprendizagem",
-    "shortStudyPages": "Paginas curtas de estudo que explicam valor, foco e proxima acao",
-    "accessibleNavigation": "Navegacao acessivel para uso com teclado, leitor de tela e alto contraste"
+    "reliableBeginnerTopics": "Tópicos confiáveis para iniciantes selecionados por objetivo de aprendizagem",
+    "shortStudyPages": "Páginas curtas de estudo que explicam valor, foco e próxima ação",
+    "accessibleNavigation": "Navegação acessível para uso com teclado, leitor de tela e alto contraste"
   },
   "preview": {
     "eyebrow": "MVP de base",
-    "heading": "Um caminho simples para estudar Ciencia da Computacao",
-    "body": "Estudantes comecam com uma breve apresentacao do professor, comparam trilhas de estudo selecionadas, abrem paginas focadas de topicos e usam orientacoes de acessibilidade quando precisam de ajuda para se mover pela plataforma.",
-    "trackPreviewLabel": "Previa das trilhas disponiveis"
+    "heading": "Um caminho simples para estudar Ciência da Computação",
+    "body": "Estudantes começam com uma breve apresentação do professor, comparam trilhas de estudo selecionadas, abrem páginas focadas de tópicos e usam orientações de acessibilidade quando precisam de ajuda para se mover pela plataforma.",
+    "trackPreviewLabel": "Prévia das trilhas disponíveis"
   }
 }

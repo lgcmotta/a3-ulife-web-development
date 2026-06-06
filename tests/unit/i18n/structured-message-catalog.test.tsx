@@ -28,7 +28,7 @@ describe("structured message catalog reads", () => {
       </NextIntlClientProvider>,
     );
 
-    expect(screen.getByRole("heading", { name: "Fundamentos de Programacao" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Fundamentos de Programação" })).toBeTruthy();
     expect(screen.getByText(/programas claros/i)).toBeTruthy();
   });
 });

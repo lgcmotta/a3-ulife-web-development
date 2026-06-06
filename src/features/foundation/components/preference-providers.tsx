@@ -89,34 +89,38 @@ export function ThemePreferenceProvider({
 
   const setBaseTheme = useCallback(
     (baseTheme: BaseThemeId) => {
-      if (baseTheme === preference.baseTheme) {
+      const currentPreference = getThemePreferenceSnapshot();
+
+      if (baseTheme === currentPreference.baseTheme) {
         return;
       }
 
       persistThemePreference(
         resolveVisualPreference({
           baseTheme,
-          highContrast: preference.highContrast,
+          highContrast: currentPreference.highContrast,
         }),
       );
     },
-    [persistThemePreference, preference.baseTheme, preference.highContrast],
+    [persistThemePreference],
   );
 
   const setHighContrast = useCallback(
     (highContrast: boolean) => {
-      if (highContrast === preference.highContrast) {
+      const currentPreference = getThemePreferenceSnapshot();
+
+      if (highContrast === currentPreference.highContrast) {
         return;
       }
 
       persistThemePreference(
         resolveVisualPreference({
-          baseTheme: preference.baseTheme,
+          baseTheme: currentPreference.baseTheme,
           highContrast,
         }),
       );
     },
-    [persistThemePreference, preference.baseTheme, preference.highContrast],
+    [persistThemePreference],
   );
 
   const value = useMemo(

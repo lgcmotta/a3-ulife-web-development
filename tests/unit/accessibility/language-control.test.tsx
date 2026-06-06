@@ -119,7 +119,7 @@ describe("LanguageToggle", () => {
     });
 
     expect(screen.getByRole("group", { name: "Idioma" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Ingles selecionado" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Mudar para Portugues (Brasil)" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Inglês selecionado" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Mudar para Português (Brasil)" })).toBeTruthy();
   });
 });

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
@@ -89,6 +89,21 @@ describe("ThemeToggle", () => {
     expect(readThemeCookie()).toBe(visualPreferences["dark-normal"]);
     expect(document.activeElement).toBe(toggle);
     expect(screen.getByRole("switch", { name: /dark theme/i })).toBe(toggle);
+  });
+
+  it("preserves stored high contrast when base theme changes before migration completes", () => {
+    window.localStorage.setItem(BASE_THEME_STORAGE_KEY, "light");
+    window.localStorage.setItem(HIGH_CONTRAST_STORAGE_KEY, "true");
+
+    renderThemeToggle();
+
+    fireEvent.click(screen.getByRole("switch", { name: /light theme/i }));
+
+    expect(window.localStorage.getItem(BASE_THEME_STORAGE_KEY)).toBe("dark");
+    expect(window.localStorage.getItem(HIGH_CONTRAST_STORAGE_KEY)).toBe("true");
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(document.documentElement.dataset.contrast).toBe("high");
+    expect(readThemeCookie()).toBe(visualPreferences["dark-high"]);
   });
 
   it("toggles contrast with pointer input while preserving focusable state semantics", async () => {
