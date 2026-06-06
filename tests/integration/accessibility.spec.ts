@@ -24,6 +24,14 @@ const highContrastModes = visualModes.filter((mode) => mode.highContrast);
 type VisualMode = (typeof visualModes)[number];
 
 async function setVisualMode(page: Page, mode: VisualMode) {
+  await page.context().addCookies([
+    {
+      name: "legado-de-diogenes-theme-preference",
+      value: `${mode.baseTheme}-${mode.contrast}`,
+      url: "http://127.0.0.1:3000",
+      sameSite: "Lax",
+    },
+  ]);
   await page.addInitScript((preference) => {
     window.localStorage.setItem("legado-de-diogenes-base-theme", preference.baseTheme);
     window.localStorage.setItem(
