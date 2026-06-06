@@ -13,7 +13,7 @@ describe("home introduction", () => {
     );
 
     expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
-      "Legado de Diogenes",
+      "Diogenes Legacy",
     );
     expect(screen.getByText(/retired computer science professor/i)).toBeTruthy();
     expect(screen.getByText(/diogenes carvalho matias/i)).toBeTruthy();

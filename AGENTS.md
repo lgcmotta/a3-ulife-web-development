@@ -45,13 +45,13 @@ public/
 ## Recent Changes
 - 007-topic-action-buttons: Planned reusable topic action group for existing Return to Builder and Complete Topic controls.
 
-- 2026-04-21: Established root agent governance for the Legado de Diogenes class project.
+- 2026-04-21: Established root agent governance for the Diogenes Legacy class project.
 
 <!-- MANUAL ADDITIONS START -->
 
 ## Project Identity
 
-This repository defines **Legado de Diogenes**, a usability-focused educational web platform for Computer Science students. The platform centers on a retired Computer Science professor who shares reliable, well-organized learning content with new students.
+This repository defines **Diogenes Legacy**, a usability-focused educational web platform for Computer Science students. The Portuguese localized brand name is **Legado de Diogenes**. The platform centers on a retired Computer Science professor who shares reliable, well-organized learning content with new students.
 
 The project goal is to deliver a simple, usable, accessible class assignment with strong academic presentation quality. This repository is governed as a Spec Kit project first: agents must understand the product, preserve the assignment intent, and use the specification workflow before changing scope or behavior.
 

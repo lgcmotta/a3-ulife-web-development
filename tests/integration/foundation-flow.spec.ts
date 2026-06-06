@@ -4,7 +4,7 @@ test.describe("foundation flow", () => {
   test("home explains the platform and exposes primary navigation", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.getByRole("heading", { name: "Legado de Diogenes" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Diogenes Legacy" })).toBeVisible();
     await expect(page.getByRole("link", { name: /explore tracks/i })).toBeVisible();
     await expect(
       page

@@ -144,7 +144,7 @@ async function expectCommonReadableSurfaces(page: Page, route: string) {
 
   if (route === "/") {
     await expect(page.locator(".hero-overlay")).toBeVisible();
-    await expect(page.getByRole("heading", { name: /legado de diogenes/i })).toHaveCSS(
+    await expect(page.getByRole("heading", { name: /diogenes legacy/i })).toHaveCSS(
       "color",
       "rgb(255, 255, 255)",
     );
@@ -223,7 +223,7 @@ test.describe("accessibility foundation", () => {
     await page.goto("/tracks");
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
-    await expect(page.getByRole("link", { name: /legado de diogenes home/i })).toBeFocused();
+    await expect(page.getByRole("link", { name: /diogenes legacy home/i })).toBeFocused();
     await page
       .getByRole("navigation", { name: /primary navigation/i })
       .getByRole("link", { name: /accessibility help/i })

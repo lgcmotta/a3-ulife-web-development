@@ -20,7 +20,8 @@ function renderThemeToggle(
   render(
     createElement(
       ThemePreferenceProvider,
-      { initialThemePreference, children: createElement(ThemeToggle) },
+      { initialThemePreference },
+      createElement(ThemeToggle),
     ),
   );
 }
