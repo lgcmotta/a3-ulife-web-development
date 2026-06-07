@@ -4,10 +4,16 @@ function topicActions(page: Page) {
   return page.getByRole("group", { name: "Topic actions", exact: true });
 }
 
-async function clickTopCompleteTopic(page: Page) {
-  const previousUrl = page.url();
+async function clickTopCompleteTopic(page: Page, nextUrl?: RegExp) {
   await topicActions(page).getByRole("button", { name: /complete topic/i }).click();
-  await expect.poll(() => page.url()).not.toBe(previousUrl);
+
+  if (nextUrl) {
+    await expect(page).toHaveURL(nextUrl);
+    await expectTopCompleteTopicVisible(page);
+    return;
+  }
+
+  await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 }
 
 async function expectTopCompleteTopicVisible(page: Page) {
@@ -102,8 +108,8 @@ test.describe("student area builder persistence", () => {
     await saveProgrammingPath(page);
     await startLearningFromBuilder(page);
 
-    await clickTopCompleteTopic(page);
-    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/variables-and-flow/);
+    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/debugging-habits/);
     await clickTopCompleteTopic(page);
     await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 
@@ -119,8 +125,8 @@ test.describe("student area builder persistence", () => {
     await saveProgrammingPath(page);
     await startLearningFromBuilder(page);
 
-    await clickTopCompleteTopic(page);
-    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/variables-and-flow/);
+    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/debugging-habits/);
     await clickTopCompleteTopic(page);
     await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 
