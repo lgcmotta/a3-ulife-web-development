@@ -1,5 +1,10 @@
 {
   "primaryLabel": "Navegação principal",
+  "mobileMenu": {
+    "openLabel": "Abrir menu do site",
+    "closeLabel": "Fechar menu do site",
+    "regionLabel": "Menu móvel do site"
+  },
   "items": {
     "home": {
       "label": "Início"

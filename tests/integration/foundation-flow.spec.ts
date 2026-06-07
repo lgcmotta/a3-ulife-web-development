@@ -1,6 +1,17 @@
 import { expect, test } from "../e2e-support/student-area-test";
 
 test.describe("foundation flow", () => {
+  test("desktop header exposes primary navigation without the mobile menu", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await page.goto("/");
+
+    await expect(page.getByRole("navigation", { name: /primary navigation/i })).toBeVisible();
+    await expect(
+      page.getByRole("button", { includeHidden: true, name: /open site menu/i }),
+    ).toBeHidden();
+    await expect(page.getByRole("link", { name: /learning tracks/i })).toBeVisible();
+  });
+
   test("home explains the platform and exposes primary navigation", async ({ page }) => {
     await page.goto("/");
 
@@ -46,9 +57,33 @@ test.describe("foundation flow", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
 
-    await expect(page.getByRole("navigation", { name: /primary navigation/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /learning tracks/i })).toBeVisible();
-    await expect(page.locator("body")).not.toHaveJSProperty("scrollLeft", 1);
+    const mobileMenu = page.getByRole("region", {
+      includeHidden: true,
+      name: /mobile site menu/i,
+    });
+
+    await expect(page.getByRole("button", { name: /open site menu/i })).toBeVisible();
+    await expect(mobileMenu).toBeHidden();
+
+    await page.getByRole("button", { name: /open site menu/i }).click();
+
+    await expect(page.getByRole("button", { name: /close site menu/i })).toBeVisible();
+    await expect(mobileMenu).toBeVisible();
+    await expect(
+      mobileMenu.getByRole("navigation", { name: /primary navigation/i }),
+    ).toBeVisible();
+    await expect(mobileMenu.getByRole("link", { name: /home/i })).toBeVisible();
+    await expect(mobileMenu.getByRole("link", { name: /learning tracks/i })).toBeVisible();
+    await expect(mobileMenu.getByRole("link", { name: /accessibility help/i })).toBeVisible();
+    await expect(mobileMenu.getByRole("switch", { name: /light theme/i })).toBeVisible();
+    await expect(mobileMenu.getByRole("switch", { name: /high contrast/i })).toBeVisible();
+    await expect(mobileMenu.getByRole("group", { name: /language/i })).toBeVisible();
+
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+      ),
+    ).toBe(true);
   });
 
   test("required public routes render meaningful content", async ({ page }) => {
