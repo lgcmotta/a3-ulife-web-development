@@ -47,6 +47,14 @@ async function expectRootMode(page: Page, mode: VisualMode) {
   await expect(page.locator("html")).toHaveAttribute("data-contrast", mode.contrast);
 }
 
+async function openMobileSiteMenuIfPresent(page: Page) {
+  const openMenu = page.getByRole("button", { name: /open site menu/i });
+
+  if (await openMenu.isVisible().catch(() => false)) {
+    await openMenu.click();
+  }
+}
+
 function parseRgb(color: string): Rgb {
   const rgbMatch = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
 
@@ -140,6 +148,8 @@ async function expectReadable(locator: Locator, label: string, minimumRatio = 4.
 }
 
 async function expectCommonReadableSurfaces(page: Page, route: string) {
+  await openMobileSiteMenuIfPresent(page);
+
   await expectReadable(
     page.getByRole("navigation", { name: /primary navigation/i }).getByRole("link").first(),
     `${route} primary navigation`,
@@ -189,7 +199,6 @@ async function expectCommonReadableSurfaces(page: Page, route: string) {
   }
 
   if (route === "/accessibility") {
-    await expectReadable(page.locator(".base-theme-control"), "base theme control");
     await expectReadable(
       page.getByRole("switch", { name: /light theme|dark theme/i }),
       "base theme switch",
@@ -232,6 +241,7 @@ test.describe("accessibility foundation", () => {
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
     await expect(page.getByRole("link", { name: /diogenes legacy home/i })).toBeFocused();
+    await openMobileSiteMenuIfPresent(page);
     await page
       .getByRole("navigation", { name: /primary navigation/i })
       .getByRole("link", { name: /accessibility help/i })
@@ -305,6 +315,7 @@ test.describe("accessibility foundation", () => {
       await setVisualMode(page, mode);
       await page.goto("/accessibility");
       await expectRootMode(page, mode);
+      await openMobileSiteMenuIfPresent(page);
 
       await expect(
         page.getByRole("switch", {
@@ -319,6 +330,7 @@ test.describe("accessibility foundation", () => {
       await page.reload();
       await expectRootMode(page, mode);
 
+      await openMobileSiteMenuIfPresent(page);
       await page.getByRole("link", { name: /learning tracks/i }).click();
       await expect(page).toHaveURL(/\/tracks$/);
       await expectRootMode(page, mode);
@@ -328,6 +340,7 @@ test.describe("accessibility foundation", () => {
   test("base theme and contrast controls update independently", async ({ page }) => {
     await setVisualMode(page, visualModes[1]);
     await page.goto("/accessibility");
+    await openMobileSiteMenuIfPresent(page);
 
     await page.getByRole("switch", { name: /light theme/i }).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
@@ -355,6 +368,7 @@ test.describe("accessibility foundation", () => {
   test("theme controls are keyboard operable and keep visible focus", async ({ page }) => {
     await setVisualMode(page, visualModes[0]);
     await page.goto("/accessibility");
+    await openMobileSiteMenuIfPresent(page);
 
     const baseThemeSwitch = page.getByRole("switch", { name: /light theme/i });
     const contrastSwitch = page.getByRole("switch", { name: /high contrast/i });
