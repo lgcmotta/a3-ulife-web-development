@@ -4,10 +4,10 @@ import { describe, expect, it } from "vitest";
 import enMessages from "@/i18n/messages/en";
 import ptBRMessages from "@/i18n/messages/pt-BR";
 
-type MessageNode = string | { [key: string]: MessageNode };
+type MessageNode = string | string[] | { [key: string]: MessageNode };
 
 function flattenKeys(node: MessageNode, prefix = ""): string[] {
-  if (typeof node === "string") {
+  if (typeof node === "string" || Array.isArray(node)) {
     return [prefix];
   }
 
@@ -19,6 +19,10 @@ function flattenKeys(node: MessageNode, prefix = ""): string[] {
 function flattenValues(node: MessageNode): string[] {
   if (typeof node === "string") {
     return [node];
+  }
+
+  if (Array.isArray(node)) {
+    return node;
   }
 
   return Object.values(node).flatMap((value) => flattenValues(value));
