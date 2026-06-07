@@ -45,11 +45,33 @@ test.describe("Ask Diogenes widget", () => {
     await page.goto("/");
     await openAskDiogenes(page);
 
-    await page.getByRole("button", { name: "Where is my progress?" }).click();
-    await expect(page.getByText(/Your saved paths and completed topics/i)).toBeVisible();
+    await page.getByRole("button", { name: "How should I study a topic?" }).click();
+    await expect(page.getByText(/Read the main explanation first/i)).toBeVisible();
 
-    await page.getByRole("link", { name: "Open path builder" }).click();
-    await expect(page).toHaveURL(/\/tracks\/builder$/);
+    const scrollArea = page.getByTestId("ask-diogenes-scroll-area");
+    const action = page.getByRole("link", { name: "Explore learning tracks" });
+
+    await expect.poll(async () => {
+      return scrollArea.evaluate(
+        (element) => element.scrollTop + element.clientHeight >= element.scrollHeight - 2,
+      );
+    }).toBe(true);
+
+    await expect.poll(async () => {
+      return Promise.all([
+        scrollArea.boundingBox(),
+        action.boundingBox(),
+      ]).then(([scrollBox, actionBox]) => {
+        if (!scrollBox || !actionBox) {
+          return false;
+        }
+
+        return actionBox.y + actionBox.height <= scrollBox.y + scrollBox.height;
+      });
+    }).toBe(true);
+
+    await action.click();
+    await expect(page).toHaveURL(/\/tracks$/);
   });
 
   test("supports keyboard use, reset on reopen, and high contrast mode", async ({ page }) => {

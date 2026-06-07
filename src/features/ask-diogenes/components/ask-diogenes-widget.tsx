@@ -53,6 +53,7 @@ export function AskDiogenesWidget() {
   const actions = t.raw("actions") as ActionScript;
   const launcherRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -122,6 +123,20 @@ export function AskDiogenesWidget() {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen || !scrollAreaRef.current) {
+      return;
+    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      if (scrollAreaRef.current) {
+        scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [isOpen, isTyping, messages.length, selectedPromptId]);
+
   const selectedPrompt = selectedPromptId ? prompts[selectedPromptId] : null;
   const selectedActionIds = selectedPrompt?.actions ?? [];
 
@@ -133,7 +148,7 @@ export function AskDiogenesWidget() {
       {isOpen ? (
         <section
           aria-labelledby="ask-diogenes-title"
-          className="max-h-[min(34rem,calc(100vh-7rem))] w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border bg-[var(--surface)] text-[var(--surface-foreground)] shadow-xl"
+          className="flex h-[min(34rem,calc(100vh-7rem))] max-h-[min(34rem,calc(100vh-7rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-lg border bg-[var(--surface)] text-[var(--surface-foreground)] shadow-xl"
           onKeyDown={(event) => {
             if (event.key === "Escape") {
               closePanel();
@@ -142,7 +157,7 @@ export function AskDiogenesWidget() {
           ref={panelRef}
           tabIndex={-1}
         >
-          <div className="flex items-start justify-between gap-3 border-b border-[var(--border)] bg-[var(--surface-strong)] p-4 text-[var(--surface-strong-foreground)]">
+          <div className="flex shrink-0 items-start justify-between gap-3 border-b border-[var(--border)] bg-[var(--surface-strong)] p-4 text-[var(--surface-strong-foreground)]">
             <div className="min-w-0">
               <p id="ask-diogenes-title" className="text-base font-bold">
                 {t("panel.title")}
@@ -171,7 +186,11 @@ export function AskDiogenesWidget() {
             </div>
           </div>
 
-          <div className="max-h-[calc(min(34rem,100vh-7rem)-5rem)] overflow-y-auto p-4">
+          <div
+            className="min-h-0 flex-1 overflow-y-auto p-4 pb-6"
+            data-testid="ask-diogenes-scroll-area"
+            ref={scrollAreaRef}
+          >
             <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-strong)] p-3 text-sm text-[var(--surface-strong-foreground)]">
               <p className="font-semibold">{t("persona.name")}</p>
               <p className="mt-1">{t("persona.greeting")}</p>
