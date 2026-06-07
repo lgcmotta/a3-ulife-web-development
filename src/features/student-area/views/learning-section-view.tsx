@@ -5,6 +5,7 @@ import { LearningSectionContent } from "@/features/student-area/components/learn
 import { LearningTopicActions } from "@/features/student-area/components/learning-topic-actions";
 import { findTopicBySlug } from "@/server/student-area/catalog";
 import { loadLearningSectionMarkdown } from "@/server/learning-content/markdown";
+import { getTopicNavigationState } from "@/features/student-area/server/path-persistence";
 import type { SavedLearningPath } from "@/server/student-area/types";
 import { buttonVariants } from "@/ui/components/button";
 
@@ -25,9 +26,9 @@ export async function LearningSectionView({
     return <LearningSectionError message={t("pathNotFound")} />;
   }
 
-  if (path.pathId.length === 0 || !path.trackGroups.some((group) =>
-    group.topicItems.some((topic) => topic.topicSlug === topicSlug),
-  )) {
+  const navigationState = getTopicNavigationState(path, topicSlug);
+
+  if (path.pathId.length === 0 || !navigationState.currentTopic) {
     return <LearningSectionError message={t("topicNotInPath")} />;
   }
 
@@ -49,6 +50,9 @@ export async function LearningSectionView({
       <LearningTopicActions
         pathId={path.pathId}
         placement="start"
+        isCurrentTopicCompleted={navigationState.isCurrentTopicCompleted}
+        nextHref={navigationState.nextHref}
+        previousHref={navigationState.previousHref}
         studentId={studentId}
         topicSlug={topicSlug}
       />
@@ -61,6 +65,9 @@ export async function LearningSectionView({
       <LearningTopicActions
         pathId={path.pathId}
         placement="end"
+        isCurrentTopicCompleted={navigationState.isCurrentTopicCompleted}
+        nextHref={navigationState.nextHref}
+        previousHref={navigationState.previousHref}
         studentId={studentId}
         topicSlug={topicSlug}
       />

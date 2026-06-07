@@ -4,6 +4,7 @@ import { learningTracks } from "@/content/tracks";
 import {
   createHistoryEntry,
   getLearningDestination,
+  getTopicNavigationState,
   saveCompositionAsLearningPath,
   upsertHistoryEntry,
 } from "@/features/student-area/server/path-persistence";
@@ -149,6 +150,74 @@ describe("path persistence", () => {
     };
 
     expect(getLearningDestination(completed)).toBe("/tracks/learn/path001/complete");
+  });
+
+  it("derives previous and next hrefs for a middle topic", () => {
+    const saved = fixtureSavedPathWithGroups({
+      pathId: "path001",
+      trackGroups: [
+        fixtureTrackGroup({
+          topicSlugs: ["problem-solving-basics", "variables-and-flow", "debugging-habits"],
+        }),
+      ],
+    });
+
+    const navigation = getTopicNavigationState(saved, "variables-and-flow");
+
+    expect(navigation.currentTopic?.topicSlug).toBe("variables-and-flow");
+    expect(navigation.previousTopic?.topicSlug).toBe("problem-solving-basics");
+    expect(navigation.nextTopic?.topicSlug).toBe("debugging-habits");
+    expect(navigation.previousHref).toBe("/tracks/learn/path001/problem-solving-basics");
+    expect(navigation.nextHref).toBe("/tracks/learn/path001/debugging-habits");
+    expect(navigation.isCurrentTopicCompleted).toBe(false);
+  });
+
+  it("derives boundary hrefs for first, last, and single-topic paths", () => {
+    const saved = fixtureSavedPathWithGroups({
+      pathId: "path001",
+      trackGroups: [
+        fixtureTrackGroup({
+          topicSlugs: ["problem-solving-basics", "variables-and-flow", "debugging-habits"],
+        }),
+      ],
+    });
+    const singleTopic = fixtureSavedPathWithGroups({
+      pathId: "path002",
+      trackGroups: [fixtureTrackGroup({ topicSlugs: ["semantic-structure"] })],
+    });
+
+    expect(getTopicNavigationState(saved, "problem-solving-basics")).toMatchObject({
+      previousHref: null,
+      nextHref: "/tracks/learn/path001/variables-and-flow",
+    });
+    expect(getTopicNavigationState(saved, "debugging-habits")).toMatchObject({
+      previousHref: "/tracks/learn/path001/variables-and-flow",
+      nextHref: null,
+    });
+    expect(getTopicNavigationState(singleTopic, "semantic-structure")).toMatchObject({
+      previousHref: null,
+      nextHref: null,
+    });
+  });
+
+  it("reports completed current topic without mutating saved path data", () => {
+    const saved = fixtureSavedPathWithGroups({
+      pathId: "path001",
+      status: "in-progress",
+      trackGroups: [
+        fixtureTrackGroup({
+          topicSlugs: ["problem-solving-basics", "variables-and-flow"],
+          completedTopicSlugs: ["problem-solving-basics"],
+        }),
+      ],
+    });
+    const before = JSON.stringify(saved);
+
+    const navigation = getTopicNavigationState(saved, "problem-solving-basics");
+
+    expect(navigation.isCurrentTopicCompleted).toBe(true);
+    expect(navigation.currentTopic?.completed).toBe(true);
+    expect(JSON.stringify(saved)).toBe(before);
   });
 
   it("updates final-topic completion status and progress counts", () => {

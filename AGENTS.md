@@ -12,6 +12,7 @@ file conflicts with the constitution, agents must follow the constitution.
 - 003-educational-content: TypeScript 6.0.3, Node.js v25.9.0, existing Next.js 16.2.7 frontend, local static content modules under `src/content`, Vitest 4.1.8, Playwright 1.60.0.
 - 004-personalized-tracks: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7 server components/actions, React 19.2.7, Redis via Docker Compose, `redis` 6.0.0, `sqids` 0.3.0, `react-markdown` 10.1.0, `remark-gfm` 4.0.1.
 - 007-topic-action-buttons: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, `react-markdown` 10.1.0, `remark-gfm` 4.0.1, existing Redis-backed saved-path progress flow, Vitest 4.1.8, Playwright 1.60.0.
+- 009-topic-navigation: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, `next-intl` 4.13.0, `lucide-react` 1.17.0, existing shadcn/Radix-style local UI components, existing Redis-backed saved-path progress flow, Vitest 4.1.8, Playwright 1.60.0. No storage schema changes.
 
 ## Project Structure
 
@@ -43,6 +44,7 @@ public/
 - Do not introduce low-value complexity, speculative subsystems, or unapproved platform dependencies.
 
 ## Recent Changes
+- 009-topic-navigation: Planned previous/next topic navigation inside the repeated topic action group, using translatable shadcn-style pagination controls without storage changes.
 - 007-topic-action-buttons: Planned reusable topic action group for existing Return to Builder and Complete Topic controls.
 
 - 2026-04-21: Established root agent governance for the Diogenes Legacy class project.
@@ -198,5 +200,5 @@ The baseline quality rules are:
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/008-language-support/plan.md
+at specs/009-topic-navigation/plan.md
 <!-- SPECKIT END -->

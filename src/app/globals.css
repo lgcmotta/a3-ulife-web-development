@@ -537,6 +537,7 @@ a {
     border-color: rgb(255 255 255 / 0.5);
     color: #ffffff;
     width: fit-content;
+    gap: 0.4rem;
 }
 
 .hero-content h1 {
@@ -766,11 +767,12 @@ h3 {
 .learning-topic-actions {
     align-items: center;
     display: grid;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+    grid-template-areas: "builder navigation complete";
+    grid-template-columns: minmax(0, max-content) minmax(0, 1fr) minmax(0, max-content);
+    justify-content: space-between;
     max-width: none;
     width: 100%;
-    grid-template-columns: max-content max-content;
-    gap: clamp(0.5rem, 2vw, 0.75rem);
-    justify-content: space-between;
 }
 
 .learning-topic-actions-end {
@@ -779,7 +781,27 @@ h3 {
 
 .learning-topic-actions form {
     display: flex;
+    grid-area: complete;
+    justify-self: end;
     min-width: 0;
+}
+
+.learning-topic-actions > a {
+    grid-area: builder;
+    justify-self: start;
+}
+
+.learning-topic-actions__pagination {
+    grid-area: navigation;
+    justify-self: center;
+    margin: 0;
+    min-width: 0;
+    width: auto;
+}
+
+.learning-topic-actions__pagination [data-slot="pagination-content"] {
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .learning-topic-actions__control {
@@ -788,6 +810,24 @@ h3 {
     text-align: center;
     white-space: normal;
     width: auto;
+}
+
+@media (max-width: 640px) {
+    .learning-topic-actions {
+        grid-template-areas:
+            "navigation navigation"
+            "builder complete";
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .learning-topic-actions form,
+    .learning-topic-actions > a {
+        width: 100%;
+    }
+
+    .learning-topic-actions__control {
+        width: 100%;
+    }
 }
 
 .study-card,
