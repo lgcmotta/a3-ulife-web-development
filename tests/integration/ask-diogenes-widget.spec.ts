@@ -114,6 +114,7 @@ test.describe("Ask Diogenes widget", () => {
     await expect(
       page.getByTestId("ask-diogenes-messages").getByText("How should I study a topic?"),
     ).toHaveCount(0);
+    await expect(page.getByRole("region", { name: "Ask Diogenes" })).toBeFocused();
 
     await page.keyboard.press("Escape");
     await expect(launcher).toBeFocused();

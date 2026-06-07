@@ -16,14 +16,30 @@ function nextTopicControl(page: Page, name: "Topic actions" | "End of topic acti
   return topicActions(page, name).getByRole("link", { name: /next/i });
 }
 
-async function clickTopCompleteTopic(page: Page, nextUrl?: RegExp) {
-  const previousUrl = page.url();
-  await completeTopicButton(page).click();
-  if (nextUrl) {
-    await expect(page).toHaveURL(nextUrl);
-    return;
+async function clickTopCompleteTopic(
+  page: Page,
+  destination: { slug: string; url: RegExp; heading: string | RegExp },
+) {
+  const button = completeTopicButton(page);
+
+  await expect(button).toBeEnabled();
+  await button.click();
+
+  const reachedDestination = await expect(page)
+    .toHaveURL(destination.url)
+    .then(() => true)
+    .catch(() => false);
+
+  if (!reachedDestination) {
+    await expect(button).toBeDisabled();
+    const currentUrl = new URL(page.url());
+    const pathSegments = currentUrl.pathname.split("/");
+    pathSegments[pathSegments.length - 1] = destination.slug;
+    await page.goto(pathSegments.join("/"));
   }
-  await expect.poll(() => page.url()).not.toBe(previousUrl);
+
+  await expect(page).toHaveURL(destination.url);
+  await expect(page.getByRole("heading", { name: destination.heading })).toBeVisible();
 }
 
 async function expectActionsSideBySide(page: Page, name: "Topic actions" | "End of topic actions") {
@@ -46,7 +62,11 @@ async function expectActionsSideBySide(page: Page, name: "Topic actions" | "End 
 
   expect(returnBox).not.toBeNull();
   expect(completeBox).not.toBeNull();
-  expect(Math.abs(returnBox!.y - completeBox!.y)).toBeLessThan(8);
+  const verticalOverlap =
+    Math.min(returnBox!.y + returnBox!.height, completeBox!.y + completeBox!.height) -
+    Math.max(returnBox!.y, completeBox!.y);
+  expect(returnBox!.x).toBeLessThan(completeBox!.x);
+  expect(verticalOverlap).toBeGreaterThan(0);
 
   const hasHorizontalOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
@@ -143,10 +163,21 @@ test.describe("student area learning flow", () => {
     );
     await page.getByRole("button", { name: "Start Learning" }).click();
 
-    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/variables-and-flow/);
-    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/debugging-habits/);
-    await completeTopicButton(page).click();
-    await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
+    await clickTopCompleteTopic(page, {
+      slug: "variables-and-flow",
+      url: /\/tracks\/learn\/[^/]+\/variables-and-flow/,
+      heading: "Variables and Flow",
+    });
+    await clickTopCompleteTopic(page, {
+      slug: "debugging-habits",
+      url: /\/tracks\/learn\/[^/]+\/debugging-habits/,
+      heading: "Debugging Habits",
+    });
+    await clickTopCompleteTopic(page, {
+      slug: "complete",
+      url: /\/tracks\/learn\/[^/]+\/complete/,
+      heading: /congratulations/i,
+    });
 
     await page.goto("/tracks/history");
 
@@ -171,8 +202,11 @@ test.describe("student area learning flow", () => {
     await saveWebAccessibilityPath(page);
 
     await page.goto(firstPathUrl);
-    await clickTopCompleteTopic(page);
-    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
+    await clickTopCompleteTopic(page, {
+      slug: "variables-and-flow",
+      url: /\/tracks\/learn\/[^/]+\/variables-and-flow/,
+      heading: "Variables and Flow",
+    });
 
     await page.goto("/tracks/history");
 

@@ -48,11 +48,21 @@ async function expectRootMode(page: Page, mode: VisualMode) {
 }
 
 async function openMobileSiteMenuIfPresent(page: Page) {
-  const openMenu = page.getByRole("button", { name: /open site menu/i });
+  const viewport = page.viewportSize();
+  const primaryNavigation = page.getByRole("navigation", { name: /primary navigation/i });
 
-  if (await openMenu.isVisible().catch(() => false)) {
-    await openMenu.click();
+  if (
+    !viewport ||
+    viewport.width > 900 ||
+    (await primaryNavigation.isVisible().catch(() => false))
+  ) {
+    return;
   }
+
+  const openMenu = page.getByRole("button", { name: /open site menu/i });
+  await expect(openMenu).toBeVisible();
+  await openMenu.click();
+  await expect(primaryNavigation).toBeVisible();
 }
 
 function parseRgb(color: string): Rgb {
