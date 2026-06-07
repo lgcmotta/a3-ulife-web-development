@@ -4,14 +4,27 @@ function topicActions(page: Page) {
   return page.getByRole("group", { name: "Topic actions", exact: true });
 }
 
-async function clickTopCompleteTopic(page: Page) {
-  const previousUrl = page.url();
+async function clickTopCompleteTopic(page: Page, nextUrl?: RegExp) {
   await topicActions(page).getByRole("button", { name: /complete topic/i }).click();
-  await expect.poll(() => page.url()).not.toBe(previousUrl);
+
+  if (nextUrl) {
+    await expect(page).toHaveURL(nextUrl);
+    await expectTopCompleteTopicVisible(page);
+    return;
+  }
+
+  await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 }
 
 async function expectTopCompleteTopicVisible(page: Page) {
   await expect(topicActions(page).getByRole("button", { name: /complete topic/i })).toBeVisible();
+}
+
+async function startLearningFromBuilder(page: Page) {
+  await expect(page.getByRole("button", { name: "Start Learning" })).toBeEnabled();
+  await page.getByRole("button", { name: "Start Learning" }).click();
+  await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
+  await expectTopCompleteTopicVisible(page);
 }
 
 async function selectWholeTrack(page: Page, trackName: RegExp, trackCheckbox: RegExp) {
@@ -93,10 +106,10 @@ test.describe("student area builder persistence", () => {
 
   test("builder returns to the initial state after completing a learning path", async ({ page }) => {
     await saveProgrammingPath(page);
-    await page.getByRole("button", { name: "Start Learning" }).click();
+    await startLearningFromBuilder(page);
 
-    await clickTopCompleteTopic(page);
-    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/variables-and-flow/);
+    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/debugging-habits/);
     await clickTopCompleteTopic(page);
     await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 
@@ -110,10 +123,10 @@ test.describe("student area builder persistence", () => {
 
   test("completed history is preserved while creating a new learning path", async ({ page }) => {
     await saveProgrammingPath(page);
-    await page.getByRole("button", { name: "Start Learning" }).click();
+    await startLearningFromBuilder(page);
 
-    await clickTopCompleteTopic(page);
-    await clickTopCompleteTopic(page);
+    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/variables-and-flow/);
+    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/debugging-habits/);
     await clickTopCompleteTopic(page);
     await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
 
@@ -138,8 +151,7 @@ test.describe("student area builder persistence", () => {
 
   test("plain builder visits stay empty after starting a saved learning path", async ({ page }) => {
     await saveProgrammingPath(page);
-    await page.getByRole("button", { name: "Start Learning" }).click();
-    await expectTopCompleteTopicVisible(page);
+    await startLearningFromBuilder(page);
 
     await page.goto("/tracks/builder");
 
@@ -151,8 +163,7 @@ test.describe("student area builder persistence", () => {
 
   test("edit path pre-populates once but plain builder visits return to a clean state", async ({ page }) => {
     await saveProgrammingPath(page);
-    await page.getByRole("button", { name: "Start Learning" }).click();
-    await expectTopCompleteTopicVisible(page);
+    await startLearningFromBuilder(page);
 
     await page.goto("/tracks/history");
     await page.getByRole("link", { name: /edit path/i }).click();
@@ -169,8 +180,7 @@ test.describe("student area builder persistence", () => {
 
   test("editing a full track can remove one topic without clearing the whole path", async ({ page }) => {
     await saveProgrammingPath(page);
-    await page.getByRole("button", { name: "Start Learning" }).click();
-    await expectTopCompleteTopicVisible(page);
+    await startLearningFromBuilder(page);
 
     await page.goto("/tracks/history");
     await page.getByRole("link", { name: /edit path/i }).click();

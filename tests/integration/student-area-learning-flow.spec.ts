@@ -8,6 +8,14 @@ function completeTopicButton(page: Page, name: "Topic actions" | "End of topic a
   return topicActions(page, name).getByRole("button", { name: /complete topic/i });
 }
 
+function previousTopicControl(page: Page, name: "Topic actions" | "End of topic actions" = "Topic actions") {
+  return topicActions(page, name).getByRole("link", { name: /previous/i });
+}
+
+function nextTopicControl(page: Page, name: "Topic actions" | "End of topic actions" = "Topic actions") {
+  return topicActions(page, name).getByRole("link", { name: /next/i });
+}
+
 async function clickTopCompleteTopic(page: Page, nextUrl?: RegExp) {
   const previousUrl = page.url();
   await completeTopicButton(page).click();
@@ -20,10 +28,14 @@ async function clickTopCompleteTopic(page: Page, nextUrl?: RegExp) {
 
 async function expectActionsSideBySide(page: Page, name: "Topic actions" | "End of topic actions") {
   const group = topicActions(page, name);
+  const previous = previousTopicControl(page, name);
+  const next = nextTopicControl(page, name);
   const returnLink = group.getByRole("link", { name: /return to builder/i });
   const completeButton = group.getByRole("button", { name: /complete topic/i });
 
   await expect(group).toBeVisible();
+  await expect(previous).toBeVisible();
+  await expect(next).toBeVisible();
   await expect(returnLink).toBeVisible();
   await expect(completeButton).toBeVisible();
 
@@ -43,10 +55,12 @@ async function expectActionsSideBySide(page: Page, name: "Topic actions" | "End 
 }
 
 async function openProgrammingLearningTopic(page: Page) {
-  await page.goto("/tracks/builder");
-  await page.getByRole("button", { name: /programming foundations/i }).click();
-  await page.getByRole("checkbox", { name: /^select programming foundations$/i }).click();
-  await page.getByRole("button", { name: "Save" }).click();
+  await saveWholeTrack(
+    page,
+    /programming foundations/i,
+    /^select programming foundations$/i,
+    "current-topic-problem-solving-basics",
+  );
   await expect(page.getByRole("button", { name: "Start Learning" })).toBeEnabled();
   await page.getByRole("button", { name: "Start Learning" }).click();
   await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
@@ -59,13 +73,23 @@ async function saveWholeTrack(
   firstTopicTestId: string,
 ) {
   await page.goto("/tracks/builder");
-  await page.getByRole("button", { name: trackName }).click();
+  const trackButton = page.getByRole("button", { name: trackName });
+
+  await expect(async () => {
+    if ((await trackButton.getAttribute("aria-expanded")) !== "true") {
+      await trackButton.click();
+    }
+
+    await expect(trackButton).toHaveAttribute("aria-expanded", "true");
+  }).toPass();
+
   const checkbox = page.getByRole("checkbox", { name: trackCheckbox });
   await expect(checkbox).toBeVisible();
   await expect(async () => {
     if ((await checkbox.getAttribute("aria-checked")) !== "true") {
-      await checkbox.click();
+      await checkbox.press("Space");
     }
+
     await expect(checkbox).toHaveAttribute("aria-checked", "true");
     await expect(page.getByTestId(firstTopicTestId)).toBeVisible();
   }).toPass();
@@ -96,6 +120,11 @@ test.describe("student area learning flow", () => {
     const completeButton = topActions.getByRole("button", { name: /complete topic/i });
 
     await expect(returnLink).toHaveAttribute("href", /\/tracks\/builder\?edit=.+/);
+    await expect(previousTopicControl(page)).toHaveAttribute("aria-disabled", "true");
+    await expect(nextTopicControl(page)).toHaveAttribute(
+      "href",
+      /\/tracks\/learn\/[^/]+\/variables-and-flow/,
+    );
     await returnLink.focus();
     await expect(returnLink).toBeFocused();
     await page.keyboard.press("Tab");
@@ -106,11 +135,12 @@ test.describe("student area learning flow", () => {
   });
 
   test("completing every topic marks the path completed in history", async ({ page }) => {
-    await page.goto("/tracks/builder");
-
-    await page.getByRole("button", { name: /programming foundations/i }).click();
-    await page.getByRole("checkbox", { name: /^select programming foundations$/i }).click();
-    await page.getByRole("button", { name: "Save" }).click();
+    await saveWholeTrack(
+      page,
+      /programming foundations/i,
+      /^select programming foundations$/i,
+      "current-topic-problem-solving-basics",
+    );
     await page.getByRole("button", { name: "Start Learning" }).click();
 
     await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/variables-and-flow/);
@@ -135,6 +165,7 @@ test.describe("student area learning flow", () => {
     );
     await page.getByRole("button", { name: "Start Learning" }).click();
     await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
+    await expect(page.getByRole("heading", { name: "Problem-Solving Basics" })).toBeVisible();
     const firstPathUrl = page.url();
 
     await saveWebAccessibilityPath(page);
@@ -184,6 +215,71 @@ test.describe("student area learning flow", () => {
     await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
   });
 
+  test("previous and next topic navigation works from repeated action groups", async ({ page }) => {
+    await openProgrammingLearningTopic(page);
+
+    await nextTopicControl(page).click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
+    await expect(page.getByRole("heading", { name: "Variables and Flow" })).toBeVisible();
+
+    await previousTopicControl(page).click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
+
+    await nextTopicControl(page, "End of topic actions").click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
+
+    await previousTopicControl(page, "End of topic actions").click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
+  });
+
+  test("completed topics disable completion when revisited through navigation", async ({ page }) => {
+    await openProgrammingLearningTopic(page);
+
+    await completeTopicButton(page).click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
+
+    await previousTopicControl(page).click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
+    await expect(completeTopicButton(page)).toBeDisabled();
+    await expect(completeTopicButton(page, "End of topic actions")).toBeDisabled();
+  });
+
+  test("navigation boundary states are disabled at first and last topics", async ({ page }) => {
+    await openProgrammingLearningTopic(page);
+
+    await expect(previousTopicControl(page)).toHaveAttribute("aria-disabled", "true");
+    await expect(previousTopicControl(page, "End of topic actions")).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+
+    await nextTopicControl(page).click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
+    await nextTopicControl(page).click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/debugging-habits/);
+
+    await expect(nextTopicControl(page)).toHaveAttribute("aria-disabled", "true");
+    await expect(nextTopicControl(page, "End of topic actions")).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+  });
+
+  test("resume still opens the last uncompleted topic after browsing elsewhere", async ({ page }) => {
+    await openProgrammingLearningTopic(page);
+
+    await completeTopicButton(page).click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
+
+    await nextTopicControl(page).click();
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/debugging-habits/);
+
+    await page.goto("/tracks/history");
+    await page.getByRole("link", { name: /resume learning/i }).click();
+
+    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
+  });
+
   test("duplicated topic actions expose matching controls with distinct group context", async ({
     page,
   }) => {
@@ -193,6 +289,10 @@ test.describe("student area learning flow", () => {
     const bottomActions = topicActions(page, "End of topic actions");
     const topReturn = topActions.getByRole("link", { name: /return to builder/i });
     const bottomReturn = bottomActions.getByRole("link", { name: /return to builder/i });
+    const topPrevious = topActions.getByRole("link", { name: /previous/i });
+    const bottomPrevious = bottomActions.getByRole("link", { name: /previous/i });
+    const topNext = topActions.getByRole("link", { name: /next/i });
+    const bottomNext = bottomActions.getByRole("link", { name: /next/i });
 
     await expect(topActions.getByRole("button", { name: /complete topic/i })).toHaveText(
       "Complete Topic",
@@ -203,8 +303,21 @@ test.describe("student area learning flow", () => {
     await expect(topReturn).toHaveText("Return to Builder");
     await expect(bottomReturn).toHaveText("Return to Builder");
     await expect(bottomReturn).toHaveAttribute("href", await topReturn.getAttribute("href") ?? "");
+    await expect(topPrevious).toHaveText("Previous");
+    await expect(bottomPrevious).toHaveText("Previous");
+    await expect(topNext).toHaveText("Next");
+    await expect(bottomNext).toHaveText("Next");
+    await expect(bottomPrevious).toHaveAttribute(
+      "aria-disabled",
+      await topPrevious.getAttribute("aria-disabled") ?? "",
+    );
+    await expect(bottomNext).toHaveAttribute("href", await topNext.getAttribute("href") ?? "");
 
-    await bottomReturn.focus();
+    await bottomPrevious.focus();
+    await expect(bottomPrevious).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(bottomNext).toBeFocused();
+    await page.keyboard.press("Tab");
     await expect(bottomReturn).toBeFocused();
     await page.keyboard.press("Tab");
     await expect(bottomActions.getByRole("button", { name: /complete topic/i })).toBeFocused();

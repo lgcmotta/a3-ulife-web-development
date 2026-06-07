@@ -138,3 +138,45 @@ export function getLearningDestination(savedPath: SavedLearningPath) {
 
   return `/tracks/learn/${savedPath.pathId}/complete`;
 }
+
+export type TopicNavigationState = {
+  currentTopic: PathTopicItem | null;
+  previousTopic: PathTopicItem | null;
+  nextTopic: PathTopicItem | null;
+  previousHref: string | null;
+  nextHref: string | null;
+  isCurrentTopicCompleted: boolean;
+};
+
+function orderedPathTopics(savedPath: Pick<SavedLearningPath, "trackGroups">) {
+  return savedPath.trackGroups
+    .toSorted((left, right) => left.order - right.order)
+    .flatMap((group) => group.topicItems.toSorted((left, right) => left.order - right.order));
+}
+
+function learningTopicHref(pathId: string, topic: PathTopicItem | null) {
+  return topic ? `/tracks/learn/${pathId}/${topic.topicSlug}` : null;
+}
+
+export function getTopicNavigationState(
+  savedPath: SavedLearningPath,
+  topicSlug: string,
+): TopicNavigationState {
+  const topics = orderedPathTopics(savedPath);
+  const currentIndex = topics.findIndex((topic) => topic.topicSlug === topicSlug);
+  const currentTopic = currentIndex >= 0 ? (topics[currentIndex] ?? null) : null;
+  const previousTopic = currentIndex > 0 ? (topics[currentIndex - 1] ?? null) : null;
+  const nextTopic =
+    currentIndex >= 0 && currentIndex < topics.length - 1
+      ? (topics[currentIndex + 1] ?? null)
+      : null;
+
+  return {
+    currentTopic,
+    previousTopic,
+    nextTopic,
+    previousHref: learningTopicHref(savedPath.pathId, previousTopic),
+    nextHref: learningTopicHref(savedPath.pathId, nextTopic),
+    isCurrentTopicCompleted: currentTopic?.completed ?? false,
+  };
+}
