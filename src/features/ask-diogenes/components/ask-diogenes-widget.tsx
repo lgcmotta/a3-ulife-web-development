@@ -240,6 +240,7 @@ export function AskDiogenesWidget() {
                     className="button-base button-secondary inline-flex min-h-10 items-center justify-center rounded-md border px-3 py-2 text-sm font-semibold"
                     href={actionTargets[actionId]}
                     key={actionId}
+                    onClick={closePanel}
                   >
                     {actions[actionId].label}
                   </Link>

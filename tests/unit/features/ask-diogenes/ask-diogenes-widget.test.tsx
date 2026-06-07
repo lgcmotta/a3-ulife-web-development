@@ -85,4 +85,26 @@ describe("AskDiogenesWidget", () => {
       expect(screen.getByRole("button", { name: "Ask Diogenes" })).toBe(document.activeElement);
     });
   });
+
+  it("closes and resets when a guided action is clicked", async () => {
+    const user = userEvent.setup();
+    renderWidget();
+
+    await user.click(screen.getByRole("button", { name: "Ask Diogenes" }));
+    await user.click(screen.getByRole("button", { name: "How should I study a topic?" }));
+    await advanceTyping();
+
+    expect(screen.getByText(/Read the main explanation first/i)).toBeTruthy();
+
+    const action = screen.getByRole("link", { name: "Explore learning tracks" });
+    action.addEventListener("click", (event) => event.preventDefault());
+
+    await user.click(action);
+
+    expect(screen.queryByRole("group", { name: "Choose a question for Diogenes" })).toBeNull();
+
+    await user.click(screen.getByRole("button", { name: "Ask Diogenes" }));
+
+    expect(screen.queryByTestId("ask-diogenes-messages")).toBeNull();
+  });
 });

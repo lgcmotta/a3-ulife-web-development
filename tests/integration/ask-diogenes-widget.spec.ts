@@ -72,6 +72,14 @@ test.describe("Ask Diogenes widget", () => {
 
     await action.click();
     await expect(page).toHaveURL(/\/tracks$/);
+    await expect(
+      page.getByRole("group", { name: "Choose a question for Diogenes" }),
+    ).toHaveCount(0);
+
+    await openAskDiogenes(page);
+    await expect(
+      page.getByTestId("ask-diogenes-messages").getByText("How should I study a topic?"),
+    ).toHaveCount(0);
   });
 
   test("supports keyboard use, reset on reopen, and high contrast mode", async ({ page }) => {
