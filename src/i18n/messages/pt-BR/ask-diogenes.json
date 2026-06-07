@@ -1,0 +1,69 @@
+{
+  "launcher": {
+    "openLabel": "Perguntar ao Diogenes",
+    "closedLabel": "Perguntar ao Diogenes",
+    "minimizedLabel": "Perguntar ao Diogenes está minimizado"
+  },
+  "panel": {
+    "title": "Perguntar ao Diogenes",
+    "description": "Escolha uma pergunta pronta. Diogenes responde com orientações roteirizadas sobre esta plataforma.",
+    "promptGroupLabel": "Escolha uma pergunta para Diogenes",
+    "typingLabel": "Diogenes está preparando uma resposta roteirizada",
+    "closeLabel": "Fechar Perguntar ao Diogenes",
+    "minimizeLabel": "Minimizar Perguntar ao Diogenes"
+  },
+  "persona": {
+    "name": "Diogenes",
+    "greeting": "Bem-vindo. Posso orientar você pela plataforma com algumas perguntas prontas.",
+    "description": "Eu uso respostas roteirizadas, então toda resposta é previsível e adequada para este trabalho da disciplina."
+  },
+  "actions": {
+    "openTracks": {
+      "label": "Explorar trilhas de aprendizagem"
+    },
+    "openBuilder": {
+      "label": "Abrir construtor de trilha"
+    },
+    "openHistory": {
+      "label": "Ver histórico de aprendizagem"
+    },
+    "openAccessibility": {
+      "label": "Abrir ajuda de acessibilidade"
+    },
+    "backHome": {
+      "label": "Ir para início"
+    }
+  },
+  "prompts": {
+    "platformOrientation": {
+      "label": "Como uso esta plataforma?",
+      "userMessage": "Como uso esta plataforma?",
+      "response": "Comece em Trilhas de Aprendizagem para escolher um caminho curto de estudo. Abra um tópico, leia a explicação, tente a atividade prática e use a ajuda de acessibilidade quando precisar de controles de visualização ou idioma.",
+      "actions": ["openTracks", "openAccessibility"]
+    },
+    "learningTracks": {
+      "label": "O que são trilhas de aprendizagem?",
+      "userMessage": "O que são trilhas de aprendizagem?",
+      "response": "As trilhas agrupam tópicos relacionados em um percurso claro. Escolha a trilha que combina com seu objetivo atual e use o construtor se quiser uma sequência menor e personalizada.",
+      "actions": ["openTracks", "openBuilder"]
+    },
+    "topicStudy": {
+      "label": "Como devo estudar um tópico?",
+      "userMessage": "Como devo estudar um tópico?",
+      "response": "Leia primeiro a explicação principal, depois pare na nota do professor e na atividade prática. Trate cada tópico como uma pequena sessão de estudo: entender, tentar e seguir para o próximo passo.",
+      "actions": ["openTracks"]
+    },
+    "progressFeedback": {
+      "label": "Onde vejo meu progresso?",
+      "userMessage": "Onde vejo meu progresso?",
+      "response": "Suas trilhas salvas e tópicos concluídos aparecem na área do estudante. Use o construtor para salvar uma trilha e volte ao histórico quando quiser retomar ou revisar o progresso.",
+      "actions": ["openBuilder", "openHistory"]
+    },
+    "accessibilityLanguage": {
+      "label": "Como funcionam acessibilidade e idioma?",
+      "userMessage": "Como funcionam acessibilidade e idioma?",
+      "response": "Use os controles do cabeçalho para trocar idioma, tema claro ou escuro e alto contraste. A página de ajuda de acessibilidade explica esses controles e como eles apoiam diferentes necessidades de estudo.",
+      "actions": ["openAccessibility"]
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import accessibility from "@/i18n/messages/pt-BR/accessibility.json";
 import actions from "@/i18n/messages/pt-BR/actions.json";
+import askDiogenes from "@/i18n/messages/pt-BR/ask-diogenes.json";
 import brand from "@/i18n/messages/pt-BR/brand.json";
 import evidence from "@/i18n/messages/pt-BR/evidence.json";
 import home from "@/i18n/messages/pt-BR/home.json";
@@ -19,6 +20,7 @@ const ptBRMessages = {
   navigation,
   preferences,
   actions,
+  askDiogenes,
   home,
   tracks,
   topic,

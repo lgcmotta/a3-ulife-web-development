@@ -6,13 +6,13 @@ The project constitution at `.specify/memory/constitution.md` is authoritative. 
 file conflicts with the constitution, agents must follow the constitution.
 
 ## Active Technologies
-
 - 001-platform-foundation: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, shadcn CLI 4.10.0, Vitest 4.1.8, Playwright 1.60.0.
 - 002-github-test-automation: GitHub Actions, actions/checkout@v6, pnpm/action-setup@v6, actions/setup-node@v6, pnpm 9.5.0, ESLint 9.39.4, Vitest 4.1.8, Playwright 1.60.0.
 - 003-educational-content: TypeScript 6.0.3, Node.js v25.9.0, existing Next.js 16.2.7 frontend, local static content modules under `src/content`, Vitest 4.1.8, Playwright 1.60.0.
 - 004-personalized-tracks: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7 server components/actions, React 19.2.7, Redis via Docker Compose, `redis` 6.0.0, `sqids` 0.3.0, `react-markdown` 10.1.0, `remark-gfm` 4.0.1.
 - 007-topic-action-buttons: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, `react-markdown` 10.1.0, `remark-gfm` 4.0.1, existing Redis-backed saved-path progress flow, Vitest 4.1.8, Playwright 1.60.0.
 - 009-topic-navigation: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, `next-intl` 4.13.0, `lucide-react` 1.17.0, existing shadcn/Radix-style local UI components, existing Redis-backed saved-path progress flow, Vitest 4.1.8, Playwright 1.60.0. No storage schema changes.
+- 010-ask-diogenes-chatbot: TypeScript 6.0.3, Node.js v25.9.0, Next.js 16.2.7, React 19.2.7, Tailwind CSS 4.3.0, `next-intl` 4.13.0, shadcn/ui and installed shadcn-chatbot-kit local components, existing Redis dependency not used for assistant history, Vitest 4.1.8, Playwright 1.60.0. Local JSON scripted responses only; no external AI/chatbot services.
 
 ## Project Structure
 
@@ -44,10 +44,9 @@ public/
 - Do not introduce low-value complexity, speculative subsystems, or unapproved platform dependencies.
 
 ## Recent Changes
+- 010-ask-diogenes-chatbot: Planned a minimum-effort mocked Ask Diogenes floating assistant with local JSON scripts, empty state on open, selective shadcn-chatbot-kit reuse, and no Redis conversation history.
 - 009-topic-navigation: Planned previous/next topic navigation inside the repeated topic action group, using translatable shadcn-style pagination controls without storage changes.
-- 007-topic-action-buttons: Planned reusable topic action group for existing Return to Builder and Complete Topic controls.
 
-- 2026-04-21: Established root agent governance for the Diogenes Legacy class project.
 
 <!-- MANUAL ADDITIONS START -->
 
@@ -200,5 +199,5 @@ The baseline quality rules are:
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/009-topic-navigation/plan.md
+at specs/010-ask-diogenes-chatbot/plan.md
 <!-- SPECKIT END -->

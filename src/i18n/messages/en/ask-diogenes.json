@@ -1,0 +1,69 @@
+{
+  "launcher": {
+    "openLabel": "Ask Diogenes",
+    "closedLabel": "Ask Diogenes",
+    "minimizedLabel": "Ask Diogenes is minimized"
+  },
+  "panel": {
+    "title": "Ask Diogenes",
+    "description": "Choose a prepared question. Diogenes will answer with scripted guidance for this platform.",
+    "promptGroupLabel": "Choose a question for Diogenes",
+    "typingLabel": "Diogenes is preparing a scripted answer",
+    "closeLabel": "Close Ask Diogenes",
+    "minimizeLabel": "Minimize Ask Diogenes"
+  },
+  "persona": {
+    "name": "Diogenes",
+    "greeting": "Welcome. I can point you around the platform with a few prepared questions.",
+    "description": "I use scripted answers, so every response is predictable and safe for this class project."
+  },
+  "actions": {
+    "openTracks": {
+      "label": "Explore learning tracks"
+    },
+    "openBuilder": {
+      "label": "Open path builder"
+    },
+    "openHistory": {
+      "label": "View learning history"
+    },
+    "openAccessibility": {
+      "label": "Open accessibility help"
+    },
+    "backHome": {
+      "label": "Go to home"
+    }
+  },
+  "prompts": {
+    "platformOrientation": {
+      "label": "How do I use this platform?",
+      "userMessage": "How do I use this platform?",
+      "response": "Start with Learning Tracks to choose a small study path. Open a topic, read the explanation, try the practice prompt, and use accessibility help whenever you need display or language controls.",
+      "actions": ["openTracks", "openAccessibility"]
+    },
+    "learningTracks": {
+      "label": "What are learning tracks?",
+      "userMessage": "What are learning tracks?",
+      "response": "Learning tracks group related topics into a clear route. Pick the track that matches your current goal, then use the path builder if you want a smaller custom sequence.",
+      "actions": ["openTracks", "openBuilder"]
+    },
+    "topicStudy": {
+      "label": "How should I study a topic?",
+      "userMessage": "How should I study a topic?",
+      "response": "Read the main explanation first, then pause at the professor note and practice prompt. Treat each topic as a small study session: understand, try, and then move to the next step.",
+      "actions": ["openTracks"]
+    },
+    "progressFeedback": {
+      "label": "Where is my progress?",
+      "userMessage": "Where is my progress?",
+      "response": "Your saved paths and completed topics appear in the student area. Use the builder to save a path, then return to history when you want to resume or review progress.",
+      "actions": ["openBuilder", "openHistory"]
+    },
+    "accessibilityLanguage": {
+      "label": "How do accessibility and language work?",
+      "userMessage": "How do accessibility and language work?",
+      "response": "Use the header controls to switch language, light or dark theme, and high contrast. The accessibility help page explains these controls and why they support different study needs.",
+      "actions": ["openAccessibility"]
+    }
+  }
+}
