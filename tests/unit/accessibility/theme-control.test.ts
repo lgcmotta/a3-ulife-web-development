@@ -1,6 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createElement } from "react";
+import {
+  createElement,
+  type ComponentProps,
+  type ComponentType,
+  type ReactNode,
+} from "react";
 import { describe, expect, it } from "vitest";
 import {
   BASE_THEME_STORAGE_KEY,
@@ -12,6 +17,16 @@ import { ThemePreferenceProvider } from "@/features/foundation/components/prefer
 import { ThemeToggle } from "@/features/foundation/components/theme-toggle";
 import { applyThemePreference, readThemeCookie } from "@/storage/theme-preference";
 
+type ThemePreferenceProviderForTestProps = Omit<
+  ComponentProps<typeof ThemePreferenceProvider>,
+  "children"
+> & {
+  children?: ReactNode;
+};
+
+const ThemePreferenceProviderForTest =
+  ThemePreferenceProvider as ComponentType<ThemePreferenceProviderForTestProps>;
+
 function renderThemeToggle(
   initialThemePreference: VisualPreference = visualPreferences["light-normal"],
 ) {
@@ -19,7 +34,7 @@ function renderThemeToggle(
 
   render(
     createElement(
-      ThemePreferenceProvider,
+      ThemePreferenceProviderForTest,
       { initialThemePreference },
       createElement(ThemeToggle),
     ),

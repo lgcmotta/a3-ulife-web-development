@@ -7,6 +7,7 @@ import {
   themePreferenceCookie,
 } from "@/accessibility/theme";
 import { mainContentId } from "@/accessibility/landmarks";
+import { AskDiogenesWidget } from "@/features/ask-diogenes/components/ask-diogenes-widget";
 import { PreferenceProviders } from "@/features/foundation/components/preference-providers";
 import { SiteHeader } from "@/features/foundation/components/site-header";
 import { resolveLocale } from "@/i18n/locales";
@@ -59,6 +60,7 @@ export default async function RootLayout({
             <main id={mainContentId} tabIndex={-1}>
               {children}
             </main>
+            <AskDiogenesWidget />
           </PreferenceProviders>
         </NextIntlClientProvider>
       </body>

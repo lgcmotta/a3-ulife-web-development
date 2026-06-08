@@ -4,10 +4,33 @@ function topicActions(page: Page) {
   return page.getByRole("group", { name: "Topic actions", exact: true });
 }
 
-async function clickTopCompleteTopic(page: Page) {
-  const previousUrl = page.url();
-  await topicActions(page).getByRole("button", { name: /complete topic/i }).click();
-  await expect.poll(() => page.url()).not.toBe(previousUrl);
+async function clickTopCompleteTopic(
+  page: Page,
+  destination: { url: RegExp; heading: string | RegExp },
+) {
+  const completeButton = topicActions(page).getByRole("button", { name: /complete topic/i });
+
+  await expect(completeButton).toBeEnabled();
+  await completeButton.click();
+  await expect(page).toHaveURL(destination.url);
+  await expect(page.getByRole("heading", { name: destination.heading })).toBeVisible();
+}
+
+async function saveProgrammingPath(page: Page) {
+  await page.goto("/tracks/builder");
+
+  await page.getByRole("button", { name: /programming foundations/i }).click();
+  await page.getByRole("checkbox", { name: /^select programming foundations$/i }).click();
+  await expect(page.getByRole("button", { name: "Save" })).toBeEnabled();
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByText(/learning path saved/i)).toBeVisible();
+}
+
+async function startLearningFromBuilder(page: Page) {
+  await expect(page.getByRole("button", { name: "Start Learning" })).toBeEnabled();
+  await page.getByRole("button", { name: "Start Learning" }).click();
+  await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
+  await expect(page.getByRole("heading", { name: "Problem-Solving Basics" })).toBeVisible();
 }
 
 test.describe("student area history", () => {
@@ -31,16 +54,13 @@ test.describe("student area history", () => {
   });
 
   test("unfinished history rows expose resume learning and edit path actions", async ({ page }) => {
-    await page.goto("/tracks/builder");
+    await saveProgrammingPath(page);
+    await startLearningFromBuilder(page);
 
-    await page.getByRole("button", { name: /programming foundations/i }).click();
-    await page.getByRole("checkbox", { name: /^select programming foundations$/i }).click();
-    await page.getByRole("button", { name: "Save" }).click();
-    await page.getByRole("button", { name: "Start Learning" }).click();
-    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
-
-    await clickTopCompleteTopic(page);
-    await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/variables-and-flow/);
+    await clickTopCompleteTopic(page, {
+      url: /\/tracks\/learn\/[^/]+\/variables-and-flow/,
+      heading: "Variables and Flow",
+    });
 
     await page.goto("/tracks/history");
 
@@ -59,17 +79,21 @@ test.describe("student area history", () => {
   });
 
   test("completed history rows show no resume, edit, or delete actions", async ({ page }) => {
-    await page.goto("/tracks/builder");
+    await saveProgrammingPath(page);
+    await startLearningFromBuilder(page);
 
-    await page.getByRole("button", { name: /programming foundations/i }).click();
-    await page.getByRole("checkbox", { name: /^select programming foundations$/i }).click();
-    await page.getByRole("button", { name: "Save" }).click();
-    await page.getByRole("button", { name: "Start Learning" }).click();
-
-    await clickTopCompleteTopic(page);
-    await clickTopCompleteTopic(page);
-    await clickTopCompleteTopic(page);
-    await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
+    await clickTopCompleteTopic(page, {
+      url: /\/tracks\/learn\/[^/]+\/variables-and-flow/,
+      heading: "Variables and Flow",
+    });
+    await clickTopCompleteTopic(page, {
+      url: /\/tracks\/learn\/[^/]+\/debugging-habits/,
+      heading: "Debugging Habits",
+    });
+    await clickTopCompleteTopic(page, {
+      url: /\/tracks\/learn\/[^/]+\/complete/,
+      heading: /congratulations/i,
+    });
 
     await page.goto("/tracks/history");
 

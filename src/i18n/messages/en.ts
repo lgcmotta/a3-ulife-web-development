@@ -1,5 +1,6 @@
 import accessibility from "@/i18n/messages/en/accessibility.json";
 import actions from "@/i18n/messages/en/actions.json";
+import askDiogenes from "@/i18n/messages/en/ask-diogenes.json";
 import brand from "@/i18n/messages/en/brand.json";
 import evidence from "@/i18n/messages/en/evidence.json";
 import home from "@/i18n/messages/en/home.json";
@@ -19,6 +20,7 @@ const enMessages = {
   navigation,
   preferences,
   actions,
+  askDiogenes,
   home,
   tracks,
   topic,

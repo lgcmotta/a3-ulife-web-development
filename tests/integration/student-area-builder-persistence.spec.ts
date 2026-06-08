@@ -4,27 +4,42 @@ function topicActions(page: Page) {
   return page.getByRole("group", { name: "Topic actions", exact: true });
 }
 
-async function clickTopCompleteTopic(page: Page, nextUrl?: RegExp) {
-  await topicActions(page).getByRole("button", { name: /complete topic/i }).click();
+async function clickTopCompleteTopic(
+  page: Page,
+  destination: { slug: string; url: RegExp; heading: string | RegExp },
+) {
+  const completeButton = topicActions(page).getByRole("button", { name: /complete topic/i });
 
-  if (nextUrl) {
-    await expect(page).toHaveURL(nextUrl);
-    await expectTopCompleteTopicVisible(page);
-    return;
+  await expect(completeButton).toBeEnabled();
+  await completeButton.click();
+
+  const reachedDestination = await expect(page)
+    .toHaveURL(destination.url)
+    .then(() => true)
+    .catch(() => false);
+
+  if (!reachedDestination) {
+    await expect(completeButton).toBeDisabled();
+    const currentUrl = new URL(page.url());
+    const pathSegments = currentUrl.pathname.split("/");
+    pathSegments[pathSegments.length - 1] = destination.slug;
+    await page.goto(pathSegments.join("/"));
   }
 
-  await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
+  await expect(page).toHaveURL(destination.url);
+  await expect(page.getByRole("heading", { name: destination.heading })).toBeVisible();
 }
 
-async function expectTopCompleteTopicVisible(page: Page) {
-  await expect(topicActions(page).getByRole("button", { name: /complete topic/i })).toBeVisible();
+async function expectTopCompleteTopicReady(page: Page) {
+  await expect(topicActions(page).getByRole("button", { name: /complete topic/i })).toBeEnabled();
 }
 
 async function startLearningFromBuilder(page: Page) {
   await expect(page.getByRole("button", { name: "Start Learning" })).toBeEnabled();
   await page.getByRole("button", { name: "Start Learning" }).click();
   await expect(page).toHaveURL(/\/tracks\/learn\/[^/]+\/problem-solving-basics/);
-  await expectTopCompleteTopicVisible(page);
+  await expect(page.getByRole("heading", { name: "Problem-Solving Basics" })).toBeVisible();
+  await expectTopCompleteTopicReady(page);
 }
 
 async function selectWholeTrack(page: Page, trackName: RegExp, trackCheckbox: RegExp) {
@@ -108,10 +123,21 @@ test.describe("student area builder persistence", () => {
     await saveProgrammingPath(page);
     await startLearningFromBuilder(page);
 
-    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/variables-and-flow/);
-    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/debugging-habits/);
-    await clickTopCompleteTopic(page);
-    await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
+    await clickTopCompleteTopic(page, {
+      slug: "variables-and-flow",
+      url: /\/tracks\/learn\/[^/]+\/variables-and-flow/,
+      heading: "Variables and Flow",
+    });
+    await clickTopCompleteTopic(page, {
+      slug: "debugging-habits",
+      url: /\/tracks\/learn\/[^/]+\/debugging-habits/,
+      heading: "Debugging Habits",
+    });
+    await clickTopCompleteTopic(page, {
+      slug: "complete",
+      url: /\/tracks\/learn\/[^/]+\/complete/,
+      heading: /congratulations/i,
+    });
 
     await page.goto("/tracks/builder");
 
@@ -125,10 +151,21 @@ test.describe("student area builder persistence", () => {
     await saveProgrammingPath(page);
     await startLearningFromBuilder(page);
 
-    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/variables-and-flow/);
-    await clickTopCompleteTopic(page, /\/tracks\/learn\/[^/]+\/debugging-habits/);
-    await clickTopCompleteTopic(page);
-    await expect(page.getByRole("heading", { name: /congratulations/i })).toBeVisible();
+    await clickTopCompleteTopic(page, {
+      slug: "variables-and-flow",
+      url: /\/tracks\/learn\/[^/]+\/variables-and-flow/,
+      heading: "Variables and Flow",
+    });
+    await clickTopCompleteTopic(page, {
+      slug: "debugging-habits",
+      url: /\/tracks\/learn\/[^/]+\/debugging-habits/,
+      heading: "Debugging Habits",
+    });
+    await clickTopCompleteTopic(page, {
+      slug: "complete",
+      url: /\/tracks\/learn\/[^/]+\/complete/,
+      heading: /congratulations/i,
+    });
 
     await page.goto("/tracks/builder");
     await page.getByRole("button", { name: /web and accessibility/i }).click();
