@@ -13,7 +13,9 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   webServer: {
-    command: "pnpm exec next dev -H 127.0.0.1 -p 3000 --webpack",
+    command: process.env.CI
+      ? "pnpm exec next start -H 127.0.0.1 -p 3000"
+      : "pnpm exec next dev -H 127.0.0.1 -p 3000 --webpack",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
