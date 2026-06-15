@@ -1017,6 +1017,18 @@ h3 {
     justify-content: space-between;
 }
 
+.next-action > div {
+    min-width: 0;
+}
+
+.next-action > a {
+    flex-shrink: 0;
+    height: auto;
+    min-height: 2.75rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
 .help-grid,
 .evidence-grid {
     display: grid;
@@ -1093,6 +1105,11 @@ h3 {
     .next-action {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .next-action > a {
+        white-space: normal;
+        width: 100%;
     }
 
     .mobile-site-menu .preference-controls,
